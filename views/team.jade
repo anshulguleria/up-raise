@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	div
+		div.alert.alert-info Your Review submission is pending. <a> Click Here </a> to complete
+		hr
+	div
+		h2 My Team
+		hr
+		div
+			table.table.table-bordered.table-responsive
+				tr
+					th.col-sm-3.text-center Name
+					th.col-sm-3.text-center Due date   
+					th.col-sm-3.text-center Actions
+				tr.danger
+					td 
+						a Varun Jain
+					td 12th Oct 13
+					td 
+						a Review Now
+						|  | 
+						a View Appraisals
+						|  | 
+						a View Goals
+				tr
+					td 
+						a Aashay Sambhe
+					td 12th Nov 13
+					td 
+						a View Appraisals
+						|  | 
+						a View Goals
+				tr
+					td 
+						a Varun Jain
+					td Pending
+					td 
+						a Set Goals
