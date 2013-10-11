@@ -10,3 +10,7 @@ exports.history = function(req, res){
 exports.self =  function(req, res){
   res.render('self-appraisal', { title: 'Appraisal Details' });
 };
+
+exports.view =  function(req, res){
+  res.render('view-appraisal', { title: 'Appraisal Details' });
+};
