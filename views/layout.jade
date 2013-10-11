@@ -2,13 +2,23 @@ doctype 5
 html
 	head
 		title= title
-		link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
-		div.page-header
-		h1(style="text-align: center;")= title
-	
-		block content
+		
 
-		script(src='/javascripts/jquery/jquery-1.10.2.js')
-		script(src='/javascripts/bootstrap/bootstrap.js')
+			div.page-header
+				h1(style="text-align: center;")= title
+			
+			block content
+
+			script(src='/javascripts/jquery/jquery-1.10.2.js')
+			script(src='/javascripts/bootstrap/bootstrap.js')
+		
+	footer
+		div.col-md-8
+			hr
+		div.col-md-4
+			hr
+			p.pull-right @Copyright Varun 2013
+			
