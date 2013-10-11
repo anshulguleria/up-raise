@@ -14,3 +14,7 @@ exports.self =  function(req, res){
 exports.view =  function(req, res){
   res.render('view-appraisal', { title: 'Appraisal Details' });
 };
+
+exports.review =  function(req, res){
+  res.render('review-appraisal', { title: 'Review Appraisal' });
+};

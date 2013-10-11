@@ -44,6 +44,7 @@ app.get('/goals', goals.list);
 app.get('/appraisals', appraisals.history);
 app.get('/self-appraisal', appraisals.self);
 app.get('/view-appraisal', appraisals.view);
+app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
 
 http.createServer(app).listen(app.get('port'), function(){
