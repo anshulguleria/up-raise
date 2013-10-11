@@ -9,7 +9,8 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var login = require('./routes/login');
 var dashboard = require('./routes/dashboard');
-
+var goals = require('./routes/goals');
+var appraisals = require('./routes/appraisals');
 
 var http = require('http');
 var path = require('path');
@@ -38,6 +39,8 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/login', login.login);
 app.get('/dashboard', dashboard.display);
+app.get('/goals', goals.list);
+app.get('/appraisals', appraisals.history);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
