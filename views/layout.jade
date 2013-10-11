@@ -1,0 +1,14 @@
+doctype 5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/bootstrap/bootstrap.css')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+	body
+		div.page-header
+		h1(style="text-align: center;")= title
+	
+		block content
+
+		script(src='/javascripts/jquery/jquery-1.10.2.js')
+		script(src='/javascripts/bootstrap/bootstrap.js')
