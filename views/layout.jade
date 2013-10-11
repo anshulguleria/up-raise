@@ -5,20 +5,33 @@ html
 		link(rel='stylesheet', href='/stylesheets/bootstrap.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 	body
-		
+		div.navbar.navbar-default.navbar-static-top.nav-blue
+			div.container			
+				div.navbar-header
+					a.navbar-brand Dashboard
+				div.navbar-collapse.collapse
+					ul.nav.navbar-nav
+						li
+							a My Goals
+						li
+							a My Diary
+						li
+							a My Team
+						li
+							a Appraisal History
+						
+					ul.nav.navbar-nav.navbar-right
+						li
+							a Welcome 
+								strong Varun
+						li
+							a Logout 
+								span.glyphicon.glyphicon-off
+		block content
 
-			div.page-header
-				h1(style="text-align: center;")= title
+		script(src='/javascripts/jquery/jquery-1.10.2.js')
+		script(src='/javascripts/bootstrap/bootstrap.js')
 			
-			block content
-
-			script(src='/javascripts/jquery/jquery-1.10.2.js')
-			script(src='/javascripts/bootstrap/bootstrap.js')
-		
 	footer
-		div.col-md-8
-			hr
-		div.col-md-4
-			hr
-			p.pull-right @Copyright Varun 2013
+		p.pull-right @Copyright Varun 2013
 			
