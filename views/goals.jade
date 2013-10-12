@@ -2,8 +2,8 @@ extends layout
 
 block content
 
-	h2 Goals for <strong>#{employee.firstName}</strong> <small>(Incomplete/Pending/Approved)</small>
-	h4 Review Cycle (#{cycle.startDate} - #{cycle.endDate})
+	h2 Goals for <strong>#{employee.firstName}</strong> <small>(#{goals.status})</small>
+	h4 Review Cycle (#{goals.cycle.startDate} - #{goals.cycle.endDate})
 
 	hr
 	div
@@ -15,56 +15,18 @@ block content
 				th.text-center Description
 				th.text-center Weightage
 				th.text-center Actions
-			tr
-				td 1
-				td Company Roadmap
-				td Organization
-				td 
-					ul
-						li Ensure meetings for company roadmap occurs bi-weekly.
-						li Track and guide Product management organization to achieve goals set
-						li Track and guide Services organization to achieve goals set
-				td.text-center 10%					
-				td
-					a Edit 
-					a Delete
-			tr
-				td 2
-				td Company Goals
-				td Organization
-				td 
-					ul
-						li Build company goals for year 2010-11.
-						li Publish goals to sales, hr, admin, products and services teams
-				td.text-center 10%					
-				td
-					a Edit 
-					a Delete
-			tr
-				td 3
-				td Company Finance
-				td Organization
-				td 
-					ul
-						li Setup company financial report publish to stake holders.
-						li Increase per person revenue by 10%.
-				td.text-center 10%					
-				td
-					a Edit 
-					a Delete
-			tr
-				td 4
-				td Training of Fg13
-				td Self
-				td 
-					ul
-						li Take 5 lectures per term to inculcate better programming techniques in the organization.
-						li Spend time with selected candidates to nurture leaders in the organization.
-				td.text-center 10%					
-				td
-					a Edit 
-					a Delete
-		a.glyphicon.glyphicon-plus Add-Another
+			each item in goals.items
+				tr
+					td #{item[0]}
+					td #{item[1]}
+					td #{item[2]}
+					td #{item[3]}
+						
+					td.text-center #{item[4]}%
+					td
+						a Edit 
+						a Delete			
+		a.glyphicon.glyphicon-plus(id='lnkAdd') Add-Another
 		
 		if (view == 'self')
 			div.text-right
