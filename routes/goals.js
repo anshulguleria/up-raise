@@ -4,5 +4,5 @@
  */
 
 exports.list = function(req, res){
-  res.render('goals', { title: 'Goals' });
+  res.render('goals', { title: 'Goals' ,  user: req.user });
 };

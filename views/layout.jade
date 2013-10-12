@@ -7,25 +7,25 @@ html
 	body
 		div.navbar.navbar-default.navbar-static-top.nav-blue
 			div.container			
-				div.navbar-header
-					a.navbar-brand Dashboard
 				div.navbar-collapse.collapse
 					ul.nav.navbar-nav
 						li
-							a My Goals
+							a(href="/dashboard") Dashboard
 						li
-							a My Diary
+							a(href="/goals") My Goals
 						li
-							a My Team
+							a(href="/perfdiary") My Diary
 						li
-							a Appraisal History
+							a(href="/team") My Team
+						li
+							a(href="/appraisals") Appraisal History
 						
 					ul.nav.navbar-nav.navbar-right
 						li
 							a Welcome 
 								strong Varun
 						li
-							a Logout 
+							a(href="/logout") Logout 
 								span.glyphicon.glyphicon-off
 		div.container
 			if (user)
