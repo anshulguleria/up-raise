@@ -4,5 +4,7 @@
  */
 
 exports.login = function(req, res){
-  res.render('login', { title: 'Login' });
+	var error = req.flash('error');
+	console.log(error);
+  res.render('login', { error: error});
 };
