@@ -21,12 +21,13 @@ html
 							a(href="/appraisals") Appraisal History
 						
 					ul.nav.navbar-nav.navbar-right
-						li
-							a Welcome 
-								strong Varun
-						li
-							a(href="/logout") Logout 
-								span.glyphicon.glyphicon-off
+						if(user)
+							li
+								a Welcome 
+									strong #{user.name}
+							li
+								a(href="/logout") Logout 
+									span.glyphicon.glyphicon-off
 		div.container
 			if (user)
 				block content

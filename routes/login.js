@@ -19,22 +19,22 @@ exports.init = function(app, passport, mongodb){
 	//   this will be as simple as storing the user ID when serializing, and finding
 	//   the user by ID when deserializing.
 	passport.serializeUser(function(user, done) {
-		console.log('serializing user');
-		console.log(user);
+		//console.log('serializing user');
+		//console.log(user);
 	  done(null, user._id);
 	});
 
 
 	function findById(id, fn) {
-		console.log('find user by id ' + id);
+		//console.log('find user by id ' + id);
 	  app.users.findOne({_id : new mongodb.BSONPure.ObjectID(id) }, function(err, doc) {	
-		console.log(doc);
+		//console.log(doc);
 	  	fn(err, doc);
 	  });
 	}
 
 	passport.deserializeUser(function(id, done) {
-		console.log('deserializing user by id ' + id);
+		//console.log('deserializing user by id ' + id);
 	  findById(id, function (err, user) {
 	    done(err, user);
 	  });
