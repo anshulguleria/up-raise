@@ -2,10 +2,8 @@ extends layout
 
 block content
 
-	div
-		div.alert.alert-info Your Review submission is pending. <a> Click Here </a> to complete
-		hr
-	h2 My Goals <small>Incomplete/Pending/Approved</small>
+	h2 Goals for <strong>#{employee.firstName}</strong> <small>(Incomplete/Pending/Approved)</small>
+	h4 Review Cycle (#{cycle.startDate} - #{cycle.endDate})
 
 	hr
 	div
@@ -67,4 +65,7 @@ block content
 					a Edit 
 					a Delete
 		a.glyphicon.glyphicon-plus Add-Another
-		button.btn.btn-primary.btn-md.pull-right Save
+		
+		if (view == 'self')
+			div.text-right
+				button.btn.btn-primary.btn-md Save
