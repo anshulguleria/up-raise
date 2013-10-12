@@ -4,5 +4,6 @@
  */
 
 exports.display = function(req, res){
-  res.render('dashboard', { title: 'My Dashboard' });
+	console.log(req.user);
+  	res.render('dashboard', { user: req.user });
 };
