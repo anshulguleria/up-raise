@@ -28,11 +28,18 @@ html
 							a Logout 
 								span.glyphicon.glyphicon-off
 		div.container
-			block content
+			if (authenticated)
+				block content
+			else
+				div.text-center
+					p You are not logged in. Please login to continue.
+					button.btn.btn-primary.btn-lg(onclick="window.location ='/login'") Login
 
 		script(src='/javascripts/jquery/jquery-1.10.2.js')
 		script(src='/javascripts/bootstrap/bootstrap.js')
 			
 	footer
-		p.pull-right @Copyright Varun 2013
+		div.container			
+			hr
+			p.text-right @Copyright Varun 2013
 			

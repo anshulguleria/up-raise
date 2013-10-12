@@ -4,6 +4,7 @@
  */
 
 var express = require('express');
+var mongodb = require('mongodb');
 
 var routes = require('./routes');
 var user = require('./routes/user');
@@ -13,6 +14,8 @@ var goals = require('./routes/goals');
 var appraisals = require('./routes/appraisals');
 var perfdiary = require('./routes/perfdiary');
 var team = require('./routes/team');
+
+var server = new mongodb.Server('127.0.0.1', 27017);
 
 var http = require('http');
 var path = require('path');
