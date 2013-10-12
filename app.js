@@ -4,19 +4,22 @@
  */
 
 var express = require('express');
-var mongodb = require('mongodb');
+var mongoose = require('mongoose');
+
 var passport = require('passport')
   , flash = require('connect-flash');
 
 
-var login = require('./routes/login');
 var dashboard = require('./routes/dashboard');
 var goals = require('./routes/goals');
 var appraisals = require('./routes/appraisals');
 var perfdiary = require('./routes/perfdiary');
 var team = require('./routes/team');
+var authenticate = require('./routes/authenticate');
+var authApi = require('./apis/authenticate')(passport);
 
-var server = new mongodb.Server('127.0.0.1', 27017);
+
+mongoose.connect('mongodb://127.0.0.1/up-raise');
 
 var http = require('http');
 var path = require('path');
@@ -44,8 +47,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', login.login);
-app.get('/login', login.login);
+app.get('/', authenticate.display);
+app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 app.get('/goals', goals.list);
 app.get('/appraisals', appraisals.history);
@@ -55,27 +58,12 @@ app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
 app.get('/team', team.list);
 
+app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
+	                                   failureRedirect: '/login',
+	                                   failureFlash: true }));
 
+app.get('/logout', authenticate.logout);
 
-mongodb.Db('up-raise', server).open(function(err, client) {
-	
-	if(err) throw err;
-
-	console.log('connected to mongo db');
-
-	app.users = new mongodb.Collection(client, 'users');
-
-	client.ensureIndex("users", "email", function (err) {
-		if (err) throw err;
-		client.ensureIndex("users", "password", function (err) {
-			if (err) throw err;
-		});
-
-		http.createServer(app).listen(app.get('port'), function(){
-	  		console.log('Express server listening on port ' + app.get('port'));
-		});
-	});	
-
+http.createServer(app).listen(app.get('port'), function(){
+		console.log('Express server listening on port ' + app.get('port'));
 });
-
-login.init(app, passport, mongodb);

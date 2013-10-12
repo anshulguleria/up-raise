@@ -40,23 +40,7 @@ exports.init = function(app, passport, mongodb){
 	  });
 	});
 
-	passport.use(new LocalStrategy({ usernameField: 'email',
-		passwordField: 'password'},
-
-	  	function(username, password, done) {
-	  		process.nextTick(function () {
-
-			    app.users.findOne({ email: username, password: password }, 
-			    	function (err, user) {
-				      if (err) { return done(err); }
-				      if (!user) {
-				        return done(null, false, { message: 'Incorrect username/password' });
-				      }
-				      return done(null, user);
-				    });
-			 });
-		}
-	));
+	
 
 	/**
 	* Login process route
