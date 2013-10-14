@@ -6,55 +6,65 @@
 		<link rel='stylesheet' href='/stylesheets/style.css'/>
 	</head>
 	<body>
-		<div class="navbar navbar-default navbar-static-top nav-blue">
-			<div class="container">
-				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li>
-							<a href="/dashboard">Dashboard</a>
-						</li>
-						<li>
-							<a href="/goals">My Goals</a>
-						</li>
-						<li>
-							<a href="/perfdiary">My Diary</a>
-						</li>
-						<li>
-							<a href="/team" >My Team</a>
-						</li>
-						<li>
-							<a href="/appraisals" >Appraisal History</a>
-						</li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<% if(user) { %>
-							<li> 
-								<a href="/profile">Welcome<strong> <%= user.firstName %></strong></a>
+		<script type="text/x-handlebars" data-template-name="header">
+			<div class="navbar navbar-default navbar-static-top nav-blue">
+				<div class="container">
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="/dashboard">Dashboard</a>
 							</li>
 							<li>
-								<a href="/logout">Logout
-									<span class="glyphicon glyphicon-off"></span></a>
+								<a href="/goals">My Goals</a>
 							</li>
-						<% } %>
-					</ul>
+							<li>
+								<a href="/perfdiary">My Diary</a>
+							</li>
+							<li>
+								<a href="/team" >My Team</a>
+							</li>
+							<li>
+								<a href="/appraisals" >Appraisal History</a>
+							</li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<% if(user) { %>
+								<li> 
+									<a href="/profile">Welcome<strong> <%= user.firstName %></strong></a>
+								</li>
+								<li>
+									<a href="/logout">Logout
+										<span class="glyphicon glyphicon-off"></span></a>
+								</li>
+							<% } %>
+						</ul>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container">
-			<% if (user) { %>
+			<div class="container">
 				<div>
 					<div class="alert alert-info"> Your Review submission is pending. <a> Click Here </a> to complete </div>
 					<hr />
+				</div>	
+			</div>										
+			<div class="container">
+				<% if (!user) { %>
+					<div class="text-center">
+						<p> You are not logged in. Please login to continue. </p>
+						<button class="btn btn-primary btn-lg" onclick="window.location ='/login'">Login</button>
+					</div>
+				<% } %>
+			</div>
+		</script>
+		<%-body -%>
+		<script type="text/x-handlebars" data-template-name="footer">
+			<footer>
+				<div class="container">
+					<hr />
+					<p class="text-right" >@Copyright Varun 2013</p>
 				</div>
-				<%-body -%>
-			<% } else { %>
-				<div class="text-center">
-					<p> You are not logged in. Please login to continue. </p>
-					<button class="btn btn-primary btn-lg" onclick="window.location ='/login'">Login</button>
-				</div>
-			<% } %>
-		</div>
-
+			</footer>
+		</script>
 		<script src='/javascripts/infra/jquery/jquery-1.10.2.js'></script>
 		<script src='/javascripts/infra/bootstrap/bootstrap.js'></script>
 		<script src='/javascripts/infra/ember/handlebars-1.0.0.js'></script>
@@ -65,15 +75,9 @@
 		<script src='/javascripts/infra/bs-for-ember/bs-modal.min.js'></script>
 		<script src='/javascripts/infra/bs-for-ember/bs-alert.min.js'></script>
 		
-		<script src='/javascripts/app.js'></script>
-		<script src='/javascripts/router/goalsRoute.js'></script>
-		<script src='/javascripts/controllers/addnewController.js'></script>
-		<footer>
-			<div class="container">
-				<hr />
-				<p class="text-right" >@Copyright Varun 2013</p>
-			</div>
-		</footer>
+		<script src='/javascripts/app.js'></script>		
+		<%-scripts%>
+		
 	</body>
 </html>
 			
