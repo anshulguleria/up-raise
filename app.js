@@ -7,7 +7,8 @@ var express = require('express');
 var mongoose = require('mongoose');
 
 var passport = require('passport')
-  , flash = require('connect-flash');
+  , flash = require('connect-flash')
+  , engine = require('ejs-locals');
 
 
 var dashboard = require('./routes/dashboard');
@@ -26,10 +27,12 @@ var path = require('path');
 
 var app = express();
 
+app.engine('ejs', engine);
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());

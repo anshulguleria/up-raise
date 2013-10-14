@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "express": "3.4.0",
-    "jade": "*",
+    "ejs": "*",
+    "ejs-locals": "*",
     "passport": "*",
     "passport-local": "*",
     "connect-flash":"*",
