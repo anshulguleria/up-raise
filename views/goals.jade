@@ -29,5 +29,16 @@ block content
 		a.glyphicon.glyphicon-plus(id='lnkAdd') Add-Another
 		
 		if (view == 'self')
-			div.text-right
-				button.btn.btn-primary.btn-md Save
+			div.text-right.btn-toolbar
+				button.btn.btn-warning.btn-md(id="btnSaveDraft") Reset
+				button.btn.btn-info.btn-md(id="btnSaveDraft") Save Draft
+				if (goals.status == 'pending')
+					button.btn.btn-primary.btn-md(id="btnSubmitGoals") Submit for Approval
+	
+	script(type="text/x-handlebars" data-template-name="addnewGoal")
+		| {{bs-button title="Show Modal" clicked="show"}}
+		| {{#bs-modal name="myModal" fade=true footerButtonsBinding="myModalButtons" title="My Modal"}}
+		p Modal content!
+		| {{/bs-modal}}	
+
+	
