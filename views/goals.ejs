@@ -70,7 +70,15 @@
 							</td>
 						</tr>
 					{{/if}}
-				</table>				
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td class="text-right success">Total (Must equal 100)</td>
+							<td class="text-center">{{totalWeight}}</td>
+							<td></td>
+						</tr>
+				</table>
 				
 				<% if (view == 'self') { %>
 					
@@ -81,7 +89,9 @@
 						<button class="btn btn-warning btn-md" id="btnSaveDraft" {{action 'reset'}}>Reset</button>
 						<button class="btn btn-info btn-md" id="btnSaveDraft" {{action 'saveDraft'}}>Save Draft</button>
 						<% if (goals.status == 'pending') { %>
-							<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'requestApproval'}}>Submit for Approval</button>
+							{{#if showSubmit}}
+								<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'requestApproval'}}>Submit for Approval</button>
+							{{/if}}
 						<% } %>
 					</div>
 				<% } %>

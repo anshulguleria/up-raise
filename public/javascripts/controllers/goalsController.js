@@ -39,7 +39,22 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 	nextIndex: function() {
 		var length = this.get('length') + 1;
 		return length;
-	}.property('@each.index'),
+	}.property('@each.weight'),
+	totalWeight: function () {
+		var total = 0;
+		this.get('model').forEach(function(item, index, list) {
+			if(item.get('weight'))
+				total+=parseInt(item.get('weight'));
+		}, this);
 
-	showAddRow: false
+		return total;
+	}.property('@each.weight'),
+
+	showAddRow: false,
+	showSubmit: function () {
+		if(this.get('totalWeight') == 100)
+			return true;
+		else
+			return false;
+	}.property('@each.weight')
 });
