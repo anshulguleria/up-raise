@@ -3,6 +3,8 @@
 <% script('/javascripts/router/goalsRoute.js') -%>
 <% script('/javascripts/controllers/goalsController.js') -%>
 <% script('/javascripts/controllers/goalController.js') -%>
+<% script('/javascripts/views/goalView.js') -%>
+<% script('/javascripts/views/goalsView.js') -%>
 
 <script type="text/x-handlebars" data-template-name="goals">
 	{{outlet headerBar}}		
@@ -22,20 +24,22 @@
 						<th class="col-sm-1 text-center"> Actions</th>
 					</tr>			
 					{{#each itemController="goal"}}
+						
 						{{#if isEditing}}
-							<tr>
-							<td> {{index}} </td>
-							<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter KRA" value=kra }} </td>
-							<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter goal type" value=type }} </td>
-							<td> {{textarea classNames="form-control" placeholder="Enter Details" value=description }} </td>
-							<td class="col-sm-1 text-center"> {{input type="text" classNames="form-control" placeholder="Eg: 10 %" value=weight }} </td>
-							<td>
-								<a {{action "cancelRow"}}>Cancel</a>
-								<a {{action "saveRow"}}>Save</a>
-							</td>
-						</tr>
+							{{#view UpRaise.GoalView}}
+						
+								<td> {{index}} </td>
+								<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter KRA" value=kra }} </td>
+								<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter goal type" value=type }} </td>
+								<td> {{textarea classNames="form-control" placeholder="Enter Details" value=description }} </td>
+								<td class="col-sm-1 text-center"> {{input type="text" classNames="form-control" placeholder="Eg: 10 %" value=weight }} </td>
+								<td>
+									<a {{action "cancelRow"}}>Cancel</a>
+									<a {{action "saveRow" target=view}}>Save</a>
+								</td>
+							{{/view}}
 						{{ else }}
-							<tr>
+							{{#view UpRaise.GoalView}}
 								<td> {{index}} </td>
 								<td> {{kra}} </td>
 								<td> {{type}} </td>
@@ -46,7 +50,7 @@
 									<a {{action "editRow"}}> Edit </a>									
 									<a {{action "showDeleteModal"}}> Delete </a>
 								</td>
-							</tr>
+							{{/view}}
 						{{/if}}
 					{{/each}}
 					{{#if showAddRow}}

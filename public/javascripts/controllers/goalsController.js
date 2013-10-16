@@ -27,9 +27,13 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			goal.save();
 		},
 		reset: function() {
-			var controller = this;
-			//$.get('/goals/reset', function(model) { controller.set('content', model);});
 			//this.get('model').forEach(function(val) { val.reload()});
+		},
+		saveDraft: function() {
+			//this.get('model').forEach(function(val) { val.reload()});
+		},
+		requestApproval: function() {
+			
 		}
 	},
 	deleteModalButtons: [

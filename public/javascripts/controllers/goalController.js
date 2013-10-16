@@ -8,19 +8,14 @@ UpRaise.GoalController = Ember.ObjectController.extend({
     },
     cancelRow: function() {
       this.set('isEditing', false);
-      this.get('model').reload();
+      this.get('model').rollback();
     },
     saveRow: function() {
-      
-      if (!Ember.isEmpty(this.get('model.weight'))) {
-          this.set('isEditing', false);
-          this.get('model').save();
-      }
-      else {
-        this.get('model').reload();
-      }
+      this.set('isEditing', false);
+      this.get('model').save();
     }
   },
   
   isEditing: false
+  
 });
