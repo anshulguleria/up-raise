@@ -27,7 +27,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			goal.save();
 		},
 		reset: function() {
-			//this.get('model').forEach(function(val) { val.reload()});
+			this.get('model').reload();
 		},
 		saveDraft: function() {
 			//this.get('model').forEach(function(val) { val.reload()});
@@ -36,11 +36,6 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			
 		}
 	},
-	deleteModalButtons: [
-	    Ember.Object.create({title: 'Delete', clicked: "delete", type:"danger"}),
-	    Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
-	],
-
 	nextIndex: function() {
 		var length = this.get('length') + 1;
 		return length;

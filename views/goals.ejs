@@ -24,11 +24,11 @@
 						<th class="col-sm-1 text-center"> Actions</th>
 					</tr>			
 					{{#each itemController="goal"}}
+						{{#view UpRaise.GoalView contentBinding="this"}}
+							{{#if isEditing}}
+							
 						
-						{{#if isEditing}}
-							{{#view UpRaise.GoalView}}
-						
-								<td> {{index}} </td>
+								<td> {{view.adjustedIndex}}</td>
 								<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter KRA" value=kra }} </td>
 								<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter goal type" value=type }} </td>
 								<td> {{textarea classNames="form-control" placeholder="Enter Details" value=description }} </td>
@@ -37,10 +37,10 @@
 									<a {{action "cancelRow"}}>Cancel</a>
 									<a {{action "saveRow" target=view}}>Save</a>
 								</td>
-							{{/view}}
-						{{ else }}
-							{{#view UpRaise.GoalView}}
-								<td> {{index}} </td>
+							
+							{{ else }}
+							
+								<td> {{view.adjustedIndex}} </td>
 								<td> {{kra}} </td>
 								<td> {{type}} </td>
 								<td> {{description}} </td>
@@ -49,10 +49,14 @@
 								<td>
 									<a {{action "editRow"}}> Edit </a>									
 									<a {{action "showDeleteModal"}}> Delete </a>
-								</td>
-							{{/view}}
-						{{/if}}
+								</td>								
+							
+							{{/if}}
+						{{/view}}
 					{{/each}}
+					{{#bs-modal name="deleteModal" fade=true footerButtonsBinding="deleteModalButtons" title="Warning"}}
+							        
+				    {{/bs-modal}}
 					{{#if showAddRow}}
 						<tr>
 							<td> {{nextIndex}} </td>
@@ -82,13 +86,13 @@
 					</div>
 				<% } %>
 			</div>
-		</div>
-		{{#bs-modal name="deleteModal" fade=true footerButtonsBinding="deleteModalButtons" title="Warning"}}
-	        <p class="text-warning"><strong>Are you sure you want to delete this KRA item?</strong></p>
-	        <p class="text-info"><em>This action is irreversible.</em></p>
-	    {{/bs-modal}}
+		</div>		
 	<% } %>
 	{{render 'footer'}}
+</script>
+<script type="text/x-handlebars" data-template-name="delete-modal">
+	<p class="text-warning"><strong>Are you sure you want to delete this KRA item?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
 </script>
 	
 
