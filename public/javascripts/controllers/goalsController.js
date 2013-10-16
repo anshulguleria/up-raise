@@ -3,6 +3,9 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		showAddGoalRow: function() {
 			this.set('showAddRow', true);
 		},
+		cancelRow: function() {
+	      this.set('showAddRow', false);	      
+	    },
 		saveRow: function() {
 			
 			var weight = this.get('weight');
@@ -22,11 +25,22 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			this.set('showAddRow',false);
 						
 			goal.save();
+		},
+		reset: function() {
+			var controller = this;
+			//$.get('/goals/reset', function(model) { controller.set('content', model);});
+			//this.get('model').forEach(function(val) { val.reload()});
 		}
 	},
+	deleteModalButtons: [
+	    Ember.Object.create({title: 'Delete', clicked: "delete", type:"danger"}),
+	    Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
+	],
+
 	nextIndex: function() {
 		var length = this.get('length') + 1;
 		return length;
 	}.property('@each.index'),
+
 	showAddRow: false
 });

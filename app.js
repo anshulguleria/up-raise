@@ -53,7 +53,11 @@ if ('development' == app.get('env')) {
 app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
+
 app.get('/goals', goals.list);
+//app.get('/goals/reset', goals.reset);
+
+
 app.get('/appraisals', appraisals.history);
 app.get('/self-appraisal', appraisals.self);
 app.get('/view-appraisal', appraisals.view);
