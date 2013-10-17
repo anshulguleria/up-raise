@@ -54,7 +54,7 @@ app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
-app.get('/goals', goals.list);
+app.get('/goals', goals.display);
 //app.get('/goals/reset', goals.reset);
 
 
@@ -70,6 +70,13 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard
 	                                   failureFlash: true }));
 
 app.get('/logout', authenticate.logout);
+
+
+//API routes
+
+app.get('/api/goals', goals.list);
+app.put('/api/goals/:id', goals.put);
+app.delete('/api/goals/:id', goals.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

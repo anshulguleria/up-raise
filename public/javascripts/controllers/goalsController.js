@@ -27,7 +27,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			goal.save();
 		},
 		reset: function() {
-			this.get('model').reload();
+			UpRaise.reset();
 		},
 		saveDraft: function() {
 			//this.get('model').forEach(function(val) { val.reload()});

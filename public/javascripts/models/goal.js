@@ -1,9 +1,8 @@
 UpRaise.Goal = DS.Model.extend({	
-  index: DS.attr('number'),
   kra: DS.attr('string'),
   type: DS.attr('string'),
   description: DS.attr('string'),
-  weight: DS.attr('number')
+  weight: DS.attr('number')  
 });
 
 UpRaise.Goal.FIXTURES = [
