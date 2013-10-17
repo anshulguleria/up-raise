@@ -13,6 +13,7 @@ var passport = require('passport')
 
 var dashboard = require('./routes/dashboard');
 var goals = require('./routes/goals');
+var kra = require('./routes/kra');
 var appraisals = require('./routes/appraisals');
 var perfdiary = require('./routes/perfdiary');
 var team = require('./routes/team');
@@ -57,6 +58,7 @@ app.get('/dashboard', dashboard.display);
 app.get('/goals', goals.display);
 //app.get('/goals/reset', goals.reset);
 
+app.get('/kra', kra.display);
 
 app.get('/appraisals', appraisals.history);
 app.get('/self-appraisal', appraisals.self);
@@ -77,6 +79,9 @@ app.get('/logout', authenticate.logout);
 app.get('/api/goals', goals.list);
 app.put('/api/goals/:id', goals.put);
 app.delete('/api/goals/:id', goals.delete);
+app.post('/api/goals', goals.post);
+
+app.get('/api/reviewDocuments', kra.list);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

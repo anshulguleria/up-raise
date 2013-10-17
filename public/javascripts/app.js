@@ -2,6 +2,12 @@ window.UpRaise = Ember.Application.createWithMixins(Bootstrap.Register, {
 	LOG_TRANSITIONS: true
 });
 
-UpRaise.ApplicationAdapter = DS.RESTAdapter.extend({
-	namespace: 'api'
+UpRaise.ApplicationAdapter = DS.RESTAdapter.extend({	
+    namespace: 'api'    
+});
+
+UpRaise.ApplicationSerializer = DS.RESTSerializer.extend({
+    primaryKey: function(type) {
+        return '_id';
+    }
 });
