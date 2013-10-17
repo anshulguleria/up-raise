@@ -3,9 +3,7 @@ window.UpRaise = Ember.Application.createWithMixins(Bootstrap.Register, {
 });
 
 UpRaise.ApplicationSerializer = DS.RESTSerializer.extend({
-    primaryKey: function(type) {
-        return '_id';
-    }
+    primaryKey: '_id'
 });
 
 UpRaise.ApplicationAdapter = DS.RESTAdapter.extend({	
