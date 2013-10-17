@@ -16,6 +16,7 @@ exports.display = function(req, res){
 
 exports.list = function(req, res) {
 	var KRA = require('../models/reviewDocument');
+	var Goal = require('../models/goal');
 
 	KRA.findOne({ userId: req.user._id}, function(err, doc) { 
 		if(err) throw err;
@@ -33,12 +34,17 @@ exports.list = function(req, res) {
 						return;
 					}
 
-					return res.send({reviewDocument: doc});
+					return res.send({reviewdocuments: [ doc ]});
 
 				});
 			});			
 		} else {
-			return res.send({reviewDocument: doc});
+			Goal.find({_id: { $in: [doc.goals] } }, function(err, goals) {
+				if(err) throw err;
+
+				return res.send({ reviewdocuments: [ doc ] , goals: goals });	
+			})
+			
 		}
 	});
 	

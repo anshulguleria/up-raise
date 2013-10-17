@@ -1,4 +1,5 @@
 <% layout('layout') -%>
+<% script('/javascripts/models/goal.js') -%>
 <% script('/javascripts/models/reviewDocument.js') -%>
 <% script('/javascripts/router/reviewDocumentRoute.js') -%>
 <% script('/javascripts/controllers/reviewDocumentController.js') -%>
@@ -7,11 +8,12 @@
 <% script('/javascripts/views/goalView.js') -%>
 <% script('/javascripts/views/goalsView.js') -%>
 
-<script type="text/x-handlebars" data-template-name="reviewDocument">
+<script type="text/x-handlebars" data-template-name="reviewdocument">
 	{{outlet headerBar}}
 	<div class="container">
 			<h2> Goals for <strong><%= employee.firstName %></strong> <small>(
-			{{#if getContent}}
+				{{log isApproved}}
+			{{#if isApproved}}
 				approved
 			{{else}}
 			pending
@@ -19,7 +21,7 @@
 			)</small></h2>
 			<h4> Review Cycle (<%= goals.cycle.startDate %> - <%= goals.cycle.endDate %>)</h4>
 			<hr />			
-			{{render goals }}
+			{{render goals}}
 	</div>		
 		
 </script>

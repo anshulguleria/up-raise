@@ -1,16 +1,24 @@
 UpRaise.Router.map(function () {
-	this.resource('reviewDocument', { path: '/' }, function() {
-		this.route('goals');		
+	this.resource('reviewdocument', { path: '/' }, function() {
+		//this.route('goals');		
 	});
 });
 
-UpRaise.ReviewDocumentRoute = Ember.Route.extend({
+UpRaise.ReviewdocumentRoute = Ember.Route.extend({
   model: function () {
-    return this.store.find('reviewDocument');
+    return this.store.find('reviewdocument', { test: 's'});
+  },
+  setupController: function(controller, model) {
+    var m = model.get('firstObject');
+    if(m) {
+      
+      this.controllerFor('goals').set('model', m.get('goals'));
+      controller.set('model', m);
+    }      
   },
   renderTemplate: function() {
-    this.render('reviewDocument');
-  	this.render('header', {	into: 'reviewDocument', outlet: 'headerBar' });
+    this.render('reviewdocument');
+  	this.render('header', {	into: 'reviewdocument', outlet: 'headerBar' });
 	//this.render('relatedtags', { into: 'questions', outlet: 'relatedTags' });
   }
 });

@@ -1,5 +1,5 @@
 UpRaise.GoalsController = Ember.ArrayController.extend({
-	needs: ['reviewDocument'],
+	needs: ['reviewdocument'],
 	actions: {
 		showAddGoalRow: function() {
 			this.set('showAddRow', true);
@@ -25,10 +25,10 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 
 			this.set('showAddRow',false);
 			
-			var kra = this.get('controllers.reviewDocument.content');
+			var kra = this.get('controllers.reviewdocument.content');
 
 			goal.save().then(function() {
-				kra.get('content').addObject(goal);
+				kra.get('goals').addObject(goal);
 				kra.save();
 			});
 		},

@@ -67,7 +67,7 @@ app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
 app.get('/team', team.list);
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
+app.post('/login', passport.authenticate('local', { successRedirect: '/kra',
 	                                   failureRedirect: '/login',
 	                                   failureFlash: true }));
 

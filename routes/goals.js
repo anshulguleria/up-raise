@@ -15,31 +15,20 @@ exports.display = function(req, res){
 };
 
 exports.list = function(req, res) {
-	var KRA = require('../models/reviewDocument');
+	var Goal = require('../models/goal');
 
-	KRA.findOne({ userId: req.user._id}, function(err, doc) { 
+	console.log(req.param('ids'));
+
+	var ids = req.param('ids').join(',');
+
+	console.log(ids);
+	
+	Goal.find({ _id: { $in: [ids] } }, function(err, doc) { 
 		if(err) throw err;
 
-		if(!doc) {
-			doc = new KRA({ userId: req.user._id});
-			doc.save(function(err) { 
-				if(err) throw err;
-				
-				KRA.findOne({ userId: req.user._id}, function(err, doc) { 
-					if(err) throw err;
-
-					if(!doc) {
-						res.send({});
-						return;
-					}
-
-					return res.send(doc);
-
-				});
-			});			
-		} else {
-			return res.send(doc);
-		}
+		console.log(doc);
+	
+		return res.send({ goals: [ doc ] });	
 	});
 	
 	// res.send({
