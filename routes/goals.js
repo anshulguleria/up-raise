@@ -31,31 +31,6 @@ exports.list = function(req, res) {
 		return res.send({ goals: [ doc ] });	
 	});
 	
-	// res.send({
-	// 	goals: [
-	// 				{
-	// 					id: '1',
-	// 					kra: 'Company Roadmap',
-	// 					type: 'Organization',
-	// 					description: 'Ensure meetings for company roadmap occurs bi-weekly. Track and guide Product management organization to achieve goals set. Track and guide Services organization to achieve goals set',
-	// 					weight: 10
-	// 				},
-	// 				{
-	// 					id: '2',
-	// 					kra: 'Company Goals',
-	// 					type: 'Organization',
-	// 					description: 'Build company goals for year 2010-11. Publish goals to sales, hr, admin, products and services teams',
-	// 					weight: 80
-	// 				},				
-	// 				{
-	// 					id: '3',
-	// 					kra: 'Company Finance',
-	// 					type: 'Organization',
-	// 					description: 'Setup company financial report publish to stake holders. Increase per person revenue by 10%.',
-	// 					weight: 10
-	// 				}
-	// 			]
-	// });
 };
 
 exports.put = function(req, res) {
@@ -64,8 +39,15 @@ exports.put = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-	console.log(req.body);
-	res.send({goal: req.body});
+	
+	var Goal = require('../models/goal');
+	var goal  = req.param('id');
+	console.log('goal is ');
+	console.log(goal);
+	Goal.remove({_id: goal}, function(err) {
+		if(err) throw err;
+		res.send(null);
+	});	
 };
 
 exports.post = function(req, res) {

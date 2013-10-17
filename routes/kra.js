@@ -39,7 +39,7 @@ exports.list = function(req, res) {
 				});
 			});			
 		} else {
-			Goal.find({_id: { $in: [doc.goals] } }, function(err, goals) {
+			Goal.find({_id: { $in: doc.goals } }, function(err, goals) {
 				if(err) throw err;
 
 				return res.send({ reviewdocuments: [ doc ] , goals: goals });	
@@ -48,39 +48,27 @@ exports.list = function(req, res) {
 		}
 	});
 	
-	// res.send({
-	// 	goals: [
-	// 				{
-	// 					id: '1',
-	// 					kra: 'Company Roadmap',
-	// 					type: 'Organization',
-	// 					description: 'Ensure meetings for company roadmap occurs bi-weekly. Track and guide Product management organization to achieve goals set. Track and guide Services organization to achieve goals set',
-	// 					weight: 10
-	// 				},
-	// 				{
-	// 					id: '2',
-	// 					kra: 'Company Goals',
-	// 					type: 'Organization',
-	// 					description: 'Build company goals for year 2010-11. Publish goals to sales, hr, admin, products and services teams',
-	// 					weight: 80
-	// 				},				
-	// 				{
-	// 					id: '3',
-	// 					kra: 'Company Finance',
-	// 					type: 'Organization',
-	// 					description: 'Setup company financial report publish to stake holders. Increase per person revenue by 10%.',
-	// 					weight: 10
-	// 				}
-	// 			]
-	// });
 };
 
 exports.put = function(req, res) {
 	console.log(req.body);
-	res.send({});
-};
 
-exports.delete = function(req, res) {
-	console.log(req.body);
+	var mongoose = require('mongoose')
+	   ,Schema = mongoose.Schema
+	   ,ObjectId = Schema.ObjectId;
+
+	var ReviewDocument = require('../models/reviewDocument');
+	var kra  = req.body.reviewdocument;
+	
+	console.log(req.param('id'));	
+	
+	var id = req.param('id');
+	console.log('kra is ');
+	console.log(kra);
+	
+	ReviewDocument.update({ _id: id }, {$set: kra}, function(err) {
+		if(err) throw err;
+		return res.send({reviewdocument: kra});
+	});
 	res.send({});
 };

@@ -22,15 +22,17 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 				description: this.get('description'),
 				weight: this.get('weight')
 			});
-
-			this.set('showAddRow',false);
 			
 			var kra = this.get('controllers.reviewdocument.content');
-
+			kra.set('isApproved', false);
+			goal.reviewdocument = kra;
 			goal.save().then(function() {
 				kra.get('goals').addObject(goal);
 				kra.save();
+				
 			});
+
+			this.set('showAddRow',false);
 		},
 		reset: function() {
 			UpRaise.reset();

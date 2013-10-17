@@ -30,7 +30,7 @@
 	<% if (user) { %>
 		<table class="table table-striped table-responsive table-bordered table-responsive">
 			<tr>
-				<th class="text-center"> Index</th>
+				<th class="col-sm-1 text-center"> Index</th>
 				<th class="col-sm-2 text-center"> KRA</th>
 				<th class="col-sm-2 text-center"> Goal-Type</th>
 				<th class="text-center"> Description</th>
@@ -116,6 +116,10 @@
 </script>
 <script type="text/x-handlebars" data-template-name="delete-modal">
 	<p class="text-warning"><strong>Are you sure you want to delete this KRA item?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>
+<script type="text/x-handlebars" data-template-name="save-modal">
+	<p class="text-warning"><strong>Are you sure you want to make changes to this KRA item? You will require </strong></p>
 	<p class="text-info"><em>This action is irreversible.</em></p>
 </script>
 	
