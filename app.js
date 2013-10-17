@@ -55,9 +55,6 @@ app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
-app.get('/goals', goals.display);
-//app.get('/goals/reset', goals.reset);
-
 app.get('/kra', kra.display);
 
 app.get('/appraisals', appraisals.history);
