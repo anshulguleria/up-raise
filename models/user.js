@@ -7,8 +7,9 @@ var userSchema = new Schema({
 	lastName: String,
 	email: String,
 	password: String,
-	companyId: ObjectId,
-	departmentId: ObjectId    
+	roles: [ { type: String } ],
+	manager: { type: ObjectId, ref: 'User' },
+	departmentId: { type: ObjectId, ref: 'Department' }
 });
 
 module.exports = mongoose.model('User', userSchema);
