@@ -34,8 +34,16 @@ exports.list = function(req, res) {
 };
 
 exports.put = function(req, res) {
-	console.log(req.body);
-	res.send({});
+	var Goal = require('../models/goal');
+	var goal  = req.body.goal;
+	var id = req.param('id');
+
+	console.log('goal is ');
+	console.log(goal);
+	Goal.findOneAndUpdate({_id: id},{$set: goal },function(err, doc) {
+		if(err) throw err;
+		res.send({goal: doc});
+	});	
 };
 
 exports.delete = function(req, res) {
