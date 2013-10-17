@@ -5,8 +5,8 @@ UpRaise.Router.map(function () {
 });
 
 UpRaise.ReviewdocumentRoute = Ember.Route.extend({
-  model: function () {
-    return this.store.find('reviewdocument', { test: 's'});
+  model: function (params) {
+    return this.store.find('reviewdocument', { type: params.type});
   },
   setupController: function(controller, model) {
     var m = model.get('firstObject');

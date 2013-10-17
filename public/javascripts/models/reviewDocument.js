@@ -3,7 +3,8 @@ UpRaise.Reviewdocument = DS.Model.extend({
 	isApproved: DS.attr('boolean'),
 	updatedOn: DS.attr('date'),
 	approvedOn: DS.attr('date'),
-	userId: DS.attr('string')
+	userId: DS.attr('string'),
+	type: DS.attr('string')
 });
 
 UpRaise.Reviewdocument.FIXTURES = [

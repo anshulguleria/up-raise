@@ -25,7 +25,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			
 			var kra = this.get('controllers.reviewdocument.content');
 			kra.set('isApproved', false);
-			goal.reviewdocument = kra;
+			goal.set('reviewdocument', kra);
 			goal.save().then(function() {
 				kra.get('goals').addObject(goal);
 				kra.save();
@@ -35,13 +35,15 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			this.set('showAddRow',false);
 		},
 		reset: function() {
+			var kra = this.get('controllers.reviewdocument.content');
+			kra.deleteRecord();
+			kra.save();
 			UpRaise.reset();
 		},
-		saveDraft: function() {
-			//this.get('model').forEach(function(val) { val.reload()});
-		},
 		requestApproval: function() {
-			
+			var kra = this.get('controllers.reviewdocument.content');
+			kra.set('type', 'request');
+			kra.save();
 		}
 	},
 	nextIndex: function() {
@@ -64,6 +66,10 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		else
 			return false;
 	}.property('@each.weight'),
+	showReset: function() {
+		var kra = this.get('controllers.reviewdocument.content');
+		return !kra.get('isApproved');
+	},
 
 	showAddRow: false
 });

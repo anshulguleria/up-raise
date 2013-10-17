@@ -83,6 +83,7 @@ app.post('/api/goals', goals.post);
 
 app.get('/api/reviewDocuments', kra.list);
 app.put('/api/reviewDocuments/:id', kra.put);
+app.delete('/api/reviewDocuments/:id', kra.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

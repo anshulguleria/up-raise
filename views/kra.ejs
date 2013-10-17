@@ -11,12 +11,11 @@
 <script type="text/x-handlebars" data-template-name="reviewdocument">
 	{{outlet headerBar}}
 	<div class="container">
-			<h2> Goals for <strong><%= employee.firstName %></strong> <small>(
-				{{log isApproved}}
+			<h2> Goals for <strong><%= employee.firstName %></strong> <small>(				
 			{{#if isApproved}}
 				approved
 			{{else}}
-			pending
+			pending approval
 			{{/if}}
 			)</small></h2>
 			<h4> Review Cycle (<%= goals.cycle.startDate %> - <%= goals.cycle.endDate %>)</h4>
@@ -100,10 +99,10 @@
 				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'showAddGoalRow'}}>Add Goal</button>
 			</div>
 			<div class="text-right btn-toolbar col-md-8">
-				<button class="btn btn-warning btn-md" id="btnSaveDraft" {{action 'reset'}}>Reset</button>
-				<% if (goals.status == 'pending') { %>
-
-				<button class="btn btn-info btn-md" id="btnSaveDraft" {{action 'saveDraft'}}>Save Draft</button>
+				{{#if showReset}}
+					<button class="btn btn-warning btn-md" id="btnSaveDraft" {{action 'reset'}}>Reset</button>
+				{{/if}}
+				<% if (goals.status == 'pending') { %>				
 					{{#if showSubmit}}
 						<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'requestApproval'}}>Submit for Approval</button>
 					{{/if}}
