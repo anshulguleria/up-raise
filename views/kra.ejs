@@ -99,7 +99,7 @@
 			</div>
 			<div class="text-right btn-toolbar col-md-8">
 				{{#if showReset}}
-					<button class="btn btn-warning btn-md" id="btnSaveDraft" {{action 'reset'}}>Reset</button>
+					<button class="btn btn-warning btn-md" id="btnShowReset" {{action 'showResetModal'}}>Reset</button>
 				{{/if}}
 				<% if (goals.status == 'pending') { %>				
 					{{#if showSubmit}}
@@ -120,6 +120,9 @@
 	<p class="text-warning"><strong>Are you sure you want to make changes to this KRA item? You will require </strong></p>
 	<p class="text-info"><em>This action is irreversible.</em></p>
 </script>
-	
+<script type="text/x-handlebars" data-template-name="reset-modal">
+	<p class="text-warning"><strong>Are you sure you want to reset pending changes?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>	
 
 	

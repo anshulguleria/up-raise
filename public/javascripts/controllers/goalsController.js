@@ -4,6 +4,9 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		showAddGoalRow: function() {
 			this.set('showAddRow', true);
 		},
+		showResetModal: function() {
+			return Bootstrap.ModalManager.open('resetModal', 'Warning', 'reset-modal', this.get('resetModalButtons'), this);
+		},
 		cancelRow: function() {
 	      this.set('showAddRow', false);	      
 	    },
@@ -70,6 +73,10 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		var kra = this.get('controllers.reviewdocument.content');
 		return !kra.get('isApproved');
 	},
-
+	resetModalButtons: [
+      Ember.Object.create({title: 'Reset', clicked: "reset", type:"danger", dismiss: 'modal'}),
+      Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
+  	],
+  
 	showAddRow: false
 });

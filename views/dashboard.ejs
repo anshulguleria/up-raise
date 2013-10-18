@@ -15,51 +15,8 @@
 <script type="text/x-handlebars" data-template-name="dashboard">
 	<div class="container">
 		{{outlet headerBar}}
-		<div class="col-md-4">
-			<h2> My Team</h2>
-			<hr />
-			<div>
-				<table class="table table-bordered table-responsive">
-					<tr>
-						<th class="col-sm-3 text-center">Name</th>
-						<th class="col-sm-3 text-center">Due date</th>
-						<th class="col-sm-3 text-center">Actions</th>
-					</tr>
-
-					{{#each teamuser in teamusers itemController='teamuser'}}
-							{{#if teamuser.isAppraisalDue}}			
-							<tr class="danger">
-								<td>
-									<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
-								<td> {{ reviewdate }}</td>
-								<td> 
-									<a href="#" {{action review }}> Review Now</a></td>
-							</tr>
-						{{else }}
-							{{#if teamuser.areGoalsSet}}
-
-								<tr>
-									<td>
-										<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
-									<td> {{ reviewdate }}</td>
-									<td> 
-										<a href="#" {{action kra }}> View Goals</a></td>
-								</tr>
-							{{else}}
-								<tr>
-									<td>
-										<a href="#" {{action history }}>{{teamuser.name}}</a></td>
-									<td> {{ reviewdate }}</td>
-									<td></td>
-								</tr>							
-							{{/if}}
-						{{/if}}
-							
-					{{/each}}					
-				</table>
-			</div>			
-		</div>
-		<div class="col-md-8">
+		
+		<div>
 			<h2> My Goals <small><a class="initialism pull-right" href="#" {{action kra }} >Show Details</a></small> </h2>
 			<hr />
 			<div>
@@ -110,6 +67,48 @@
 						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'saveNote'}}>Save</button>
 						<button class="btn btn-normal btn-md" id="btnCancelNote" {{action 'cancelNote'}}>Cancel</button>
 					{{/if}}
+			</div>
+				<h2> My Team</h2>
+			<hr />
+			<div>
+				<table class="table table-bordered table-responsive">
+					<tr>
+						<th class="col-sm-3 text-center">Name</th>
+						<th class="col-sm-3 text-center">Due date</th>
+						<th class="col-sm-3 text-center">Actions</th>
+					</tr>
+
+					{{#each teamuser in teamusers itemController='teamuser'}}
+							{{#if teamuser.isAppraisalDue}}			
+							<tr class="danger">
+								<td>
+									<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
+								<td> {{ reviewdate }}</td>
+								<td> 
+									<a href="#" {{action review }}> Review Now</a></td>
+							</tr>
+						{{else }}
+							{{#if teamuser.areGoalsSet}}
+
+								<tr>
+									<td>
+										<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
+									<td> {{ reviewdate }}</td>
+									<td> 
+										<a href="#" {{action kra }}> View Goals</a></td>
+								</tr>
+							{{else}}
+								<tr>
+									<td>
+										<a href="#" {{action history }}>{{teamuser.name}}</a></td>
+									<td> {{ reviewdate }}</td>
+									<td></td>
+								</tr>							
+							{{/if}}
+						{{/if}}
+							
+					{{/each}}					
+				</table>
 			</div>
 		</div>
 	</div>
