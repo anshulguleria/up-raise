@@ -65,7 +65,7 @@ app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
 app.get('/team', team.list);
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/kra',
+app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
 	                                   failureRedirect: '/login',
 	                                   failureFlash: true }));
 
@@ -75,6 +75,8 @@ app.get('/admin/companies', companies.display);
 
 
 //API routes
+
+app.get('/api/dashboards', dashboard.list);
 
 app.get('/api/goals', goals.list);
 app.put('/api/goals/:id', goals.put);
