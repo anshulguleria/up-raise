@@ -27,17 +27,17 @@
 							<td> {{input type="text" classNames="col-sm-2 form-control" placeholder="Enter Company name" value=name }} </td>
 							<td> {{textarea classNames="form-control" placeholder="Enter Details" value=description }} </td>
 							<td>
-								<a {{action "cancelRow"}}>Cancel</a>
-								<a {{action "saveRow" target=view}}>Save</a>
+								<a {{action "cancelRow"}} href="#">Cancel</a>
+								<a {{action "saveRow" target=view}} href="#">Save</a>
 							</td>					
 					{{else}}
 						<td> {{view.adjustedIndex}} </td>
 								<td> {{name}} </td>
 								<td> {{description}} </td>								
 								<td>
-									<a {{action "editRow"}}> Edit </a>			
-									<a {{action "showDeleteModal"}}> Delete </a>
-								</td>		
+									<a {{action "editRow"}} href="#"> Edit </a>			
+									<a {{action "showDeleteModal"}} href="#"> Delete </a>
+								</td>
 					{{/if}}
 				{{/view}}
 			{{/each}}			
