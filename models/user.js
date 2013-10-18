@@ -10,6 +10,7 @@ var userSchema = new Schema({
 	roles: [ { type: String } ],
 	manager: { type: ObjectId, ref: 'User' },
 	departmentId: { type: ObjectId, ref: 'Department' },
+	teamId: { type: ObjectId, ref: 'Team' },
 	empId: String
 });
 

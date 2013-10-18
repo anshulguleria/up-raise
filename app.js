@@ -19,6 +19,7 @@ var perfdiary = require('./routes/perfdiary');
 var team = require('./routes/team');
 var authenticate = require('./routes/authenticate');
 var authApi = require('./apis/authenticate')(passport);
+var setup = require('./routes/admin/setup');
 
 
 mongoose.connect('mongodb://127.0.0.1/up-raise');
@@ -69,6 +70,8 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/kra',
 	                                   failureFlash: true }));
 
 app.get('/logout', authenticate.logout);
+
+app.get('/admin/companysetup', setup.display);
 
 
 //API routes
