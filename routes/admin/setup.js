@@ -1,3 +1,3 @@
 exports.display = function(req, res){
-  res.render('admin/companysetup', { title: 'Company Setup' ,  user: req.user });
+  res.render('admin/companies', { title: 'Company Listing' ,  user: req.user });
 };

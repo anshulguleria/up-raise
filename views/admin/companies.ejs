@@ -1,0 +1,37 @@
+<% layout('layout') -%>
+<% script('/javascripts/router/admin/companysetupRoute.js') -%>
+<% script('/javascripts/controllers/admin/companysetupController.js') -%>
+
+<script type="text/x-handlebars" data-template-name="company">
+	{{outlet headerBar}}
+	<div class="container">
+			<h2> Setup New Company</h2>
+			<hr />
+
+			<form role="form">
+				<div class="form-group">
+					<label for="companyName">Name</label>
+					{{input type="text" class="form-control" id="companyName" placeholder="Enter Name" value=name }}
+				</div>
+				<div class="form-group">
+					<label for="description">Description</label>
+					{{textarea type="password" class="form-control" id="description" placeholder="Enter description" value=description }}
+				</div>
+				<!-- <div class="form-group">
+					<label for="exampleInputFile">File input</label>
+					<input type="file" id="exampleInputFile">
+					<p class="help-block">Example block-level help text here.</p>
+				</div>
+				<div class="checkbox">
+					<label>
+					<input type="checkbox"> Check me out
+					</label>
+				</div> -->
+				<button type="submit" class="btn btn-primary" {{action showConfirmSaveModal}}>Create Company</button>
+			</form>
+	</div>		
+		
+</script>
+<script type="text/x-handlebars" data-template-name="save-modal">
+	<p class="text-info"><strong>Are you sure? </strong></p>
+</script>

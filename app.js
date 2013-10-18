@@ -71,7 +71,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/kra',
 
 app.get('/logout', authenticate.logout);
 
-app.get('/admin/companysetup', setup.display);
+app.get('/admin/companies', setup.display);
 
 
 //API routes
