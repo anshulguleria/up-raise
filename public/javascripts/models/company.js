@@ -5,3 +5,12 @@ UpRaise.Company = DS.Model.extend({
   departments: DS.hasMany('department'),
   teams: DS.hasMany('team')
 });
+
+UpRaise.Company.FIXTURES = [
+ {
+ 	id: 1,
+ 	index: 1,
+   	name: 'Tavisca',
+   	description: 'Tavisca Solutions Pvt Ltd.'   	
+ }
+ ];

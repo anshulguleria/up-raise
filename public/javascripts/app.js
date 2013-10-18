@@ -2,6 +2,8 @@ window.UpRaise = Ember.Application.createWithMixins(Bootstrap.Register, {
 	LOG_TRANSITIONS: true
 });
 
+// UpRaise.ApplicationAdapter = DS.FixtureAdapter.extend();
+
 UpRaise.AppRESTSerializer = DS.RESTSerializer.extend({
 	//primary key is '__id' in appacitive, overriding default behaviour
 	primaryKey: '_id',

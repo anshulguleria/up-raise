@@ -19,7 +19,7 @@ var perfdiary = require('./routes/perfdiary');
 var team = require('./routes/team');
 var authenticate = require('./routes/authenticate');
 var authApi = require('./apis/authenticate')(passport);
-var setup = require('./routes/admin/setup');
+var companies = require('./routes/admin/companies');
 
 
 mongoose.connect('mongodb://127.0.0.1/up-raise');
@@ -71,7 +71,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/kra',
 
 app.get('/logout', authenticate.logout);
 
-app.get('/admin/companies', setup.display);
+app.get('/admin/companies', companies.display);
 
 
 //API routes
@@ -84,6 +84,10 @@ app.post('/api/goals', goals.post);
 app.get('/api/reviewDocuments', kra.list);
 app.put('/api/reviewDocuments/:id', kra.put);
 app.delete('/api/reviewDocuments/:id', kra.delete);
+
+
+app.get('/api/companies', companies.list);
+app.post('/api/companies', companies.create);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

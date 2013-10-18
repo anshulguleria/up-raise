@@ -1,18 +1,19 @@
 UpRaise.Router.map(function () {
-	this.resource('company', { path: '/' }, function() {			
+	this.resource('companys', { path: '/' }, function() {			
+    this.route('company');
 	});
 });
 
-UpRaise.CompanyRoute = Ember.Route.extend({
+UpRaise.CompanysRoute = Ember.Route.extend({
   model: function () {
-    return this.store.createRecord('company');
+    return this.store.find('company');
   },
   setupController: function(controller, model) {
     controller.set('content', model);
   },
   renderTemplate: function() {
-    this.render('company');
-  	this.render('header', {	into: 'company', outlet: 'headerBar' });
+    this.render('companys');
+  	this.render('header', {	into: 'companys', outlet: 'headerBar' });
 	//this.render('relatedtags', { into: 'questions', outlet: 'relatedTags' });
   }
 });
