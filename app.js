@@ -88,6 +88,8 @@ app.delete('/api/reviewDocuments/:id', kra.delete);
 
 app.get('/api/companies', companies.list);
 app.post('/api/companies', companies.create);
+app.put('/api/companies/:id', companies.update);
+app.delete('/api/companies/:id', companies.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

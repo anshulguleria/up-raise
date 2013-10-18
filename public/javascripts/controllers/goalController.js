@@ -2,7 +2,6 @@ UpRaise.GoalController = Ember.ObjectController.extend({
   needs: ['reviewdocument'],
   actions: {
     editRow: function() {
-      var view = this.get('_parentview');
       this.set('isEditing', true);
     },
     showDeleteModal: function() {

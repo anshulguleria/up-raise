@@ -16,6 +16,8 @@ UpRaise.NewcompanyController = Ember.ObjectController.extend({
 					model.save().then(function() {
 						controller.transitionToRoute('companys');
 					});
+				} else {
+					model.rollback();
 				}
 			}
 		}		

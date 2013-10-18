@@ -4,7 +4,8 @@ var mongoose = require('mongoose')
 
 var companySchema = new Schema({
 	name: String, 
-	description: String	
+	description: String,
+	isEnabled: Boolean
 });
 
 module.exports = mongoose.model('Company', companySchema);
