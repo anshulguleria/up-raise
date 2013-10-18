@@ -17,6 +17,7 @@ exports.list = function(req, res) {
 	var teamusers = [];
 	var dashnotes = [];
 	var goalids = [];
+	var noteids = [];
 
 	console.log('user id ' + req.user._id);
 	KRA.find({ userId: req.user._id}).sort({updatedOn: -1}).execFind(function(err, doc) { 
@@ -75,17 +76,20 @@ exports.list = function(req, res) {
 			Note.find({ userId: req.user._id}).sort({ addedOn: -1 }).execFind(function(err, notes) {
 				if(err) throw err;
 				dashnotes = notes;
+				for (var i = 0; i < notes.length; i++) {
+					 noteids.push(notes[i]._id);
+				};
 
 				var responseObj = {
 					_id: req.user._id,
 					name: req.user.firstName + ' ' + req.user.lastName,
 					goals: goalids,
 					teamusers: teamusers,
-					notes: dashnotes
+					notes: noteids
 				};
 
 				console.log('response' + responseObj);
-				return res.send({dashboards: [ responseObj], goals: dashgoals });
+				return res.send({dashboards: [ responseObj], goals: dashgoals, notes: dashnotes });
 			});
 
 		});

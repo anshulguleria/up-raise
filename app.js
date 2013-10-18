@@ -20,7 +20,7 @@ var team = require('./routes/team');
 var authenticate = require('./routes/authenticate');
 var authApi = require('./apis/authenticate')(passport);
 var companies = require('./routes/admin/companies');
-
+var notes = require('./routes/notes');
 
 mongoose.connect('mongodb://127.0.0.1/up-raise');
 
@@ -77,6 +77,7 @@ app.get('/admin/companies', companies.display);
 //API routes
 
 app.get('/api/dashboards', dashboard.list);
+app.get('/api/dashboards/:id', dashboard.list);
 
 app.get('/api/goals', goals.list);
 app.put('/api/goals/:id', goals.put);
@@ -92,6 +93,8 @@ app.get('/api/companies', companies.list);
 app.post('/api/companies', companies.create);
 app.put('/api/companies/:id', companies.update);
 app.delete('/api/companies/:id', companies.delete);
+
+app.post('/api/notes', notes.create);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
