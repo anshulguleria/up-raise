@@ -18,43 +18,40 @@ exports.list = function(req, res) {
 	var dashnotes = [];
 	var goalids = [];
 	var noteids = [];
+	var teamuserids = [];
 
-	console.log('user id ' + req.user._id);
 	KRA.find({ userId: req.user._id}).sort({updatedOn: -1}).execFind(function(err, doc) { 
 		if(err) throw err;
 
-		console.log('kras ' + doc);
 		if(doc && doc.length > 0) {
 
 
 			if(doc[0].goals.length > 0) {		
 				goalids = doc[0].goals;
-				console.log('getting goals');
 				Goal.find({_id: { $in: doc[0].goals } }, function(err, g) {
 					if(err) throw err;
-					console.log('goals ' + g);
 					dashgoals = g;					
 				});
 			}		
 			
 		}
 
-		User.find({manager: req.user._id}).sort({firstName: 1}).execFind( function(err, users) {
+		User.find({managerId: req.user._id}).sort({firstName: 1}).execFind( function(err, users) {
 			if(err) throw err;
-			console.log('team users ' + users);
 			if(users && users.length > 0) {
 				for (var i = 0 ; i < users.length; i++) {
 					var user = users[i];
 					var item = { 
 						name: user.firstName + ' ' + user.lastName,
-						userId: user._id
+						userId: user._id,
+						_id: user._id
 						};
+					teamuserids.push(user._id);
 					
 					KRA.find({ userId: user._id},function(err, success){ 
 						if(err) throw err;
 						item.areGoalsSet =  !err && success; 
 
-						console.log('teamuser goals ' + success);
 						if(item.areGoalsSet) {
 
 							Cycle.find({ _id : success.cycleId }, function(err, cycles) { 
@@ -84,12 +81,11 @@ exports.list = function(req, res) {
 					_id: req.user._id,
 					name: req.user.firstName + ' ' + req.user.lastName,
 					goals: goalids,
-					teamusers: teamusers,
+					teamusers: teamuserids,
 					notes: noteids
 				};
 
-				console.log('response' + responseObj);
-				return res.send({dashboards: [ responseObj], goals: dashgoals, notes: dashnotes });
+				return res.send({dashboards: [ responseObj], goals: dashgoals, notes: dashnotes, teamusers: teamusers });
 			});
 
 		});

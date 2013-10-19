@@ -8,7 +8,7 @@ var userSchema = new Schema({
 	email: String,
 	password: String,
 	roles: [ { type: String } ],
-	manager: { type: ObjectId, ref: 'User' },
+	managerId: { type: ObjectId, ref: 'User' },
 	departmentId: { type: ObjectId, ref: 'Department' },
 	teamId: { type: ObjectId, ref: 'Team' },
 	empId: String

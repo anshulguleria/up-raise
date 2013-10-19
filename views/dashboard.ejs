@@ -9,15 +9,17 @@
 <% script('/javascripts/controllers/teamuserController.js') -%>
 <% script('/javascripts/controllers/goalController.js') -%>
 <% script('/javascripts/controllers/reviewDocumentController.js') -%>
+<% script('/javascripts/controllers/notesController.js') -%>
 <% script('/javascripts/controllers/noteController.js') -%>
 <% script('/javascripts/views/goalView.js') -%>
+<% script('/javascripts/views/noteView.js') -%>
 
 <script type="text/x-handlebars" data-template-name="dashboard">
 	<div class="container">
 		{{outlet headerBar}}
 		
 		<div>
-			<h2> My Goals <small><a class="initialism pull-right" href="#" {{action kra }} >Show Details</a></small> </h2>
+			<a href="#" {{action kra }}><h2> My Goals </h2></a>
 			<hr />
 			<div>
 				<table class="table table-striped table-responsive table-bordered table-responsive">
@@ -37,7 +39,7 @@
 					{{/each}}					
 				</table>
 			</div>
-			<h2> My Notes	<small><a class="glyphicon glyphicon-plus pull-right" href="#" {{action 'showAddNote'}}>Add-Note</a></small></h2>
+			<h2> My Notes</h2>
 			
 			<hr />	
 			<div>
@@ -46,26 +48,33 @@
 						<th>Index</th>
 						<th class="col-sm-3">Added-on</th>
 						<th class="text-center">Description</th>
+						<th></th>
 					</tr>
 					{{#each note in notes itemController="note"}}
-						<tr>
-							<td> 19</td>
-							<td> {{addedOn}}</td>
-							<td> 
-								{{description}}</td>
-						</tr>
+						{{#view 'note'}}
+							<tr>
+								<td> {{view.adjustedIndex}}</td>
+								<td> {{addedOn}}</td>
+								<td> 
+									{{description}}</td>
+								<td> <a href="#" {{action 'showDeleteModal'}}>Delete</a>
+							</tr>
+						{{/view}}
 					{{/each}}
 					{{#if showAddNote}}
 						<tr>
 							<td> </td>
 							<td> </td>
 							<td> {{textarea type="text" classNames="form-control" placeholder="Enter Note" value=description }} </td>
+							<td></td>
 						</tr>
 					{{/if}}
 				</table>
 					{{#if showAddNote}}
 						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'saveNote'}}>Save</button>
 						<button class="btn btn-normal btn-md" id="btnCancelNote" {{action 'cancelNote'}}>Cancel</button>
+					{{else}}
+						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'showAddNote'}}>Add Note</button>
 					{{/if}}
 			</div>
 				<h2> My Team</h2>
@@ -112,4 +121,8 @@
 			</div>
 		</div>
 	</div>
+</script>
+<script type="text/x-handlebars" data-template-name="delete-modal">
+	<p class="text-warning"><strong>Are you sure you want to delete?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
 </script>

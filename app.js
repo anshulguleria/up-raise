@@ -95,6 +95,7 @@ app.put('/api/companies/:id', companies.update);
 app.delete('/api/companies/:id', companies.delete);
 
 app.post('/api/notes', notes.create);
+app.delete('/api/notes/:id', notes.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

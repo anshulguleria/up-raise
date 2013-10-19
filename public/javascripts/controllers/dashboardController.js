@@ -1,4 +1,5 @@
 UpRaise.DashboardController = Ember.ObjectController.extend({
+	needs: 'notes',
 	actions: {
 		kra: function() {
 			window.location.assign('/kra');	
@@ -20,7 +21,7 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 			});
 			
 			note.save().then(function() {
-				that.get('model').reload();
+				window.location.assign('/dashboard');
 			});
 
 			this.set('showAddNote',false);
