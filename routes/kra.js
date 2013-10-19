@@ -4,20 +4,47 @@
  */
 
 exports.display = function(req, res){
-  res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-  	goals: {
-  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-		status: 'pending'
-				
-  	}
-  	, view: 'self' });
+	if(req.param('id')) {
+		var User = require('../models/user');
+
+		User.findOne({_id : req.param('id')}, function(err, user) {
+			if(err) throw err;
+
+				res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
+		  	goals: {
+		  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
+				status: 'pending'						
+		  	}
+		  	, view: 'reviewer' });
+		});
+
+	}else {
+	
+		res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
+	  	goals: {
+	  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
+			status: 'pending'
+					
+	  	}
+	  	, view: 'self' });
+	}
+  
 };
 
 exports.list = function(req, res) {
+
 	var KRA = require('../models/reviewDocument');
 	var Goal = require('../models/goal');
 
-	KRA.find({ userId: req.user._id}, function(err, doc) { 
+	var userId = '';
+
+	if(req.param('id')) {
+		id = req.param('id');
+	} else {
+		id = req.user._id;
+	}
+
+	KRA.find({ userId: id}, function(err, doc) { 
 		if(err) throw err;
 
 		if(!doc || doc.length == 0) {
@@ -33,19 +60,15 @@ exports.list = function(req, res) {
 			var allGoals = [];
 
 			for (var i = doc.length - 1; i >= 0; i--) {
-				console.log(doc[i]);
 				allGoals = allGoals.concat(doc[i].goals);
 			};
-			console.log(allGoals);
 			if(allGoals.length > 0) {			
-				console.log('getting goals');
 				Goal.find({_id: { $in: allGoals } }, function(err, goals) {
 					if(err) throw err;
 
 					return res.send({ reviewdocuments:  doc , goals: goals });	
 				});
 			} else {
-				console.log('no goals array');
 				return res.send({ reviewdocuments:  doc });	
 			}
 			
@@ -55,7 +78,7 @@ exports.list = function(req, res) {
 };
 
 exports.put = function(req, res) {
-	console.log(req.body);
+	
 
 	var mongoose = require('mongoose')
 	   ,Schema = mongoose.Schema
@@ -64,7 +87,6 @@ exports.put = function(req, res) {
 	var ReviewDocument = require('../models/reviewDocument');
 	var kra  = req.body.reviewdocument;
 	
-	console.log(req.param('id'));	
 	
 	var id = req.param('id');
 	
@@ -81,19 +103,15 @@ exports.put = function(req, res) {
 
 
 exports.delete = function(req, res) {
-	console.log(req.body);
-
-
+	
 	var ReviewDocument = require('../models/reviewDocument');
 	var Goal = require('../models/goal');
 	var item  = req.param('id');
-	console.log(item);
 	
 	ReviewDocument.findOne({_id: item}, function(err, doc) {
 		if(err) throw err;
 		if(doc) {
 			doc.goals.forEach(function(item){
-				console.log('goal id: ' + item);
 				Goal.remove({_id: item}, function(err){});
 			});
 		} 
@@ -104,4 +122,107 @@ exports.delete = function(req, res) {
 		res.send(null);
 	});	
 	
+};
+
+exports.requestApproval = function(req, res) {
+	var User = require('../models/user');
+	
+	var nodemailer = require("nodemailer");
+
+	// create reusable transport method (opens pool of SMTP connections)
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	        user: "varun13@gmail.com",
+	        pass: "junior08111981"
+	    }
+	});
+
+	if(req.user._id) {
+		User.findOne({ _id: req.user.managerId }, function(err, user) {
+			if(err) throw err;
+
+			// setup e-mail data with unicode symbols
+			var mailOptions = {
+			    from: req.user.firstName + " <" + req.user.email + ">", // sender address
+			    to: user.email, // list of receivers
+			    subject: "Please review goals for " + req.user.firstName + " " + req.user.lastName, // Subject line
+			    html: "Dear <strong>" + user.firstName + "</strong>," // html body
+			    +	"<br />"
+			    + "<p>" + req.user.firstName + "'s goals have been set/updated. Please approve the goals."
+			    + " To approve, please click on the link below.</p>"
+			    + "<a href='http://localhost:3000/' >Up-Raise</a>"
+			    + "<br />"			    
+			};
+
+			// send mail with defined transport object
+			smtpTransport.sendMail(mailOptions, function(error, response){
+			    if(error){
+			        console.log(error);
+			    }else{
+			        console.log("Message sent: " + response.message);
+			    }
+
+			    res.send(null);
+			    // if you don't want to use this transport object anymore, uncomment following line
+			    smtpTransport.close(); // shut down the connection pool, no more messages
+			});
+		});
+	} else {
+		res.send(null);
+	}
+};
+
+exports.approve = function(req, res) {
+	var User = require('../models/user');
+	var ReviewDocument = require('../models/reviewDocument');
+	var nodemailer = require("nodemailer");
+
+	// create reusable transport method (opens pool of SMTP connections)
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	        user: "varun13@gmail.com",
+	        pass: "junior08111981"
+	    }
+	});
+
+	if(req.param('id')) {
+		ReviewDocument.findOneAndUpdate({ _id: req.param('id') }, {$set: {isApproved: true, approvedOn: new Date(), type: 'approved' }}, function(err, doc) {
+			if(err) throw err;
+
+			User.findOne({_id: doc.userId}, function(err, user) {
+				if(err) throw err;
+				// setup e-mail data with unicode symbols
+				var mailOptions = {
+				    from: req.user.firstName + " <" + req.user.email + ">", // sender address
+				    to: user.email + "," + req.user.email, // list of receivers
+				    subject: user.firstName +  " - Your goals have been approved.", // Subject line
+				    html: "Dear <strong>" + user.firstName + "</strong>," // html body
+				    +	"<br />"
+				    + "<p>" + "Your goals have been approved."
+				    + " To view your goals, please click on the link below.</p>"
+				    + "<a href='http://localhost:3000/' >Up-Raise</a>"
+				    + "<br />"			    
+				};
+
+				// send mail with defined transport object
+				smtpTransport.sendMail(mailOptions, function(error, response){
+				    if(error){
+				        console.log(error);
+				    }else{
+				        console.log("Message sent: " + response.message);
+				    }
+
+				    res.send(null);
+				    // if you don't want to use this transport object anymore, uncomment following line
+				    smtpTransport.close(); // shut down the connection pool, no more messages
+				});
+			});
+
+			
+		});
+	} else {
+		res.send(null);
+	}
 };

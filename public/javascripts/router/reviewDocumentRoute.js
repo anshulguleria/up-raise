@@ -1,12 +1,12 @@
 UpRaise.Router.map(function () {
-	this.resource('reviewdocument', { path: '/' }, function() {
-		//this.route('goals');		
-	});
+	this.resource('reviewdocument', { path: '/:id' }, function() {
+    //this.route('goals');    
+  });
 });
 
 UpRaise.ReviewdocumentRoute = Ember.Route.extend({
   model: function (params) {
-    return this.store.find('reviewdocument', { type: params.type});
+      return this.store.find('reviewdocument', { id: params.id});
   },
   setupController: function(controller, model) {
     var m = model.get('firstObject');

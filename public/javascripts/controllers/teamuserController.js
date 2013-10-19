@@ -1,7 +1,7 @@
 UpRaise.TeamuserController = Ember.ObjectController.extend({ 
 	actions: {
 		kra: function () {
-			window.location.assign('/kra/' + this.get('model').get('id'));
+			window.location.assign('/kra/' + this.get('model').get('id') + '/#/' + this.get('model').get('id'));
 		},
 		review: function() {
 			window.location.assign('/review-appraisal/' + this.get('model').get('id'));	

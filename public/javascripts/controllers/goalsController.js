@@ -44,10 +44,15 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			UpRaise.reset();
 		},
 		requestApproval: function() {
+			$.get('/api/requestApproval');			
+		},
+		approve: function() {
 			var kra = this.get('controllers.reviewdocument.content');
-			kra.set('type', 'request');
-			kra.save();
-		}
+			$.get('/api/approve/' + kra.get('id')).then(function(){ 
+				window.location.assign('/dashboard');
+			});			
+		},
+
 	},
 	nextIndex: function() {
 		var length = this.get('length') + 1;

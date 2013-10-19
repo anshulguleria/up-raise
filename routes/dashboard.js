@@ -50,7 +50,9 @@ exports.list = function(req, res) {
 					
 					KRA.find({ userId: user._id},function(err, success){ 
 						if(err) throw err;
-						item.areGoalsSet =  !err && success; 
+						item.areGoalsSet = (success != null); 
+
+						console.log(item.areGoalsSet);
 
 						if(item.areGoalsSet) {
 

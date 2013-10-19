@@ -57,6 +57,7 @@ app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
 app.get('/kra', kra.display);
+app.get('/kra/:id', kra.display);
 
 app.get('/appraisals', appraisals.history);
 app.get('/self-appraisal', appraisals.self);
@@ -87,7 +88,8 @@ app.post('/api/goals', goals.post);
 app.get('/api/reviewDocuments', kra.list);
 app.put('/api/reviewDocuments/:id', kra.put);
 app.delete('/api/reviewDocuments/:id', kra.delete);
-
+app.get('/api/requestApproval', kra.requestApproval);
+app.get('/api/approve/:id', kra.approve);
 
 app.get('/api/companies', companies.list);
 app.post('/api/companies', companies.create);

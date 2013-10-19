@@ -6,12 +6,13 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.4.0",
+    "express": "*",
     "ejs": "*",
     "ejs-locals": "*",
     "passport": "*",
     "passport-local": "*",
     "connect-flash":"*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "nodemailer": "*"
   }
 }

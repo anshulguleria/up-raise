@@ -107,7 +107,12 @@
 					{{/if}}
 				<% } %>
 			</div>
-		<% } %>		
+		<% } else if(goals.status != 'approved') { %>			
+			<div class="text-right btn-toolbar">
+				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'approve'}}>Approve</button>
+				<button class="btn btn-warning btn-md" id="btnSubmitGoals" {{action 'approve'}}>Reject</button>
+			</div>
+		<% } %>
 			
 	<% } %>
 	{{render 'footer'}}
