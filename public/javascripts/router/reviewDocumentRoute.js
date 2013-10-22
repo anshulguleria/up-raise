@@ -1,6 +1,6 @@
 UpRaise.Router.map(function () {
 	this.resource('reviewdocument', { path: '/:id' }, function() {
-    //this.route('goals');    
+    this.route('goals');    
   });
 });
 

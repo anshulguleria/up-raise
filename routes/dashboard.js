@@ -19,12 +19,14 @@ exports.list = function(req, res) {
 	var goalids = [];
 	var noteids = [];
 	var teamuserids = [];
+	var kra = {};
 
 	KRA.find({ userId: req.user._id}).sort({updatedOn: -1}).execFind(function(err, doc) { 
 		if(err) throw err;
 
 		if(doc && doc.length > 0) {
 
+			kra = doc[0];
 
 			if(doc[0].goals.length > 0) {		
 				goalids = doc[0].goals;
@@ -82,12 +84,12 @@ exports.list = function(req, res) {
 				var responseObj = {
 					_id: req.user._id,
 					name: req.user.firstName + ' ' + req.user.lastName,
-					goals: goalids,
+					reviewdocument: kra._id,
 					teamusers: teamuserids,
 					notes: noteids
 				};
 
-				return res.send({dashboards: [ responseObj], goals: dashgoals, notes: dashnotes, teamusers: teamusers });
+				return res.send({dashboards: [ responseObj ], reviewdocuments: [kra], goals: dashgoals, notes: dashnotes, teamusers: teamusers });
 			});
 
 		});

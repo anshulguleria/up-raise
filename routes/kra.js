@@ -6,17 +6,23 @@
 exports.display = function(req, res){
 	if(req.param('id')) {
 		var User = require('../models/user');
-
-		User.findOne({_id : req.param('id')}, function(err, user) {
+		var KRA = require('../models/reviewDocument');
+		KRA.findOne({_id: req.param('id')}, function(err, kra) { 
 			if(err) throw err;
 
-				res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
-		  	goals: {
-		  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-				status: 'pending'						
-		  	}
-		  	, view: 'reviewer' });
+			User.findOne({_id : kra.userId}, function(err, user) {
+				if(err) throw err;
+
+					res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
+			  	goals: {
+			  		
+			  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
+					status: 'pending'						
+			  	}
+			  	, view: 'reviewer' });
+			});
 		});
+		
 
 	}else {
 	
@@ -31,6 +37,25 @@ exports.display = function(req, res){
   
 };
 
+exports.post = function(req, res) {
+
+	var KRA = require('../models/reviewDocument');
+	
+	console.log(req.body);
+	var kra  = new KRA(req.body.reviewdocument);
+
+	kra.userId = req.user._id;
+	
+	console.log('reviewdocument is ');
+	console.log(kra);
+	kra.save(function(err) {
+		if(err) throw err;
+		res.send({reviewdocument: kra});
+	});	
+	
+};
+
+
 exports.list = function(req, res) {
 
 	var KRA = require('../models/reviewDocument');
@@ -40,23 +65,10 @@ exports.list = function(req, res) {
 
 	if(req.param('id')) {
 		id = req.param('id');
-	} else {
-		id = req.user._id;
-	}
+	
+		KRA.find({ _id: id}, function(err, doc) { 
+			if(err) throw err;
 
-	KRA.find({ userId: id}, function(err, doc) { 
-		if(err) throw err;
-
-		if(!doc || doc.length == 0) {
-			doc = new KRA({ userId: req.user._id, type: 'draft'});
-			doc.save(function(err) { 
-				if(err) throw err;
-				
-				return res.send({reviewdocuments: [ doc ]});
-
-			});
-			
-		} else {
 			var allGoals = [];
 
 			for (var i = doc.length - 1; i >= 0; i--) {
@@ -72,8 +84,10 @@ exports.list = function(req, res) {
 				return res.send({ reviewdocuments:  doc });	
 			}
 			
-		}
-	});
+		});
+	} else {
+		return res.send(null);
+	}
 	
 };
 

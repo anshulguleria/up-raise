@@ -59,11 +59,8 @@ exports.delete = function(req, res) {
 };
 
 exports.post = function(req, res) {
-	console.log(req.body);
 	var Goal = require('../models/goal');
 	var goal  = new Goal(req.body.goal);
-	console.log('goal is ');
-	console.log(goal);
 	goal.save(function(err) {
 		if(err) throw err;
 		res.send({goal: goal});

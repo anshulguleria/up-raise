@@ -87,6 +87,7 @@ app.post('/api/goals', goals.post);
 
 app.get('/api/reviewDocuments', kra.list);
 app.put('/api/reviewDocuments/:id', kra.put);
+app.post('/api/reviewDocuments', kra.post);
 app.get('/api/reset/:id', kra.delete);
 app.get('/api/clonekra/:id', kra.delete);
 app.get('/api/requestApproval', kra.requestApproval);
