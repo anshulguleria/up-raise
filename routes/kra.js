@@ -10,30 +10,31 @@ exports.display = function(req, res){
 		KRA.findOne({_id: req.param('id')}, function(err, kra) { 
 			if(err) throw err;
 
-			User.findOne({_id : kra.userId}, function(err, user) {
-				if(err) throw err;
+			if(req.param('id') != kra.userId) {
 
-					res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
-			  	goals: {
+				User.findOne({_id : kra.userId}, function(err, user) {
+					if(err) throw err;
 
-			  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-					status: 'pending'						
-			  	}
-			  	, view: 'reviewer' });
-			});
+					return res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
+				  	goals: {
+
+				  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
+						status: 'pending'						
+				  	}
+				  	, view: 'reviewer' });
+				});
+			}			
 		});
-		
-
-	}else {
-	
-		res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-	  	goals: {
-	  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-			status: 'pending'
-					
-	  	}
-	  	, view: 'self' });
 	}
+	
+	return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
+  	goals: {
+  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
+		status: 'pending'
+				
+  	}
+  	, view: 'self' });
+	
   
 };
 

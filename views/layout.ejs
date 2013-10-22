@@ -15,10 +15,10 @@
 								<a href="/dashboard">Dashboard</a>
 							</li>
 							<li>
-								<a href="/kra#/<%= user._id %>">My Goals</a>
+								<a href="/teamkra/<%= user._id %>">My Goals</a>
 							</li>
 							<li>
-								<a href="/perfdiary">My Diary</a>
+								<a href="/teamdiary/<%= user._id %>">My Diary</a>
 							</li>
 							<li>
 								<a href="/team" >My Team</a>
@@ -77,6 +77,14 @@
 		<script src='/javascripts/infra/bs-for-ember/bs-alert.min.js'></script>
 		<script src='/javascripts/infra/moment.min.js'></script>
 		<script src='/javascripts/app.js'></script>		
+		<script src='/javascripts/models/goal.js'></script>
+		<script src='/javascripts/models/dashboard.js'></script>
+		<script src='/javascripts/models/note.js'></script>
+		<script src='/javascripts/models/teamuser.js'></script>
+		<script src='/javascripts/models/reviewDocument.js'></script>
+		<script src='/javascripts/models/perfdiary.js'></script>
+		<script src='/javascripts/models/diaryitem.js'></script>
+
 		<%-scripts%>
 		
 	</body>

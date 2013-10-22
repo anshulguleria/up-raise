@@ -16,6 +16,7 @@ var goals = require('./routes/goals');
 var kra = require('./routes/kra');
 var appraisals = require('./routes/appraisals');
 var perfdiary = require('./routes/perfdiary');
+var diaryitems = require('./routes/diaryitems');
 var team = require('./routes/team');
 var authenticate = require('./routes/authenticate');
 var authApi = require('./apis/authenticate')(passport);
@@ -56,7 +57,7 @@ app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
-app.get('/kra/', kra.display);
+app.get('/kra', kra.display);
 app.get('/kra/:id', kra.display);
 
 app.get('/teamkra/:id', kra.redirect);
@@ -66,6 +67,8 @@ app.get('/self-appraisal', appraisals.self);
 app.get('/view-appraisal', appraisals.view);
 app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
+app.get('/perfdiary/:id', perfdiary.view);
+app.get('/teamdiary/:userId', perfdiary.displayForUser);
 app.get('/team', team.list);
 
 app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
@@ -103,6 +106,14 @@ app.delete('/api/companies/:id', companies.delete);
 
 app.post('/api/notes', notes.create);
 app.delete('/api/notes/:id', notes.delete);
+
+app.get('/api/perfdiaries', perfdiary.list);
+app.post('/api/perfdiaries', perfdiary.post);
+app.put('/api/perfdiaries/:id', perfdiary.put);
+
+app.post('/api/diaryitems', diaryitems.post);
+app.put('/api/diaryitems/:id', diaryitems.put);
+app.delete('/api/diaryitems/:id', diaryitems.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
