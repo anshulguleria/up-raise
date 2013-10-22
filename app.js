@@ -56,8 +56,10 @@ app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
-app.get('/kra', kra.display);
+app.get('/kra/', kra.display);
 app.get('/kra/:id', kra.display);
+
+app.get('/teamkra/:id', kra.redirect);
 
 app.get('/appraisals', appraisals.history);
 app.get('/self-appraisal', appraisals.self);

@@ -15,7 +15,7 @@ exports.display = function(req, res){
 
 					res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
 			  	goals: {
-			  		
+
 			  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
 					status: 'pending'						
 			  	}
@@ -84,6 +84,34 @@ exports.list = function(req, res) {
 				return res.send({ reviewdocuments:  doc });	
 			}
 			
+		});
+	} else {
+		return res.send(null);
+	}
+	
+};
+
+
+exports.redirect = function(req, res) {
+
+	var KRA = require('../models/reviewDocument');
+	var Goal = require('../models/goal');
+
+	var userId = '';
+
+	//TODO: check autorization first
+
+	if(req.param('id')) {
+		id = req.param('id');
+	
+		KRA.find({ userId: id}, function(err, doc) { 
+			if(err) throw err;	
+
+			if(doc && doc.length > 0){
+				return res.redirect('/kra/' + doc[0]._id + '#/' + doc[0]._id);
+			}
+			else
+				return res.send(null);				
 		});
 	} else {
 		return res.send(null);

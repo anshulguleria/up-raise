@@ -24,17 +24,21 @@
 				<div>
 					<table class="table table-striped table-responsive table-bordered table-responsive">
 						<tr>
-							<th class="text-center"> KRA</th>
-							<th class="text-center"> Goal-Type</th>
+							<th class="col-sm-1 text-center"> Index</th>
+							<th class="col-sm-2 text-center"> KRA</th>
+							<th class="col-sm-2 text-center"> Goal-Type</th>
 							<th class="text-center"> Description</th>
+							<th class="col-sm-1 text-center"> Weightage</th>
+							
 						</tr>
 						{{#each goal in reviewdocument.goals itemController="goal"}}
 							{{#view UpRaise.GoalView contentBinding="this"}}
-								<td> {{kra}}</td>
-								<td> {{type}}</td>
-								<td> 
-									{{description}}
-								</td>
+								<td> {{view.adjustedIndex}} </td>
+								<td> {{kra}} </td>
+								<td> {{type}} </td>
+								<td> {{description}} </td>
+									
+								<td class="text-center"> {{weight}}% </td>
 							{{/view}}
 						{{/each}}					
 					</table>
@@ -49,10 +53,10 @@
 			<div>
 				<table class="table table-striped table-bordered table-responsive">
 					<tr>
-						<th>Index</th>
-						<th class="col-sm-3">Added</th>
+						<th class="col-sm-1 text-center">Index</th>
+						<th class="col-sm-2 text-center">Added</th>
 						<th class="text-center">Description</th>
-						<th></th>
+						<th class="col-sm-1 text-center"></th>
 					</tr>
 					{{#each note in notes itemController="note"}}
 						{{#view 'note'}}
@@ -83,12 +87,12 @@
 			</div>
 				<h2> My Team</h2>
 			<hr />
-			<div>
+			<div class="col-md-8">
 				<table class="table table-bordered table-responsive">
 					<tr>
-						<th class="col-sm-3 text-center">Name</th>
+						<th class="col-md-4 text-center">Name</th>
 						<th class="col-sm-3 text-center">Due date</th>
-						<th class="col-sm-3 text-center">Actions</th>
+						<th class="text-center">Actions</th>
 					</tr>
 
 					{{#each teamuser in teamusers itemController='teamuser'}}
@@ -123,6 +127,7 @@
 					{{/each}}					
 				</table>
 			</div>
+			<div class="col-md-4"> </div>
 		</div>
 	</div>
 </script>
