@@ -124,6 +124,20 @@ exports.delete = function(req, res) {
 	
 };
 
+exports.clone = function(req, res) {
+	
+	var ReviewDocument = require('../models/reviewDocument');
+	var item  = req.param('id');
+	
+	ReviewDocument.findOne({_id: item}, function(err, doc) {
+		if(err) throw err;
+		if(doc) {
+			doc.clone();
+		} 
+		res.send(null);
+	});	
+};
+
 exports.requestApproval = function(req, res) {
 	var User = require('../models/user');
 	
@@ -177,7 +191,7 @@ exports.approve = function(req, res) {
 	var User = require('../models/user');
 	var ReviewDocument = require('../models/reviewDocument');
 	var nodemailer = require("nodemailer");
-
+	
 	// create reusable transport method (opens pool of SMTP connections)
 	var smtpTransport = nodemailer.createTransport("SMTP",{
 	    service: "Gmail",
@@ -188,38 +202,162 @@ exports.approve = function(req, res) {
 	});
 
 	if(req.param('id')) {
+
 		ReviewDocument.findOneAndUpdate({ _id: req.param('id') }, {$set: {isApproved: true, approvedOn: new Date(), type: 'approved' }}, function(err, doc) {
 			if(err) throw err;
 
-			User.findOne({_id: doc.userId}, function(err, user) {
-				if(err) throw err;
-				// setup e-mail data with unicode symbols
-				var mailOptions = {
-				    from: req.user.firstName + " <" + req.user.email + ">", // sender address
-				    to: user.email + "," + req.user.email, // list of receivers
-				    subject: user.firstName +  " - Your goals have been approved.", // Subject line
-				    html: "Dear <strong>" + user.firstName + "</strong>," // html body
-				    +	"<br />"
-				    + "<p>" + "Your goals have been approved."
-				    + " To view your goals, please click on the link below.</p>"
-				    + "<a href='http://localhost:3000/' >Up-Raise</a>"
-				    + "<br />"			    
-				};
+			if(doc) {
 
-				// send mail with defined transport object
-				smtpTransport.sendMail(mailOptions, function(error, response){
-				    if(error){
-				        console.log(error);
-				    }else{
-				        console.log("Message sent: " + response.message);
-				    }
+				doc.clone();
 
-				    res.send(null);
-				    // if you don't want to use this transport object anymore, uncomment following line
-				    smtpTransport.close(); // shut down the connection pool, no more messages
-				});
+					User.findOne({_id: doc.userId}, function(err, user) {
+						if(err) throw err;
+						// setup e-mail data with unicode symbols
+						var mailOptions = {
+						    from: req.user.firstName + " <" + req.user.email + ">", // sender address
+						    to: user.email + "," + req.user.email, // list of receivers
+						    subject: user.firstName +  " - Your goals have been approved.", // Subject line
+						    html: "Dear <strong>" + user.firstName + "</strong>," // html body
+						    +	"<br />"
+						    + "<p>" + "Your goals have been approved."
+						    + " To view your goals, please click on the link below.</p>"
+						    + "<a href='http://localhost:3000/' >Up-Raise</a>"
+						    + "<br />"			    
+						};
+
+						// send mail with defined transport object
+						smtpTransport.sendMail(mailOptions, function(error, response){
+						    if(error){
+						        console.log(error);
+						    }else{
+						        console.log("Message sent: " + response.message);
+						    }
+
+						    res.send(null);
+						    // if you don't want to use this transport object anymore, uncomment following line
+						    smtpTransport.close(); // shut down the connection pool, no more messages
+						});
+					});
+				// });
+				
+			}
+			
+		});
+	} else {
+		res.send(null);
+	}
+};
+
+exports.requestApproval = function(req, res) {
+	var User = require('../models/user');
+	
+	var nodemailer = require("nodemailer");
+
+	// create reusable transport method (opens pool of SMTP connections)
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	        user: "varun13@gmail.com",
+	        pass: "junior08111981"
+	    }
+	});
+
+	if(req.user._id) {
+		User.findOne({ _id: req.user.managerId }, function(err, user) {
+			if(err) throw err;
+
+			// setup e-mail data with unicode symbols
+			var mailOptions = {
+			    from: req.user.firstName + " <" + req.user.email + ">", // sender address
+			    to: user.email, // list of receivers
+			    subject: "Please review goals for " + req.user.firstName + " " + req.user.lastName, // Subject line
+			    html: "Dear <strong>" + user.firstName + "</strong>," // html body
+			    +	"<br />"
+			    + "<p>" + req.user.firstName + "'s goals have been set/updated. Please approve the goals."
+			    + " To approve, please click on the link below.</p>"
+			    + "<br />"
+			    + "<a href='http://localhost:3000/' >Up-Raise</a>"
+			    + "<br />"			    
+			};
+
+			// send mail with defined transport object
+			smtpTransport.sendMail(mailOptions, function(error, response){
+			    if(error){
+			        console.log(error);
+			    }else{
+			        console.log("Message sent: " + response.message);
+			    }
+
+			    res.send(null);
+			    // if you don't want to use this transport object anymore, uncomment following line
+			    smtpTransport.close(); // shut down the connection pool, no more messages
 			});
+		});
+	} else {
+		res.send(null);
+	}
+};
 
+exports.reject = function(req, res) {
+	var User = require('../models/user');
+	var ReviewDocument = require('../models/reviewDocument');
+	var nodemailer = require("nodemailer");
+	
+	// create reusable transport method (opens pool of SMTP connections)
+	var smtpTransport = nodemailer.createTransport("SMTP",{
+	    service: "Gmail",
+	    auth: {
+	        user: "varun13@gmail.com",
+	        pass: "junior08111981"
+	    }
+	});
+
+	console.log( ' text is: ' + req.param('text'));
+		
+
+	if(req.param('id')) {
+		
+		ReviewDocument.findOne({ _id: req.param('id') }, function(err, doc) {
+			if(err) throw err;
+
+			if(doc) {
+
+					User.findOne({_id: doc.userId}, function(err, user) {
+						if(err) throw err;
+						// setup e-mail data with unicode symbols
+						var mailOptions = {
+						    from: req.user.firstName + " <" + req.user.email + ">", // sender address
+						    to: user.email + "," + req.user.email, // list of receivers
+						    subject: user.firstName +  " - Your goals have been rejected.", // Subject line
+						    html: "Dear <strong>" + user.firstName + "</strong>," // html body
+						    +	"<br />"
+						    + "<p>Your goals have been rejected.</p>"
+						    + "<br/>"
+						    + "<p>Your manager has rejected your goal changes with following comments: " 
+						    + req.param('text')
+						    + "</p> <br />"
+						    + " To view your goals, please click on the link below.</p>"
+						    + "<br />"
+						    + "<a href='http://localhost:3000/' >Up-Raise</a>"
+						    + "<br />"			    
+						};
+
+						// send mail with defined transport object
+						smtpTransport.sendMail(mailOptions, function(error, response){
+						    if(error){
+						        console.log(error);
+						    }else{
+						        console.log("Message sent: " + response.message);
+						    }
+
+						    res.send(null);
+						    // if you don't want to use this transport object anymore, uncomment following line
+						    smtpTransport.close(); // shut down the connection pool, no more messages
+						});
+					});
+				// });
+				
+			}
 			
 		});
 	} else {

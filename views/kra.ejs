@@ -46,8 +46,8 @@
 						<td> {{textarea classNames="form-control" placeholder="Enter Details" value=description }} </td>
 						<td class="col-sm-1 text-center"> {{input type="text" classNames="form-control" placeholder="Eg: 10 %" value=weight }} </td>
 						<td>
-							<a {{action "cancelRow"}}>Cancel</a>
-							<a {{action "saveRow" target=view}}>Save</a>
+							<a {{action "cancelRow"}} href="#">Cancel</a>
+							<a {{action "saveRow" target=view}} href="#">Save</a>
 						</td>
 					
 					{{ else }}
@@ -59,15 +59,18 @@
 							
 						<td class="text-center"> {{weight}}% </td>
 						<td>
-							<a {{action "editRow"}}> Edit </a>									
-							<a {{action "showDeleteModal"}}> Delete </a>
+							<% if (view == 'self') { %>
+								<a {{action "editRow"}} href="#"> Edit </a>									
+								<a {{action "showDeleteModal"}} href="#"> Delete </a>
+							<% } %>
 						</td>								
 					
 					{{/if}}
 				{{/view}}
 			{{/each}}
-			{{#bs-modal name="deleteModal" fade=true footerButtonsBinding="deleteModalButtons" title="Warning"}}
-					        
+			{{#bs-modal name="rejectModal" fade=true footerButtonsBinding="rejectModalButtons" title="Warning"}}
+				<p class="text-warning"><strong>Please add reason for rejecting the goals.</strong></p>
+				{{textarea classNames="form-control" id="reject-description" placeholder="Enter Details"  value=rejecttext}}	
 		    {{/bs-modal}}
 			{{#if showAddRow}}
 				<tr>
@@ -86,8 +89,8 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td class="text-right success">Total (Must equal 100)</td>
-					<td class="text-center">{{totalWeight}}%</td>
+						<td class="text-right success">Total (Must equal 100)</td>
+						<td class="text-center">{{totalWeight}}%</td>
 					<td></td>
 				</tr>
 		</table>
@@ -107,11 +110,13 @@
 					{{/if}}
 				<% } %>
 			</div>
-		<% } else if(goals.status != 'approved') { %>			
+		<% } else if(goals.status != 'approved') { %>
+			{{#unless isApproved}}
 			<div class="text-right btn-toolbar">
 				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'approve'}}>Approve</button>
-				<button class="btn btn-warning btn-md" id="btnSubmitGoals" {{action 'approve'}}>Reject</button>
+				<button class="btn btn-warning btn-md" id="btnSubmitGoals" {{action 'showRejectModal'}}>Reject</button>
 			</div>
+			{{/unless}}
 		<% } %>
 			
 	<% } %>
@@ -128,6 +133,10 @@
 <script type="text/x-handlebars" data-template-name="reset-modal">
 	<p class="text-warning"><strong>Are you sure you want to reset pending changes?</strong></p>
 	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>	
+<script type="text/x-handlebars" data-template-name="reject-modal">
+	<p class="text-warning"><strong>Please add reasons for rejecting the goals.</strong></p>
+	{{textarea classNames="form-control" id="reject-description" placeholder="Enter Details"  value=rejecttext}}	
 </script>	
 
 	

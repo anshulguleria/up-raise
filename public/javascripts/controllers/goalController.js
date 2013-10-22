@@ -17,11 +17,34 @@ UpRaise.GoalController = Ember.ObjectController.extend({
     saveRow: function() {
       this.set('isEditing', false);
       var kra = this.get('controllers.reviewdocument.content');
-      kra.set('isApproved', false);
+      var goal = this.get('model');
+
+      goal.set('reviewdocument', kra);
       
-      this.get('model').save().then(function() {
-        kra.save();
-      });
+      if(kra.get('isApproved')) {
+        $.get('/api/clonekra/' + kra.get('id')).then(function() { 
+
+
+          goal.save().then(function() {
+            
+            kra.set('isApproved', false);     
+            kra.get('goals').addObject(goal);
+            kra.save();
+            
+          });
+
+        });
+      }
+      else {
+
+          goal.save().then(function() {
+
+            kra.get('goals').addObject(goal);
+            kra.save();
+            
+          });
+
+      }
     },
     deleteRow: function () {
       var item = this.get('content');
