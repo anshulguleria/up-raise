@@ -43,5 +43,9 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 		var doc = this.get('model.reviewdocument') 
 		return doc && doc != null;
 	}.property('reviewdocument'),
+	showTeam: function() {
+		var doc = this.get('teamusers.length') ;
+		return doc && doc > 0;
+	}.property('teamusers.length'),
 	showAddNote: false
 });

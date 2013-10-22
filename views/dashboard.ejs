@@ -85,49 +85,51 @@
 						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'showAddNote'}}>Add Note</button>
 					{{/if}}
 			</div>
+			{{#if showTeam}}			
 				<h2> My Team</h2>
-			<hr />
-			<div class="col-md-8">
-				<table class="table table-bordered table-responsive">
-					<tr>
-						<th class="col-md-4 text-center">Name</th>
-						<th class="col-sm-3 text-center">Due date</th>
-						<th class="text-center">Actions</th>
-					</tr>
+				<hr />
+				<div class="col-md-8">
+					<table class="table table-bordered table-responsive">
+						<tr>
+							<th class="col-md-4 text-center">Name</th>
+							<th class="col-sm-3 text-center">Due date</th>
+							<th class="text-center">Actions</th>
+						</tr>
 
-					{{#each teamuser in teamusers itemController='teamuser'}}
-							{{#if teamuser.isAppraisalDue}}			
-							<tr class="danger">
-								<td>
-									<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
-								<td> {{ reviewdate }}</td>
-								<td> 
-									<a href="#" {{action review }}> Review Now</a></td>
-							</tr>
-						{{else }}
-							{{#if teamuser.areGoalsSet}}
-
-								<tr>
+						{{#each teamuser in teamusers itemController='teamuser'}}
+								{{#if teamuser.isAppraisalDue}}			
+								<tr class="danger">
 									<td>
 										<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
 									<td> {{ reviewdate }}</td>
 									<td> 
-										<a href="#" {{action kra }}> View Goals</a></td>
+										<a href="#" {{action review }}> Review Now</a></td>
 								</tr>
-							{{else}}
-								<tr>
-									<td>
-										<a href="#" {{action history }}>{{teamuser.name}}</a></td>
-									<td> {{ reviewdate }}</td>
-									<td></td>
-								</tr>							
+							{{else }}
+								{{#if teamuser.areGoalsSet}}
+
+									<tr>
+										<td>
+											<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
+										<td> {{ reviewdate }}</td>
+										<td> 
+											<a href="#" {{action kra }}> View Goals</a></td>
+									</tr>
+								{{else}}
+									<tr>
+										<td>
+											<a href="#" {{action history }}>{{teamuser.name}}</a></td>
+										<td> {{ reviewdate }}</td>
+										<td></td>
+									</tr>							
+								{{/if}}
 							{{/if}}
-						{{/if}}
-							
-					{{/each}}					
-				</table>
-			</div>
-			<div class="col-md-4"> </div>
+								
+						{{/each}}					
+					</table>
+				</div>
+				<div class="col-md-4"> </div>
+			{{/if}}
 		</div>
 	</div>
 </script>
