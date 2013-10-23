@@ -19,8 +19,21 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 				'params': {
 					'extra': 'info'
 				},
-				'onComplete': function(response) {					
-					return Bootstrap.ModalManager.close('importModal');					
+				valid_extensions : ['xlsx'],
+				'onComplete': function(response) {
+					if(response){
+						if(response.status == false) {
+							$('.error').html(response.message);
+							$('.error').show();
+						} else {
+							$('.error').hide();
+							return Bootstrap.ModalManager.close('importModal');
+						}
+					} else {
+							$('.error').html('Unknown error occurred. Please check the file and try again.');
+							$('.error').show();
+					}
+					
 				},
 				'onStart': function() {
 					

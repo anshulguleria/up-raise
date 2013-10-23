@@ -433,16 +433,14 @@ exports.reject = function(req, res) {
 exports.upload = function(req, res) {
 
 	var fs = require('fs');
-	console.log('file ' + JSON.stringify(req.files));
+	
+	var parseXlsx = require('excel');
 
-	fs.readFile(req.files.btnImportGoals.path, function (err, data) {
-	  
-	  console.log('path ' + __dirname);
-	  var newPath = __dirname + "/uploads/uploadedFileName";
-	  fs.writeFile(newPath, data, function (err) {
-	  	if(err) throw err;
-	  	console.log('uploaded to ' + newPath);
-	    res.redirect("back");
-	  });
+	parseXlsx(req.files.btnImportGoals.path, function(err, data) {
+	    if(err) throw err;
+	    // data is an array of arrays
+	    console.log(data);
+	    return res.send({status:true});
 	});
+	
 };
