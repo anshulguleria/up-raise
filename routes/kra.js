@@ -65,6 +65,7 @@ exports.post = function(req, res) {
 	Cycle.findOne({ companyId: req.user.companyId, isActive: true}, function(err, cycleItem) {
 		if(err) throw err;
 		
+		console.log('cycle get  ' + cycleItem);
 		if(cycleItem) {
 			kra.cycleId = cycleItem._id;
 		}
@@ -427,4 +428,21 @@ exports.reject = function(req, res) {
 	} else {
 		res.send(null);
 	}
+};
+
+exports.upload = function(req, res) {
+
+	var fs = require('fs');
+	console.log('file ' + JSON.stringify(req.files));
+
+	fs.readFile(req.files.btnImportGoals.path, function (err, data) {
+	  
+	  console.log('path ' + __dirname);
+	  var newPath = __dirname + "/uploads/uploadedFileName";
+	  fs.writeFile(newPath, data, function (err) {
+	  	if(err) throw err;
+	  	console.log('uploaded to ' + newPath);
+	    res.redirect("back");
+	  });
+	});
 };

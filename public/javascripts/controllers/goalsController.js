@@ -9,7 +9,29 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		},
 		showRejectModal: function() {			 
 			return Bootstrap.ModalManager.show('rejectModal');			
-		},		
+		},
+		showImportModal: function() {
+			Bootstrap.ModalManager.open('importModal', 'Import from Excel', 'import-modal', this.get('importModalButtons'), this)
+			setTimeout(function() {
+				$('input[type=file]').bootstrapFileInput();
+				$('input[type="file"]').ajaxfileupload({
+				'action': '/api/goals/upload',
+				'params': {
+					'extra': 'info'
+				},
+				'onComplete': function(response) {					
+					return Bootstrap.ModalManager.close('importModal');					
+				},
+				'onStart': function() {
+					
+				},
+				'onCancel': function() {
+					console.log('no file selected');
+				}
+			});
+
+			}, 10);
+		},
 		cancelRow: function() {
 	      this.set('showAddRow', false);	      
 	    },
@@ -126,6 +148,8 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
       Ember.Object.create({title: 'Reject Changes', clicked: "reject", type:"primary", dismiss: 'modal'}),
       Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
   	],
-  	
+  	importModalButtons: [
+      Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
+  	],
 	showAddRow: false
 });

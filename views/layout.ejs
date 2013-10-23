@@ -24,7 +24,7 @@
 								<a href="/team" >My Team</a>
 							</li>
 							<li>
-								<a href="/appraisals" >Appraisal History</a>
+								<!--<a href="/appraisals" >Appraisal History</a>-->
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -55,7 +55,7 @@
 					</div>
 				<% } %>
 			</div>
-		</script>
+		</script>		
 		<%-body -%>
 		<script type="text/x-handlebars" data-template-name="footer">
 			<footer>
@@ -84,9 +84,48 @@
 		<script src='/javascripts/models/reviewDocument.js'></script>
 		<script src='/javascripts/models/perfdiary.js'></script>
 		<script src='/javascripts/models/diaryitem.js'></script>
-
 		<%-scripts%>
-		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				var pleaseWaitDiv = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
+				var cont = false;
+				function increaseProgress(isStart) {
+
+					setTimeout(function() {
+						
+						if(isStart) {
+							
+							$('.progress-bar').attr('aria-valuenow', '0');
+							$('.progress-bar').attr('style', "width: 0%;");							
+						}
+						else{
+
+							var val = parseInt($('.progress-bar').attr('aria-valuenow'));
+							val = val + 20;
+							$('.progress-bar').attr('aria-valuenow', val);
+							$('.progress-bar').attr('style', "width: " + val + "%;");
+						}
+
+						if(cont)
+							increaseProgress(false);
+					},100);
+				}
+
+		        $(document)
+		        .ajaxStart(function () {
+		        	pleaseWaitDiv = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
+		        	pleaseWaitDiv.modal('show');
+		        	cont = true;
+	        		increaseProgress(true);
+		        	
+		        })
+		        .ajaxStop(function () {
+		        	setTimeout(function() { 
+		        		pleaseWaitDiv.modal('hide'); 
+		        		cont = false;		            	
+		            }, 500);
+		        });
+			});
+		</script>
 	</body>
 </html>
-			

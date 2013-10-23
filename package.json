@@ -15,6 +15,7 @@
     "mongoose": "*",
     "nodemailer": "*",
     "async": "*",
-    "moment": "*"
+    "moment": "*",
+    "excel": "*"
   }
 }

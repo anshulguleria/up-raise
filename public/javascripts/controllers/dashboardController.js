@@ -2,7 +2,7 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 	needs: 'notes',
 	actions: {
 		gotoKRA: function() {
-			window.location.assign('/kra/#/' + this.get('model.reviewdocument.id'));	
+			window.location.assign('/kra/' + this.get('model.reviewdocument.id') + '#/' + this.get('model.reviewdocument.id'));	
 		},
 		showAddNote: function() {
 			this.set('showAddNote', true);
@@ -34,7 +34,7 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 	    	var that = this;
 	    	doc.save().then(function() {
 	    		that.set('reviewdocument', doc);
-				window.location.assign('/kra/#/' + doc.get('id'));
+	    		window.location.assign('/kra/' + doc.get('id')+ '#/' + doc.get('id'));					
 			});
 	    }
 		
