@@ -4,30 +4,58 @@
  */
 
 exports.view = function(req, res){
+	var cycle = { startDate:'', endDate: ''};
+		
 	if(req.param('id')) {
 		var User = require('../models/user');
 		var PerfDiary = require('../models/perfDiary');
+		var Cycle = require('../models/cycle');
+		var async = require('async');
+
+		
 		PerfDiary.findOne({_id: req.param('id')}, function(err, doc) { 
 			if(err) throw err;
 
-			if(req.param('id') != doc.userId) {
+			if(doc && req.param('id') != doc.userId) {
+				var user = {};
 
-				User.findOne({_id : doc.userId}, function(err, user) {
-					if(err) throw err;
+				async.parallel([
+						function(callback) {
+							User.findOne({_id : doc.userId}, function(err, userItem) {
+								if(err) return callback(err);
+								user = userItem;
+								return callback();
+							});
+						},
+						function(callback) {
+							Cycle.findOne({_id: doc.cycleId}, function(err, cycleItem) {
+								if(err) return callback(err);								
+								
+								if(cycleItem) {
+									var moment = require('moment');
+									cycle.startDate = moment(cycleItem.start).format('MMM YY');
+									cycle.endDate = moment(cycleItem.end).format('MMM YY');
+								}
 
-					return res.render('perfdiary', { title: 'Diary' ,  user: req.user, employee: user, 
-				  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013'}
-				  		,view: 'other' });
+								return callback();
+							});
+						}
+					], 
+					function(err) { 
+							if(err) throw err;
+								
+							return res.render('perfdiary', { title: 'Diary' ,  user: req.user, employee: user, 
+							  		cycle: cycle
+							  		,view: 'other' });
 				});
+
 			}else {
-				return  res.render('perfdiary', { title: 'My Diary' ,  user: req.user, employee: req.user, cycle: { startDate: 'Apr 2013', 
-					endDate: 'Sept 2013' }, view: 'self' });
+				return  res.render('perfdiary', { title: 'My Diary' ,  user: req.user, employee: req.user, cycle: cycle, view: 'self' });
 			}			
 		});
 	}
 	else {
-		return  res.render('perfdiary', { title: 'My Diary' ,  user: req.user, employee: req.user, cycle: { startDate: 'Apr 2013', 
-		endDate: 'Sept 2013' }, view: 'self' });	
+		return  res.render('perfdiary', { title: 'My Diary' ,  user: req.user, employee: req.user, cycle: cycle, view: 'self' });	
 	}	
 };
 
@@ -53,14 +81,25 @@ exports.post = function(req, res) {
 
 	var PerfDiary = require('../models/perfDiary');
 	
+	var Cycle = require('../models/cycle');
+			
 	var diary  = new PerfDiary(req.body.perfdiary);
 
 	diary.userId = req.user._id;
-	
-	diary.save(function(err) {
+
+	Cycle.findOne({ companyId: req.user.companyId, isActive: true}, function(err, cycleItem) {
 		if(err) throw err;
-		return res.send({perfdiary: diary});
-	});		
+		
+		if(cycleItem) {
+			diary.cycleId = cycleItem._id;
+		}
+
+		diary.save(function(err) {
+			if(err) throw err;
+			return res.send({perfdiary: diary});
+		});			
+	});
+			
 };
 
 exports.list = function(req, res) {

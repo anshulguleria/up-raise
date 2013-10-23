@@ -3,17 +3,6 @@
  * GET goals page.
  */
 
-exports.display = function(req, res){
-  res.render('goals', { title: 'Goals' ,  user: req.user, employee: req.user, 
-  	goals: {
-  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-		status: 'pending'
-
-				
-  	}
-  	, view: 'self' });
-};
-
 exports.list = function(req, res) {
 	var Goal = require('../models/goal');
 

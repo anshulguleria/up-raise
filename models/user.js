@@ -11,6 +11,7 @@ var userSchema = new Schema({
 	managerId: { type: ObjectId, ref: 'User' },
 	departmentId: { type: ObjectId, ref: 'Department' },
 	teamId: { type: ObjectId, ref: 'Team' },
+	companyId: { type: ObjectId, ref: 'Company' },
 	empId: String
 });
 

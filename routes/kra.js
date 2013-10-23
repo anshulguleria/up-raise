@@ -4,46 +4,49 @@
  */
 
 exports.display = function(req, res){
+	var cycle = { startDate:'', endDate: ''};
+		
 	if(req.param('id')) {
 		var User = require('../models/user');
 		var KRA = require('../models/reviewDocument');
+		var async = require('async');
+		var Cycle = require('../models/cycle');
+		var status = 'pending';
+
 		KRA.findOne({_id: req.param('id')}, function(err, kra) { 
 			if(err) throw err;
 
-			if(req.user._id != kra.userId.toString()) {
-				console.log('param ' + req.param('id'));
-				console.log('kra user ' + kra.userId.toString());
+			if( kra.isApproved)
+				status = 'approved';
 
-				User.findOne({_id : kra.userId}, function(err, user) {
-					if(err) throw err;
+			Cycle.findOne({_id: kra.cycleId}, function(err, cycleItem) {
+				if(err) throw err;
+				console.log('cycle is ' + cycleItem);
+				if(cycleItem) {
+					var moment = require('moment');
+					cycle.startDate = moment(cycleItem.start).format('MMM YY');
+					cycle.endDate = moment(cycleItem.end).format('MMM YY');
+				}
 
-					return res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
-				  	goals: {
-
-				  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-						status: 'pending'						
-				  	}
-				  	, view: 'reviewer' });
-				});
-			} else {
-				return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-				  	goals: {
-				  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-						status: 'pending'
+				if(req.user._id != kra.userId.toString()) {
 					
-			  	}
-			  	, view: 'self' });
-			}			
+					User.findOne({_id : kra.userId}, function(err, user) {
+						if(err) throw err;
+
+						return res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
+					  		cycle: cycle, status: status, view: 'reviewer' });
+					});
+				} else {
+					return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
+					  		cycle: cycle, status: status, view: 'self' });
+				}
+
+			});			
 		});
 	} else {
 	
 		return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-	  	goals: {
-	  		cycle: { startDate: 'Apr 2013', endDate: 'Sept 2013' },
-			status: 'pending'
-					
-	  	}
-	  	, view: 'self' });
+	  		cycle: cycle, status: status, view: 'self' });
 		
 	}
   
@@ -52,18 +55,25 @@ exports.display = function(req, res){
 exports.post = function(req, res) {
 
 	var KRA = require('../models/reviewDocument');
+	var Cycle = require('../models/cycle');
 	
-	console.log(req.body);
+
 	var kra  = new KRA(req.body.reviewdocument);
 
 	kra.userId = req.user._id;
 	
-	console.log('reviewdocument is ');
-	console.log(kra);
-	kra.save(function(err) {
+	Cycle.findOne({ companyId: req.user.companyId, isActive: true}, function(err, cycleItem) {
 		if(err) throw err;
-		res.send({reviewdocument: kra});
-	});	
+		
+		if(cycleItem) {
+			kra.cycleId = cycleItem._id;
+		}
+
+		kra.save(function(err) {
+			if(err) throw err;
+			res.send({reviewdocument: kra});
+		});	
+	});
 	
 };
 

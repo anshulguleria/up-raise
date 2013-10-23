@@ -15,7 +15,7 @@
 			pending approval
 			{{/if}}
 			)</small></h2>
-			<h4> Review Cycle (<%= goals.cycle.startDate %> - <%= goals.cycle.endDate %>)</h4>
+			<h4> Review Cycle (<%= cycle.startDate %> - <%= cycle.endDate %>)</h4>
 			<hr />			
 			{{render goals}}
 	</div>
@@ -101,13 +101,13 @@
 				{{#if showReset}}
 					<button class="btn btn-warning btn-md" id="btnShowReset" {{action 'showResetModal'}}>Reset</button>
 				{{/if}}
-				<% if (goals.status == 'pending') { %>				
+				<% if (status == 'pending') { %>				
 					{{#if showSubmit}}
 						<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'requestApproval'}}>Submit for Approval</button>
 					{{/if}}
 				<% } %>
 			</div>
-		<% } else if(goals.status != 'approved') { %>
+		<% } else if(status != 'approved') { %>
 			{{#unless isApproved}}
 			<div class="text-right btn-toolbar">
 				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'approve'}}>Approve</button>

@@ -43,6 +43,7 @@ exports.list = function(req, res) {
 								
 								if(cycle) {
 									item.appraisalDueDate = cycle.end;
+									var moment = require('moment');
 									item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
 								}
 							});
