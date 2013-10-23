@@ -8,7 +8,10 @@ UpRaise.TeamuserController = Ember.ObjectController.extend({
 		},
 		history: function() {
 			window.location.assign('/teamappraisals/' + this.get('model').get('id'));	
-		}
+		},
+		diary: function () {
+			window.location.assign('/teamdiary/' + this.get('model').get('id'));
+		}		
 	},
 	review:"test",
 

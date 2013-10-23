@@ -38,8 +38,11 @@ exports.displayForUser = function(req, res) {
 			if(err) throw err;
 			if(doc) {
 				return res.redirect('/perfdiary/' + doc._id + '#/' + doc._id);			
-			} else {
+			} else if(userId == req.user._id) {
+
 				return res.redirect('/perfdiary');
+			} else {
+				return res.redirect('/perfdiary#/notfound');
 			}
 	});
 

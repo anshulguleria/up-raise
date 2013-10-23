@@ -12,6 +12,12 @@
 		<button class="btn btn-primary btn-md" id="btnCreateDisary" {{action 'createDiary'}}>Create Performance Diary</button>
 	</div>
 </script>
+<script type="text/x-handlebars" data-template-name="notfound">
+	{{outlet headerBar}}
+	<div class="container">
+		<h2> User Performance diary is not set. </h2>		
+	</div>
+</script>
 <script type="text/x-handlebars" data-template-name="perfdiary">
 	{{outlet headerBar}}
 	<div class="container">

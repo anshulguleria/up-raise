@@ -3,6 +3,8 @@ UpRaise.Router.map(function () {
     
   });
 
+  this.resource('notfound',  { path: '/notfound' });
+
   this.resource('perfdiary',  { path: '/:id' });
 });
 
@@ -30,5 +32,12 @@ UpRaise.PerfdiaryIndexRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render('perfdiaryIndex');
     this.render('header', { into: 'perfdiaryIndex', outlet: 'headerBar' });  
+  }
+});
+
+UpRaise.NotfoundRoute = Ember.Route.extend({
+  renderTemplate: function() {
+    this.render('notfound');
+    this.render('header', { into: 'notfound', outlet: 'headerBar' });  
   }
 });
