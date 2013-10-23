@@ -69,7 +69,7 @@ app.get('/review-appraisal', appraisals.review);
 app.get('/perfdiary', perfdiary.view);
 app.get('/perfdiary/:id', perfdiary.view);
 app.get('/teamdiary/:userId', perfdiary.displayForUser);
-app.get('/team', team.list);
+app.get('/team', team.display);
 
 app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
 	                                   failureRedirect: '/login',
@@ -114,6 +114,8 @@ app.put('/api/perfdiaries/:id', perfdiary.put);
 app.post('/api/diaryitems', diaryitems.post);
 app.put('/api/diaryitems/:id', diaryitems.put);
 app.delete('/api/diaryitems/:id', diaryitems.delete);
+
+app.get('/api/teamusers', team.list);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

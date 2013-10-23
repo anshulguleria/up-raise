@@ -1,0 +1,55 @@
+<% layout('layout') -%>
+<% script('/javascripts/router/teamusersRoute.js') -%>
+<% script('/javascripts/controllers/teamusersController.js') -%>
+<% script('/javascripts/controllers/teamuserController.js') -%>
+
+<script type="text/x-handlebars" data-template-name="teamusers">
+	<div class="container">
+		{{outlet headerBar}}
+
+		{{#if showTeam}}			
+			<h2> My Team</h2>
+			<hr />
+			<table class="table table-bordered table-responsive">
+				<tr>
+					<th class="col-md-4 text-center">Name</th>
+					<th class="col-sm-3 text-center">Due date</th>
+					<th class="text-center">Actions</th>
+				</tr>
+
+				{{#each itemController='teamuser'}}
+						{{#if isAppraisalDue}}			
+						<tr class="danger">
+							<td>
+								<a href="#" {{action kra }}>{{name}}</a></td>
+							<td> {{ reviewdate }}</td>
+							<td> 
+								<a href="#" {{action review }}> Review Now</a></td>
+						</tr>
+					{{else }}
+						{{#if areGoalsSet}}
+
+							<tr>
+								<td>
+									<a href="#" {{action kra }}>{{name}}</a></td>
+								<td> {{ reviewdate }}</td>
+								<td> 
+									<a href="#" {{action kra }}> View Goals</a>
+									<a href="#" {{action diary }}> View Diary</a>
+								</td>
+							</tr>
+						{{else}}
+							<tr>
+								<td>
+									<a href="#" {{action history }}>{{name}}</a></td>
+								<td> {{ reviewdate }}</td>
+								<td></td>
+							</tr>							
+						{{/if}}
+					{{/if}}
+						
+				{{/each}}					
+			</table>			
+		{{/if}}
+	</div>
+</script>
