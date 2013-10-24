@@ -19,7 +19,22 @@ var perfdiary = require('./routes/perfdiary');
 var diaryitems = require('./routes/diaryitems');
 var team = require('./routes/team');
 var authenticate = require('./routes/authenticate');
+var OPTS = { server: {
+				url: 'ldap://<server>:389',		      
+				searchBase: '<base>',
+				searchFilter: '(sAMAccountName={{username}})',
+				adminDn: '<admin-user>',
+				adminPassword: '<admin-pwd>',
+				searchAttributes: ['displayName', 'mail', 'givenName', 'sn']				
+		    },
+		    usernameField: 'email', 
+			passwordField: 'password'	
+		};
+
 var authApi = require('./apis/authenticate')(passport);
+var authApildap = require('./apis/ldap-authenticate')(passport, OPTS);
+var authType = 'local'; //ldapauth
+
 var companies = require('./routes/admin/companies');
 var notes = require('./routes/notes');
 
@@ -71,7 +86,7 @@ app.get('/perfdiary/:id', perfdiary.view);
 app.get('/teamdiary/:userId', perfdiary.displayForUser);
 app.get('/team', team.display);
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/dashboard',
+app.post('/login', passport.authenticate(authType, { successRedirect: '/dashboard',
 	                                   failureRedirect: '/login',
 	                                   failureFlash: true }));
 
