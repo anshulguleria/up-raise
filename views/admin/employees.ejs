@@ -1,0 +1,121 @@
+<% layout('layout') -%>
+
+<% script('/javascripts/router/admin/employeesRoute.js') -%>
+<% script('/javascripts/router/admin/newemployeeRoute.js') -%>
+<% script('/javascripts/controllers/admin/employeesController.js') -%>
+<% script('/javascripts/controllers/admin/employeeController.js') -%>
+<% script('/javascripts/controllers/admin/newemployeeController.js') -%>
+<% script('/javascripts/views/admin/employeeView.js') -%>
+<% script('/javascripts/views/admin/newemployeeView.js') -%>
+<% script('/javascripts/infra/jquery.ajaxfileupload.js') -%>
+<% script('/javascripts/infra/bootstrap.file-input.js') -%>
+
+<script type="text/x-handlebars" data-template-name="employees">
+	{{outlet headerBar}}
+	<div class="container">
+		<h2> Employees Listing</h2>
+		<hr />
+		<table class="table table-bordered table-responsive">
+			<tr>
+				<th class="col-sm-1 text-center"> Index</th>
+				<th class="col-sm-1 text-center"> Employee Id</th>
+				<th class="col-sm-2 text-center"> Name</th>
+				<th class="col-sm-2 text-center"> Email</th>
+				<th class="col-sm-2 text-center"> Department</th>
+				<th class="col-sm-1 text-center"> Team</th>
+				<th class="text-center"> Manager</th>
+				<th class="col-sm-1 text-center"> Actions</th>
+			</tr>			
+			{{#each itemController="employee"}}
+				{{#view UpRaise.EmployeeView contentBinding="this"}}
+					<td> {{view.adjustedIndex}} </td>
+					<td> {{empId}} </td>
+					<td> {{name}} </td>
+					<td> {{email}} </td>
+					<td> {{departmentId.name}} </td>
+					<td> {{teamId.name}} </td>
+					<td> {{managerId.name}} </td>
+					<td>
+						<a {{action "showDisableModal"}} href="#"> {{disableText}} </a>			
+						<a {{action "details"}} href="#"> Details </a>
+					</td>					
+				{{/view}}
+			{{/each}}			
+		</table>
+		<div class="text-right">
+			<button type="submit" class="btn btn-primary" {{action 'add'}}>Add Employee</button>
+			<button type="submit" class="btn btn-success" {{action 'showImportModal'}}>Import Employees</button>
+		</div>
+	</div>
+	{{outlet	}}		
+</script>
+<script type="text/x-handlebars" data-template-name="newemployee">
+	{{outlet headerBar}}
+	<div class="container">
+			<h2> Setup New Employees</h2>
+			<hr />
+		<div class="col-md-8">
+			<form role="form">
+				<div class="form-group">
+					<label for="txtEmployeeId">Employee Id</label>
+					{{input type="text" class="form-control" id="txtEmployeeId" placeholder="Enter Employee Id" value=empId }}
+				</div>
+				<div class="form-group">
+					<label for="txtFirstName">First Name</label>
+					{{input type="text" class="form-control" id="txtFirstName" placeholder="Enter First Name" value=firstName }}
+				</div>
+				<div class="form-group">
+					<label for="txtLastName">Last Name</label>
+					{{input type="text" class="form-control" id="txtLastName" placeholder="Enter Last Name" value=lastName }}
+				</div>
+				<div class="form-group">
+					<label for="txtEmail">Email Address</label>
+					{{input type="email" class="form-control" id="txtEmail" placeholder="Enter Email" value=email }}
+				</div>
+				<div class="form-group">
+					<label for="selectDepartment">Department</label>
+					{{view Ember.Select
+						classNameBinding= ['form-control']
+						contentBinding='departments'
+						optionValuePath="content.id"
+						optionLabelPath="content.name"
+						value=currentDepartment.id
+				   	}}
+				</div>
+				<div class="form-group">
+					<label for="selectTeam">Team</label>
+					{{view Ember.Select
+						contentBinding=teams
+						optionValuePath="content.id"
+						optionLabelPath="content.name"
+						value=currentTeam.id
+				   	}}
+				</div>
+				<div class="form-group">
+					<label for="txtManager">Manager</label>
+					{{view Ember.Select
+						contentBinding=managers
+						optionValuePath="content.id"
+						optionLabelPath="content.name"
+						value=currentTeam.id
+				   	}}
+				</div>
+				<button type="submit" class="btn btn-primary" {{action add target=view}}>Create Employees</button>
+			</form>
+		</div>
+	</div>		
+</script>
+<script type="text/x-handlebars" data-template-name="save-modal">
+	<p class="text-info"><strong>Are you sure? </strong></p>
+</script>
+<script type="text/x-handlebars" data-template-name="delete-modal">
+	<p class="text-warning"><strong>Are you sure you want to delete?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>
+<script type="text/x-handlebars" data-template-name="import-modal">
+	<label class="error text-danger"></label>
+	<p class="text-info"><strong>Select a file to import employees from.</strong></p>
+	<p> The file should contain comma delimited values in the following format. </p>
+	<p> EmployeeId,	FirstName,	LastName,	Username,	Email, Joining Date,	Department,	Team,	Manager Email </p>
+	<input class="btn btn-primary btn-md" type="file" name="btnImport" id="btnImport" />
+</script>

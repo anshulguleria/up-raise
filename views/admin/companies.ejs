@@ -17,7 +17,7 @@
 				<th class="col-sm-1 text-center"> Index</th>
 				<th class="col-sm-2 text-center"> Name</th>
 				<th class="text-center"> Description</th>
-				<th class="col-sm-1 text-center"> Actions</th>
+				<th class="col-sm-2 text-center"> Actions</th>
 			</tr>			
 			{{#each itemController="company"}}
 				{{#view UpRaise.CompanyView contentBinding="this"}}
@@ -35,8 +35,9 @@
 								<td> {{name}} </td>
 								<td> {{description}} </td>								
 								<td>
-									<a {{action "editRow"}} href="#"> Edit </a>			
-									<a {{action "showDeleteModal"}} href="#"> Delete </a>
+									<a {{action "editRow"}} href="#"> Edit </a> <br />
+									<a {{action "showDeleteModal"}} href="#"> Delete </a> <br />
+									<a {{action "employees"}} href="#"> View Employees </a>
 								</td>
 					{{/if}}
 				{{/view}}

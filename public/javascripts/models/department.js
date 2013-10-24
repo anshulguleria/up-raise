@@ -4,3 +4,11 @@ UpRaise.Department = DS.Model.extend({
   __v: DS.attr('string'),
   company: DS.belongsTo('company')
 });
+
+UpRaise.Department.FIXTURES = [
+	{
+		id: 1,
+		name: 'Technical',
+		description: 'Software Development.'   	
+	}
+ ];

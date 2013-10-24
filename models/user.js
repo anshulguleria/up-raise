@@ -11,8 +11,10 @@ var userSchema = new Schema({
 	managerId: { type: ObjectId, ref: 'User' },
 	departmentId: { type: ObjectId, ref: 'Department' },
 	teamId: { type: ObjectId, ref: 'Team' },
+	joiningDate: Date,
 	companyId: { type: ObjectId, ref: 'Company' },
-	empId: String
+	empId: String,
+	isEnabled: Boolean
 });
 
 module.exports = mongoose.model('User', userSchema);

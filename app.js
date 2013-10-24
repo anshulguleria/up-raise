@@ -36,6 +36,8 @@ var authApildap = require('./apis/ldap-authenticate')(passport, OPTS);
 var authType = 'local'; //ldapauth
 
 var companies = require('./routes/admin/companies');
+var employees = require('./routes/admin/employees');
+
 var notes = require('./routes/notes');
 
 mongoose.connect('mongodb://127.0.0.1/up-raise');
@@ -93,6 +95,7 @@ app.post('/login', passport.authenticate(authType, { successRedirect: '/dashboar
 app.get('/logout', authenticate.logout);
 
 app.get('/admin/companies', companies.display);
+app.get('/admin/employees', employees.display);
 
 
 //API routes
@@ -133,6 +136,9 @@ app.put('/api/diaryitems/:id', diaryitems.put);
 app.delete('/api/diaryitems/:id', diaryitems.delete);
 
 app.get('/api/teamusers', team.list);
+
+app.get('/api/employees', employees.list);
+app.post('/api/employees/upload', employees.upload);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

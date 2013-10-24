@@ -4,3 +4,11 @@ UpRaise.Team = DS.Model.extend({
   __v: DS.attr('string'),
   company: DS.belongsTo('company')
 });
+
+UpRaise.Team.FIXTURES = [
+	{
+		id: 1,
+		name: 'IMS',
+		description: 'Innventia.'   	
+	}
+ ];

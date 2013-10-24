@@ -4,8 +4,13 @@ window.UpRaise = Ember.Application.createWithMixins(Bootstrap.Register, {
 
  // UpRaise.ApplicationAdapter = DS.FixtureAdapter.extend();
 
+//Added class to ember select for bootstrap
+Ember.Select = Ember.Select.extend({
+  classNames: ['form-control']
+});
+
 UpRaise.AppRESTSerializer = DS.RESTSerializer.extend({
-	//primary key is '__id' in appacitive, overriding default behaviour
+
 	primaryKey: '_id',
 	
 	serializeHasMany: function(record, json, relationship) {

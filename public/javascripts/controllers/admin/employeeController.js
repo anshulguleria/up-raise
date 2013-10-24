@@ -1,5 +1,5 @@
-UpRaise.CompanyController = Ember.ObjectController.extend({
-  needs: ['companys'],
+UpRaise.EmployeeController = Ember.ObjectController.extend({
+  needs: ['employees'],
   actions: {
     editRow: function() {
       this.set('isEditing', true);
@@ -26,9 +26,6 @@ UpRaise.CompanyController = Ember.ObjectController.extend({
       item.save();
       
       return Bootstrap.ModalManager.hide('deleteModal');
-    },
-    employees: function() {
-      return window.location.assign('/admin/employees#/' + this.get('model.id'));
     }
   },
   deleteModalButtons: [
