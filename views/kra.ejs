@@ -32,7 +32,7 @@
 				<th class="col-sm-2 text-center"> KRA</th>
 				<th class="col-sm-2 text-center"> Goal-Type</th>
 				<th class="text-center"> Description</th>
-				<th class="col-sm-1 text-center"> Weightage</th>
+				<th class="col-sm-1 text-center"> Weight</th>
 				<th class="col-sm-1 text-center"> Actions</th>
 			</tr>			
 			{{#each itemController="goal"}}
@@ -71,6 +71,7 @@
 				<p class="text-warning"><strong>Please add reason for rejecting the goals.</strong></p>
 				{{textarea classNames="form-control" id="reject-description" placeholder="Enter Details"  value=rejecttext}}	
 		    {{/bs-modal}}
+		    	
 			{{#if showAddRow}}
 				<tr>
 					<td> {{nextIndex}} </td>
@@ -141,5 +142,7 @@
 <script type="text/x-handlebars" data-template-name="import-modal">
 	<label class="error text-danger"></label>
 	<p class="text-info"><strong>Select a file to import goals from.</strong></p>
+	<p> The file should contain comma delimited values in the following format. </p>
+	<p> KRA, Goal Type, Description, Weight </p>
 	<input class="btn btn-primary btn-md" type="file" name="btnImportGoals" id="btnImportGoals" />	
 </script>

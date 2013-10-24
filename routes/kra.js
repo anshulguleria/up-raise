@@ -9,7 +9,6 @@ exports.display = function(req, res){
 	if(req.param('id')) {
 		var User = require('../models/user');
 		var KRA = require('../models/reviewDocument');
-		var async = require('async');
 		var Cycle = require('../models/cycle');
 		var status = 'pending';
 
@@ -127,7 +126,7 @@ exports.redirect = function(req, res) {
 	if(req.param('id')) {
 		id = req.param('id');
 	
-		KRA.find({ userId: id}, function(err, doc) { 
+		KRA.find({ userId: id}).sort({updatedOn: -1}).exec(function(err, doc) { 
 			if(err) throw err;	
 
 			if(doc && doc.length > 0){
@@ -432,15 +431,74 @@ exports.reject = function(req, res) {
 
 exports.upload = function(req, res) {
 
-	var fs = require('fs');
-	
+	var ReviewDocument = require('../models/reviewDocument');
+	var Goal = require('../models/goal');	
 	var parseXlsx = require('excel');
-
+	var async = require('async');
+		
 	parseXlsx(req.files.btnImportGoals.path, function(err, data) {
 	    if(err) throw err;
 	    // data is an array of arrays
-	    console.log(data);
-	    return res.send({status:true});
+	    
+	    if(data && data.length > 0) {
+	    	console.log(data[0]);
+
+	    	if(data[0][0] == 'KRA') {
+
+		    	var kra  = new ReviewDocument();
+		    	kra.goals = [];
+	    		var goalSaveFuncs = [];
+
+		    	for (var i = 1; i < data.length; i++) {
+		    		if(data[i].length >= 4 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
+
+		    			var goal = new Goal();
+		    			
+		    			goal.kra = data[i][0];
+		    			goal.type = data[i][1];
+		    			goal.description = data[i][2];
+		    			goal.weight = data[i][3];
+
+		    			goalSaveFuncs.push(async.apply(function(item, callback) {
+		    				item.save(function(err) {
+		    					if(err) callback(err);
+			    				kra.goals.push(item._id);
+			    				callback();
+			    			});
+		    			}, goal));
+					}
+		    	};
+
+		    	if(goalSaveFuncs.length > 0) {
+
+		    		var Cycle = require('../models/cycle');	
+					kra.userId = req.user._id;
+					
+					Cycle.findOne({ companyId: req.user.companyId, isActive: true}, function(err, cycleItem) {
+						if(err) throw err;
+						
+						if(cycleItem) {
+							kra.cycleId = cycleItem._id;
+						}
+
+						async.parallel(goalSaveFuncs, function(err){ 
+							kra.save(function(err) {
+							if(err) throw err;
+								res.setHeader('Content-Type', 'application/json');
+								return res.send({success: true});
+							});	
+						});
+						
+					});
+					
+		    	}
+		    	else
+		    		return res.send(null);	
+		    }
+		    else
+		    		return res.send(null);	
+	    } else	    
+	    	return res.send(null);
 	});
 	
 };

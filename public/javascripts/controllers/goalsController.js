@@ -27,10 +27,11 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 							$('.error').show();
 						} else {
 							$('.error').hide();
-							return Bootstrap.ModalManager.close('importModal');
+							Bootstrap.ModalManager.close('importModal');
+							return window.location.assign('/dashboard');
 						}
 					} else {
-							$('.error').html('Unknown error occurred. Please check the file and try again.');
+							$('.error').html('Invalid data. Please check the file and try again.');
 							$('.error').show();
 					}
 					

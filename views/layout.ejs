@@ -87,7 +87,7 @@
 		<%-scripts%>
 		<script type="text/javascript">
 			$(document).ready(function(){
-				var pleaseWaitDiv = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
+				var pleaseWaitDiv = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
 				var cont = false;
 				function increaseProgress(isStart) {
 
@@ -113,7 +113,7 @@
 
 		        $(document)
 		        .ajaxStart(function () {
-		        	pleaseWaitDiv = $('<div class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
+		        	pleaseWaitDiv = $('<div class="modal fade"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h1>Please wait a moment...</h1></div><div class="modal-body"><div class="progress progress-striped"> <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div></div></div></div></div>');
 		        	pleaseWaitDiv.modal('show');
 		        	cont = true;
 	        		increaseProgress(true);
