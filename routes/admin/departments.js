@@ -1,5 +1,5 @@
 exports.display = function(req, res){
-  res.render('admin/departments', { title: 'Department Listing' ,  department: req.user });
+  res.render('admin/departments', { title: 'Department Listing' ,  user: req.user });
 };
 
 var Department = require('../../models/department');	

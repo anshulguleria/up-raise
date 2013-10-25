@@ -40,6 +40,7 @@ var companies = require('./routes/admin/companies');
 var employees = require('./routes/admin/employees');
 var departments = require('./routes/admin/departments');
 var teams = require('./routes/admin/teams');
+var roles = require('./routes/admin/roles');
 
 var notes = require('./routes/notes');
 
@@ -143,6 +144,9 @@ app.get('/api/teamusers', team.list);
 
 app.get('/api/employees', employees.list);
 app.post('/api/employees/upload', employees.upload);
+app.post('/api/employees', employees.create);
+app.put('/api/employees/:id', employees.update);
+app.delete('/api/employees/:id', employees.delete);
 
 app.get('/api/departments', departments.list);
 app.post('/api/departments', departments.create);
@@ -154,6 +158,12 @@ app.get('/api/teams', teams.list);
 app.post('/api/teams', teams.create);
 app.put('/api/teams/:id', teams.update);
 app.delete('/api/teams/:id', teams.delete);
+
+app.get('/api/roles', roles.list);
+app.post('/api/roles', roles.create);
+app.put('/api/roles/:id', roles.update);
+app.delete('/api/roles/:id', roles.delete);
+
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));

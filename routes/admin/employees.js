@@ -7,15 +7,16 @@ exports.list = function(req, res) {
 	var Department = require('../../models/department');
 	var Team = require('../../models/team');
 
-	Employee.find({ companyId: req.param('companyId') }, function(err, employees) { 
+	var companyId = req.param('companyId') || req.user.companyId;
+	Employee.find({ companyId: companyId }, function(err, employees) { 
 		
 		if(err) throw err;
 
-		Department.find({ companyId: req.param('companyId') }, function(err, departments) {
+		Department.find({ companyId: companyId }, function(err, departments) {
 
 			if(err) throw err;
 
-			Team.find({ companyId: req.param('companyId') }, function(err, teams) {			 
+			Team.find({ companyId: companyId }, function(err, teams) {			 
 				if(err) throw err;
 	
 				return res.send({ employees: employees, departments: departments, teams: teams });	

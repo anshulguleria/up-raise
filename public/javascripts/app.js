@@ -2,7 +2,7 @@ window.UpRaise = Ember.Application.createWithMixins(Bootstrap.Register, {
 	LOG_TRANSITIONS: true
 });
 
- // UpRaise.ApplicationAdapter = DS.FixtureAdapter.extend();
+// UpRaise.ApplicationAdapter = DS.FixtureAdapter.extend();
 
 //Added class to ember select for bootstrap
 Ember.Select = Ember.Select.extend({

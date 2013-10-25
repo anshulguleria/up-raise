@@ -1,12 +1,12 @@
 exports.display = function(req, res){
-  res.render('admin/teams', { title: 'Team Listing' ,  team: req.user });
+  res.render('admin/teams', { title: 'Team Listing' ,  user: req.user });
 };
 
 var Team = require('../../models/team');	
 
 exports.list = function(req, res) {
 	
-	Team.find({ companyId: user.companyId }, function(err, teams) {
+	Team.find({ companyId: req.user.companyId }, function(err, teams) {
 
 		return res.send({ teams: teams });	
 	});

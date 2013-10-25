@@ -10,9 +10,13 @@ UpRaise.Employee = DS.Model.extend({
   joiningDate: DS.attr('date'),
   isEnabled: DS.attr('boolean'),
   empId: DS.attr('string'),
-  name: function() {
+  nameWithEmpId: function() {
+    return this.get('firstName') + ' ' + this.get('lastName') + ' (' + this.get('empId') + ')';
+  }.property('firstName', 'lastName'),
+  fullName: function() {
     return this.get('firstName') + ' ' + this.get('lastName');
   }.property('firstName', 'lastName')
+
 });
 
 UpRaise.Employee.FIXTURES = [

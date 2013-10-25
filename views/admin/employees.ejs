@@ -30,11 +30,11 @@
 				{{#view UpRaise.EmployeeView contentBinding="this"}}
 					<td> {{view.adjustedIndex}} </td>
 					<td> {{empId}} </td>
-					<td> {{name}} </td>
+					<td> {{fullName}} </td>
 					<td> {{email}} </td>
 					<td> {{departmentId.name}} </td>
 					<td> {{teamId.name}} </td>
-					<td> {{managerId.name}} </td>
+					<td> {{managerId.fullName}} </td>
 					<td>
 						<a {{action "showDisableModal"}} href="#"> {{disableText}} </a>			
 						<a {{action "details"}} href="#"> Details </a>
@@ -79,7 +79,8 @@
 						contentBinding='departments'
 						optionValuePath="content.id"
 						optionLabelPath="content.name"
-						value=currentDepartment.id
+						value='departmentId'
+						selectionBinding='departmentId'
 				   	}}
 				</div>
 				<div class="form-group">
@@ -88,7 +89,8 @@
 						contentBinding=teams
 						optionValuePath="content.id"
 						optionLabelPath="content.name"
-						value=currentTeam.id
+						value='teamId'						
+						selectionBinding='teamId'
 				   	}}
 				</div>
 				<div class="form-group">
@@ -96,9 +98,16 @@
 					{{view Ember.Select
 						contentBinding=managers
 						optionValuePath="content.id"
-						optionLabelPath="content.name"
-						value=currentTeam.id
+						optionLabelPath="content.nameWithEmpId"
+						value='managerId'						
+						selectionBinding='managerId'
 				   	}}
+				</div>
+				<div class="form-group">
+					<label for="cbRoles">Roles</label>
+					{{#each role in roles}}
+						{{input type="checkbox" checked=role.isSelected }} {{role.name}}
+					{{/each}}
 				</div>
 				<button type="submit" class="btn btn-primary" {{action add target=view}}>Create Employees</button>
 			</form>

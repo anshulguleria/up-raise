@@ -14,8 +14,20 @@ UpRaise.NewemployeeRoute = Ember.Route.extend({
 
     controller.set('teams', this.store.find('team'));
 
-    controller.set('managers', this.store.find('employee'));
+    controller.set('managers', this.store.find('employee', {isDirty: false}));
 
+    controller.set('roles', this.store.find('role'));
+
+    setTimeout(function(){
+
+      controller.get('model').set('teamId', controller.get('teams').get('firstObject'));
+    
+      controller.get('model').set('departmentId', controller.get('departments').get('firstObject'));
+      
+      controller.get('model').set('managerId', controller.get('managers').get('firstObject'));
+
+    }, 1000);
+    
   },
   renderTemplate: function() {
     this.render('newemployee');
