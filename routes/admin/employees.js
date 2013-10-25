@@ -4,13 +4,23 @@ exports.display = function(req, res){
 
 exports.list = function(req, res) {
 	var Employee = require('../../models/user');
+	var Department = require('../../models/department');
+	var Team = require('../../models/team');
 
-	Employee.find({ companyId: req.param('companyId') }, function(err, doc) { 
+	Employee.find({ companyId: req.param('companyId') }, function(err, employees) { 
+		
 		if(err) throw err;
 
-		console.log(doc);
+		Department.find({ companyId: req.param('companyId') }, function(err, departments) {
+
+			if(err) throw err;
+
+			Team.find({ companyId: req.param('companyId') }, function(err, teams) {			 
+				if(err) throw err;
 	
-		return res.send({ employees: doc });	
+				return res.send({ employees: employees, departments: departments, teams: teams });	
+			});
+		});
 	});
 };
 
@@ -105,7 +115,7 @@ function addDepartments(req, res, data) {
 		}
 
 		for (var i = 1; i < data.length; i++) {
-			if(data[i].length >= 8 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
+			if(data[i].length >= 9 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
 
 				//add departments
 				departmentFuncs.push(async.apply(saveDepartment, data[i], existingDepartments, companyId));
@@ -127,7 +137,7 @@ function saveDepartment(data, existing, companyId, callback){
 	console.log('inside saveDepartment');
 	console.log('data ' + data);
 
-	if(data.length >= 8 && data[i] && data[i]!=null && data[i] != '') {
+	if(data.length >= 9 && data[i] && data[i]!=null && data[i] != '') {
 
 		var dep = data[i];
 		var Department = require('../../models/department');
@@ -176,7 +186,7 @@ function addTeams(req, res, data) {
 		}
 
 		for (var i = 1; i < data.length; i++) {
-			if(data[i].length >= 8 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
+			if(data[i].length >= 9 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
 
 				//add teams
 				teamFuncs.push(async.apply(saveTeam, data[i], existingTeams, companyId));
@@ -196,7 +206,7 @@ function addTeams(req, res, data) {
 function saveTeam(data, existing, companyId, callback){
 	var i = 7;
 	console.log('inside saveTeam');
-	if(data.length >= 8 && data[i] && data[i]!=null && data[i] != '') {
+	if(data.length >= 9 && data[i] && data[i]!=null && data[i] != '') {
 
 		var team = data[i];
 		var Team = require('../../models/team');
@@ -242,7 +252,7 @@ function addEmployees(req, res, data) {
 		}
 
 		for (var i = 1; i < data.length; i++) {
-			if(data[i].length >= 8 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
+			if(data[i].length >= 9 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
 
 				//add users
 				empFuncs.push(async.apply(saveEmployee, data[i], existingUsers, companyId));
@@ -265,7 +275,7 @@ function saveEmployee(data, existing, companyId, callback){
 
 	console.log('inside saveEmployee');
 
-	if(data.length >= 8 && data[i] && data[i]!=null && data[i] != '') {
+	if(data.length >= 9 && data[i] && data[i]!=null && data[i] != '') {
 
 		var Employee = require('../../models/user');
 
@@ -329,7 +339,7 @@ function addRelations(req, res, data) {
 				});
 
 				for (var i = 1; i < data.length; i++) {
-					if(data[i].length >= 8 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
+					if(data[i].length >= 9 && data[i][0] && data[i][0]!=null && data[i][0] != '') {
 
 						//add relations
 						empFuncs.push(async.apply(updateEmployee, data[i], departments, teams, managers, companyId));
@@ -356,7 +366,7 @@ function updateEmployee(data, departments, teams, employees, companyId, callback
 
 	console.log('inside updateEmployee');
 
-	if(data.length >= 8 && data[i] && data[i]!=null && data[i] != '') {
+	if(data.length >= 9 && data[i] && data[i]!=null && data[i] != '') {
 
 		var Employee = require('../../models/user');
 		
@@ -367,7 +377,7 @@ function updateEmployee(data, departments, teams, employees, companyId, callback
 				Employee.update({ _id: employee._id }, {$set: { 
 					departmentId: departments[data[6]], 
 					teamId: teams[data[7]],
-					manager: employees[data[4]]
+					managerId: employees[data[8]]
 				} }, function(err) {
 					if(err) return callback(err);
 					return callback();

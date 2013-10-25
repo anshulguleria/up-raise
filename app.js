@@ -18,6 +18,7 @@ var appraisals = require('./routes/appraisals');
 var perfdiary = require('./routes/perfdiary');
 var diaryitems = require('./routes/diaryitems');
 var team = require('./routes/team');
+
 var authenticate = require('./routes/authenticate');
 var OPTS = { server: {
 				url: 'ldap://<server>:389',		      
@@ -37,6 +38,8 @@ var authType = 'local'; //ldapauth
 
 var companies = require('./routes/admin/companies');
 var employees = require('./routes/admin/employees');
+var departments = require('./routes/admin/departments');
+var teams = require('./routes/admin/teams');
 
 var notes = require('./routes/notes');
 
@@ -96,7 +99,8 @@ app.get('/logout', authenticate.logout);
 
 app.get('/admin/companies', companies.display);
 app.get('/admin/employees', employees.display);
-
+app.get('/admin/departments', departments.display);
+app.get('/admin/teams', teams.display);
 
 //API routes
 
@@ -139,6 +143,17 @@ app.get('/api/teamusers', team.list);
 
 app.get('/api/employees', employees.list);
 app.post('/api/employees/upload', employees.upload);
+
+app.get('/api/departments', departments.list);
+app.post('/api/departments', departments.create);
+app.put('/api/departments/:id', departments.update);
+app.delete('/api/departments/:id', departments.delete);
+
+
+app.get('/api/teams', teams.list);
+app.post('/api/teams', teams.create);
+app.put('/api/teams/:id', teams.update);
+app.delete('/api/teams/:id', teams.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
 		console.log('Express server listening on port ' + app.get('port'));
