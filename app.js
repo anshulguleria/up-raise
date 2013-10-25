@@ -74,6 +74,28 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// Automatically apply the `requireLogin` middleware to all
+// routes starting with `/`
+app.all(/^\/(?!login)(?!stylesheets)(?!javascripts).*/, requireLogin, function(req, res, next) {
+
+  next(); // if the middleware allowed us to get here,
+      // just move on to the next route handler
+});
+
+
+function requireLogin(req, res, next) {
+
+	console.log(req.path);
+
+  if (req.user) {
+  	
+    next(); // allow the next route to run
+  } else {
+    // require the user to log in
+    res.redirect("/login"); // or render a form, etc.
+  }
+}
+
 app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);

@@ -55,8 +55,10 @@
 					</div>
 				<% } %>
 			</div>
-		</script>		
-		<%-body -%>
+		</script>
+		<% if (user) { %>		
+			<%-body -%>
+		<% } %>
 		<script type="text/x-handlebars" data-template-name="footer">
 			<footer>
 				<div class="container">
