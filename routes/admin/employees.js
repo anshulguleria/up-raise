@@ -1,3 +1,8 @@
+
+/**
+ *
+ */
+
 exports.display = function(req, res){
   res.render('admin/employees', { title: 'Employee Listing' ,  user: req.user });
 };
@@ -65,7 +70,7 @@ exports.delete = function(req, res) {
 };
 
 var Employee = require('../../models/user');
-var parseXlsx = require('excel');
+//var parseXlsx = require('excel');
 var async = require('async');
 	
 

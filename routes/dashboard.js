@@ -4,7 +4,7 @@
  */
 
 exports.display = function(req, res){	
-	res.render('dashboard', { title: 'My Dash',  user: req.user });
+	res.render('dashboard', { title: 'My Dashboard',  user: req.user });
 };
 
 exports.list = function(req, res) {
@@ -26,7 +26,9 @@ exports.list = function(req, res) {
 
 	async.parallel([function(callback) {
 
-		KRA.find({ userId: req.user._id}).sort({updatedOn: -1}).execFind(function(err, doc) { 
+		KRA.find({ userId: req.user._id}).sort({updatedOn: -1})
+			.exec(function(err, doc) {
+
 			if(err) return callback(err);
 
 			if(doc && doc.length > 0) {
@@ -56,7 +58,8 @@ exports.list = function(req, res) {
 	},
 		function(callback) {
 
-			User.find({managerId: req.user._id}).sort({firstName: 1}).execFind( function(err, users) {
+			User.find({managerId: req.user._id}).sort({firstName: 1})
+				.exec( function(err, users) {
 				if(err) return callback(err);
 
 				var teamFuncs = [];
@@ -112,7 +115,8 @@ exports.list = function(req, res) {
 		},
 
 		function(callback) {
-			Note.find({ userId: req.user._id}).sort({ addedOn: -1 }).execFind(function(err, notes) {
+			Note.find({ userId: req.user._id}).sort({ addedOn: -1 })
+				.exec(function(err, notes) {
 				if(err) return callback(err);
 
 				dashnotes = notes;

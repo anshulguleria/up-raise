@@ -17,14 +17,12 @@
 							<li>
 								<a href="/teamkra/<%= user._id %>">My Goals</a>
 							</li>
+						
 							<li>
-								<a href="/teamdiary/<%= user._id %>">My Diary</a>
+								<a href="/manager" >Manager Board</a>
 							</li>
 							<li>
-								<a href="/team" >My Team</a>
-							</li>
-							<li>
-								<!--<a href="/appraisals" >Appraisal History</a>-->
+							<a href="admin/employees" >Employee Desk</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -56,9 +54,13 @@
 				<% } %>
 			</div>
 		</script>
+
 		<% if (user) { %>		
 			<%-body -%>
 		<% } %>
+
+
+
 		<script type="text/x-handlebars" data-template-name="footer">
 			<footer>
 				<div class="container">
