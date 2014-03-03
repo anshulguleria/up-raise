@@ -3,139 +3,141 @@
  * GET dashboard page.
  */
 
-exports.display = function(req, res){	
-	res.render('dashboard', { title: 'My Dashboard',  user: req.user });
+exports.display = function(req, res){ 
+  res.render('dashboard', { title: 'My Dashboard',  user: req.user });
 };
 
 exports.list = function(req, res) {
-	var KRA = require('../models/reviewDocument');
-	var Goal = require('../models/goal');
-	var User = require('../models/user');
-	var Note = require('../models/note');
-	var Cycle = require('../models/cycle');
-	var dashgoals = [];
-	var teamusers = [];
-	var dashnotes = [];
-	var goalids = [];
-	var noteids = [];
-	var teamuserids = [];
-	var kra = {};
-	var async = require('async');
-	var gusers=[];
-	var gdepartments = [];
+  var Goal = require('../models/goal')
+    , User = require('../models/user')
+    , Note = require('../models/note')
+    , Cycle = require('../models/cycle')
+    , KRA = require('../models/reviewDocument')
 
-	async.parallel([function(callback) {
+  var gusers =
+    , goalids =
+    , noteids =
+    , dashgoals =
+    , teamusers =
+    , dashnotes =
+    , teamuserids =
+    , gdepartments = [];
 
-		KRA.find({ userId: req.user._id}).sort({updatedOn: -1})
-			.exec(function(err, doc) {
+  var kra = {}
+    , async = require('async')
 
-			if(err) return callback(err);
+  async.parallel([function(callback) {
 
-			if(doc && doc.length > 0) {
+    KRA.find({ userId: req.user._id}).sort({updatedOn: -1})
+      .exec(function(err, doc) {
 
-				kra = doc[0];
+      if(err) return callback(err);
 
-				if(doc[0].goals.length > 0) {		
-					
-					goalids = doc[0].goals;
+      if(doc && doc.length > 0) {
 
-					Goal.find({_id: { $in: doc[0].goals } }, function(err, g) {
-						if(err) return callback(err);
+        kra = doc[0];
 
-						dashgoals = g;
-						return callback();					
-					});
-				}
-				else
-				{
-					return callback();
-				}				
-			}else {
-				return callback();
-			}
-			
-		});
-	},
-		function(callback) {
+        if(doc[0].goals.length > 0) {   
+          
+          goalids = doc[0].goals;
 
-			User.find({managerId: req.user._id}).sort({firstName: 1})
-				.exec( function(err, users) {
-				if(err) return callback(err);
+          Goal.find({_id: { $in: doc[0].goals } }, function(err, g) {
+            if(err) return callback(err);
 
-				var teamFuncs = [];
+            dashgoals = g;
+            return callback();          
+          });
+        }
+        else
+        {
+          return callback();
+        }       
+      }else {
+        return callback();
+      }
+      
+    });
+  },
+    function(callback) {
 
-				if(users && users.length > 0) {
-					for (var i = 0 ; i < users.length; i++) {
-						var user = users[i];
-						var item = { 
-							name: user.firstName + ' ' + user.lastName,
-							userId: user._id,
-							_id: user._id
-							};
-						teamuserids.push(user._id);
-						
-						teamFuncs.push(
-							async.apply(function(user, item, callback) {
-								KRA.find({ userId: user._id},function(err, success){ 
-									if(err) return callback(err);
+      User.find({managerId: req.user._id}).sort({firstName: 1})
+        .exec( function(err, users) {
+        if(err) return callback(err);
 
-									item.areGoalsSet = (success != null); 
+        var teamFuncs = [];
 
-									if(item.areGoalsSet) {
+        if(users && users.length > 0) {
+          for (var i = 0 ; i < users.length; i++) {
+            var user = users[i];
+            var item = { 
+              name: user.firstName + ' ' + user.lastName,
+              userId: user._id,
+              _id: user._id
+              };
+            teamuserids.push(user._id);
+            
+            teamFuncs.push(
+              async.apply(function(user, item, callback) {
+                KRA.find({ userId: user._id},function(err, success){ 
+                  if(err) return callback(err);
 
-										Cycle.find({ _id : success.cycleId }, function(err, cycles) { 
-											if(err) return callback(err);
+                  item.areGoalsSet = (success != null); 
 
-											if(cycles && cycles.length > 0) {
-												item.appraisalDueDate = cycles[0].end;
-												var moment = require('moment');
-												item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
-											}
+                  if(item.areGoalsSet) {
 
-											teamusers.push(item);
-											return callback();
-											
-										});
-									}else {
-										teamusers.push(item);
-										return callback();
-									}							
-								});
-							}, user, item)
-						);
-					}				
-				}
+                    Cycle.find({ _id : success.cycleId }, function(err, cycles) { 
+                      if(err) return callback(err);
 
-				async.parallel(teamFuncs, function(err) {
-					if(err) return callback(err);
-					
-					return callback();
-				});
-			});
-		},
+                      if(cycles && cycles.length > 0) {
+                        item.appraisalDueDate = cycles[0].end;
+                        var moment = require('moment');
+                        item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
+                      }
 
-		function(callback) {
-			Note.find({ userId: req.user._id}).sort({ addedOn: -1 })
-				.exec(function(err, notes) {
-				if(err) return callback(err);
+                      teamusers.push(item);
+                      return callback();
+                      
+                    });
+                  }else {
+                    teamusers.push(item);
+                    return callback();
+                  }             
+                });
+              }, user, item)
+            );
+          }       
+        }
 
-				dashnotes = notes;
-				for (var i = 0; i < notes.length; i++) {
-					 noteids.push(notes[i]._id);
-				};
-				return callback();					
-			});
-		}], function(err) {
-			if(err) throw err;
-			var responseObj = {
-				_id: req.user._id,
-				name: req.user.firstName + ' ' + req.user.lastName,
-				reviewdocument: kra._id,
-				teamusers: teamuserids,
-				notes: noteids
-			};
+        async.parallel(teamFuncs, function(err) {
+          if(err) return callback(err);
+          
+          return callback();
+        });
+      });
+    },
 
-			return res.send({dashboards: [ responseObj ], reviewdocuments: [kra], goals: dashgoals, notes: dashnotes, teamusers: teamusers });
-	});		
-	
+    function(callback) {
+      Note.find({ userId: req.user._id}).sort({ addedOn: -1 })
+        .exec(function(err, notes) {
+        if(err) return callback(err);
+
+        dashnotes = notes;
+        for (var i = 0; i < notes.length; i++) {
+           noteids.push(notes[i]._id);
+        };
+        return callback();          
+      });
+    }], function(err) {
+      if(err) throw err;
+      var responseObj = {
+        _id: req.user._id,
+        name: req.user.firstName + ' ' + req.user.lastName,
+        reviewdocument: kra._id,
+        teamusers: teamuserids,
+        notes: noteids
+      };
+
+      return res.send({dashboards: [ responseObj ], reviewdocuments: [kra], goals: dashgoals, notes: dashnotes, teamusers: teamusers });
+  });   
+  
 };
