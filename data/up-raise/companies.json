@@ -1,0 +1,3 @@
+{ "__v" : 0, "_id" : { "$oid" : "52614639668feea438000003" }, "description" : "tavisca solutions", "isEnabled" : true, "name" : "Tavisca" }
+{ "isEnabled" : false, "name" : "test", "description" : "", "__v" : 0, "cycleStartDate" : { "$date" : 1382466600000 }, "cycletype" : { "$oid" : "526e43a426400043990f0785" }, "_id" : { "$oid" : "526f4a5a59048c8c30000001" } }
+{ "isEnabled" : true, "name" : "test1", "description" : null, "__v" : 0, "cycleStartDate" : { "$date" : 1382985000000 }, "cycletype" : { "$oid" : "526e43a426400043990f0785" }, "_id" : { "$oid" : "526f4d324fcbbac047000001" } }

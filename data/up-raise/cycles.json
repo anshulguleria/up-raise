@@ -1,0 +1,1 @@
+{ "companyId" : { "$oid" : "52614639668feea438000003" }, "name" : "Summer'14", "startDate" : { "$date" : 1395340200000 }, "endDate" : { "$date" : 1395772200000 }, "status" : "New", "__v" : 0, "_id" : { "$oid" : "5321c599b6ae016428eb31f0" } }

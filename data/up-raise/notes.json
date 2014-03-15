@@ -1,0 +1,3 @@
+{ "userId" : { "$oid" : "525932c62284f68886f62cb2" }, "description" : "save new note", "addedOn" : { "$date" : 1382127411000 }, "_id" : { "$oid" : "5261973325e131b02a000005" }, "__v" : 0 }
+{ "userId" : { "$oid" : "526210d7ee1e66f4c552352e" }, "description" : "test", "addedOn" : { "$date" : 1382550305000 }, "_id" : { "$oid" : "52680b21fc72313c4100000f" }, "__v" : 0 }
+{ "userId" : { "$oid" : "525932c62284f68886f62cb2" }, "description" : "attended company meeting today", "addedOn" : { "$date" : 1382611610000 }, "_id" : { "$oid" : "5268fa9a3d9db7e426000001" }, "__v" : 0 }

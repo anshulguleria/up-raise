@@ -1,0 +1,7 @@
+{ "name" : "IMS", "_id" : { "$oid" : "526976e8015cccac31000001" }, "__v" : 0 }
+{ "name" : "Management", "_id" : { "$oid" : "526976e8015cccac31000002" }, "__v" : 0 }
+{ "name" : "Operations", "_id" : { "$oid" : "526976e8015cccac31000003" }, "__v" : 0 }
+{ "__v" : 0, "_id" : { "$oid" : "52697b096d23323840000002" }, "companyId" : { "$oid" : "52614639668feea438000003" }, "description" : "Inventory Management Service", "name" : "IMS" }
+{ "__v" : 0, "_id" : { "$oid" : "52697b096d23323840000004" }, "companyId" : { "$oid" : "52614639668feea438000003" }, "description" : "Get it Going", "name" : "Operations" }
+{ "companyId" : { "$oid" : "52614639668feea438000003" }, "name" : "TravelNxt", "description" : "UI Engineers.", "__v" : 0, "_id" : { "$oid" : "531bd0d605b746101e646070" } }
+{ "companyId" : { "$oid" : "52614639668feea438000003" }, "name" : "Management", "description" : "MBA people", "__v" : 0, "_id" : { "$oid" : "531bd1da9cca170c100d776c" } }

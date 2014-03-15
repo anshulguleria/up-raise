@@ -1,0 +1,25 @@
+{ "weight" : 10, "description" : "Description1", "type" : "Type1", "kra" : "GOal1", "_id" : { "$oid" : "5268e4fb3378e3542f000002" }, "__v" : 0 }
+{ "weight" : 20, "description" : "Description2", "type" : "Type2", "kra" : "GOal2", "_id" : { "$oid" : "5268e4fb3378e3542f000003" }, "__v" : 0 }
+{ "weight" : 30, "description" : "Description3", "type" : "Type3", "kra" : "GOal3", "_id" : { "$oid" : "5268e4fb3378e3542f000004" }, "__v" : 0 }
+{ "weight" : 40, "description" : "Description4", "type" : "Type4", "kra" : "GOal4", "_id" : { "$oid" : "5268e4fb3378e3542f000005" }, "__v" : 0 }
+{ "weight" : 10, "description" : "Description1", "type" : "Type1", "kra" : "GOal1", "_id" : { "$oid" : "5268e5533378e3542f000007" }, "__v" : 0 }
+{ "weight" : 20, "description" : "Description2", "type" : "Type2", "kra" : "GOal2", "_id" : { "$oid" : "5268e5533378e3542f000008" }, "__v" : 0 }
+{ "weight" : 30, "description" : "Description3", "type" : "Type3", "kra" : "GOal3", "_id" : { "$oid" : "5268e5533378e3542f000009" }, "__v" : 0 }
+{ "kra" : "xyz", "type" : "organization", "description" : "I will doccc\nc\n\nc", "weight" : 40, "__v" : 0, "_id" : { "$oid" : "5268fbc33d9db7e426000002" } }
+{ "weight" : 10, "description" : "Description1", "type" : "Type1", "kra" : "GOal1", "_id" : { "$oid" : "52692be95efd97f01b000002" }, "__v" : 0 }
+{ "weight" : 20, "description" : "Description2", "type" : "Type2", "kra" : "GOal2", "_id" : { "$oid" : "52692be95efd97f01b000003" }, "__v" : 0 }
+{ "weight" : 30, "description" : "Description3", "type" : "Type3", "kra" : "GOal3", "_id" : { "$oid" : "52692be95efd97f01b000004" }, "__v" : 0 }
+{ "weight" : 40, "description" : "Description4", "type" : "Type4", "kra" : "GOal4", "_id" : { "$oid" : "52692be95efd97f01b000005" }, "__v" : 0 }
+{ "weight" : 0, "description" : "hello world", "type" : "org", "kra" : "my new goal", "_id" : { "$oid" : "52692be95efd97f01b000006" }, "__v" : 0 }
+{ "weight" : 0, "description" : "hello world", "type" : "org", "kra" : "my new goal", "__v" : 0, "_id" : { "$oid" : "52692c0d5efd97f01b000008" } }
+{ "weight" : 10, "description" : "Description1", "type" : "Type1", "kra" : "GOal1", "__v" : 0, "_id" : { "$oid" : "52692c0d5efd97f01b000009" } }
+{ "weight" : 20, "description" : "Description2", "type" : "Type2", "kra" : "GOal2", "__v" : 0, "_id" : { "$oid" : "52692c0d5efd97f01b00000a" } }
+{ "weight" : 30, "description" : "Description3", "type" : "Type3", "kra" : "GOal3", "__v" : 0, "_id" : { "$oid" : "52692c0d5efd97f01b00000b" } }
+{ "weight" : 40, "description" : "Description4", "type" : "Type4", "kra" : "GOal4", "__v" : 0, "_id" : { "$oid" : "52692c0d5efd97f01b00000c" } }
+{ "weight" : 10, "description" : "Description1", "type" : "Type1", "kra" : "GOal1", "__v" : 0, "_id" : { "$oid" : "52d3c40c2b1b3d3804000002" } }
+{ "weight" : 20, "description" : "Description2", "type" : "Type2", "kra" : "GOal2", "__v" : 0, "_id" : { "$oid" : "52d3c40c2b1b3d3804000003" } }
+{ "weight" : 30, "description" : "Description3", "type" : "Type3", "kra" : "GOal3", "__v" : 0, "_id" : { "$oid" : "52d3c40c2b1b3d3804000004" } }
+{ "kra" : "xyz", "type" : "organization", "description" : "I will doccc\nc\n\nc", "weight" : 40, "__v" : 0, "_id" : { "$oid" : "52d3c40c2b1b3d3804000005" } }
+{ "kra" : "jj", "type" : "jjjj", "description" : "hhhh", "weight" : 10, "__v" : 0, "_id" : { "$oid" : "53148d0adb42eb001b3c779f" } }
+{ "kra" : "hhh", "type" : "hjjj", "description" : "hghgyfhv", "weight" : null, "__v" : 0, "_id" : { "$oid" : "5322b7b6a1a17690221a0dfe" } }
+{ "kra" : "Hello", "type" : "Sir", "description" : "How u doing", "weight" : null, "__v" : 0, "_id" : { "$oid" : "53236c39d4f5e340134ef00e" } }
