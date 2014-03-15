@@ -38,6 +38,8 @@ exports.update = function(req, res) {
 		if(err) throw err;
 		res.send({department: doc });
 	});	
+
+
 };
 
 exports.delete = function(req, res) {
@@ -45,8 +47,12 @@ exports.delete = function(req, res) {
 	
 	var id = req.param('id');
 
-	Department.findOneAndUpdate({_id: id},{$set: {isEnabled: false} },function(err, doc) {
-		if(err) throw err;
-		res.send(null);
-	});	
+	Department.remove({ _id: id }, function(err,doc) {
+    if (!err) {
+            res.send(true);
+    }
+    else {
+            throw err;
+    }
+});
 };

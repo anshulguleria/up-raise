@@ -16,7 +16,6 @@
     "nodemailer": "*",
     "async": "*",
     "moment": "*",
-    "excel": "*",
-    "passport-ldapauth": "*"
+    "excel": "*" 
   }
 }

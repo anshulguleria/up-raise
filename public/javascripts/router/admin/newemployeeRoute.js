@@ -1,9 +1,5 @@
-UpRaise.Router.map(function () {
-	this.resource('newemployee', function() {			
-	});
-});
 
-UpRaise.NewemployeeRoute = Ember.Route.extend({
+UpRaise.EmployeesNewemployeeRoute = Ember.Route.extend({
   model: function () {
     return this.store.createRecord('employee');
   },
@@ -16,9 +12,7 @@ UpRaise.NewemployeeRoute = Ember.Route.extend({
 
     controller.set('managers', this.store.find('employee', {isDirty: false}));
 
-    controller.set('roles', this.store.find('role'));
-
-    setTimeout(function(){
+      setTimeout(function(){
 
       controller.get('model').set('teamId', controller.get('teams').get('firstObject'));
     
@@ -29,8 +23,5 @@ UpRaise.NewemployeeRoute = Ember.Route.extend({
     }, 1000);
     
   },
-  renderTemplate: function() {
-    this.render('newemployee');
-  	this.render('header', {	into: 'newemployee', outlet: 'headerBar' });	
-  }
+ 
 });

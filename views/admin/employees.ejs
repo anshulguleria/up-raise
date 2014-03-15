@@ -1,6 +1,7 @@
-<% layout('layout') -%>
+<% layout('../layout') -%>
 <% script('/javascripts/router/admin/employeesRoute.js') -%>
 <% script('/javascripts/router/admin/newemployeeRoute.js') -%>
+<% script('/javascripts/router/admin/employeeRoute.js') -%>
 <% script('/javascripts/controllers/admin/employeesController.js') -%>
 <% script('/javascripts/controllers/admin/employeeController.js') -%>
 <% script('/javascripts/controllers/admin/newemployeeController.js') -%>
@@ -10,9 +11,27 @@
 <% script('/javascripts/infra/bootstrap.file-input.js') -%>
 
 <script type="text/x-handlebars" data-template-name="employees">
-	{{outlet headerBar}}
+	{{outlet "headerBar"}}
+
+	
+	{{outlet}}
+	
+	
+	
+</script>
+
+<script type="text/x-handlebars" data-template-name="employees/index">
+	
 	<div class="container">
-		<h2> Employees Listing</h2>
+	<ul class="nav nav-pills">
+  <li class="active">
+    <a href="/admin/employees">Employees</a>
+  </li>
+  <li><a href="/admin/departments">Departments</a></li>
+  <li><a href="/admin/teams">Teams</a></li>
+  <li ><a href="/admin/cycles">Cycles</a></li>
+    <li><a href="/admin/permissions">Permissions</a></li>
+	</ul>
 		<hr />
 		<table class="table table-bordered table-responsive">
 			<tr>
@@ -25,8 +44,8 @@
 				<th class="text-center"> Manager</th>
 				<th class="col-sm-1 text-center"> Actions</th>
 			</tr>			
-			{{#each itemController="employee"}}
-				{{#view UpRaise.EmployeeView contentBinding="this"}}
+			{{#each itemController="employees.employee"}}
+				{{#view UpRaise.EmployeesEmployeeView contentBinding="this"}}
 					<td> {{view.adjustedIndex}} </td>
 					<td> {{empId}} </td>
 					<td> {{fullName}} </td>
@@ -36,25 +55,25 @@
 					<td> {{managerId.fullName}} </td>
 					<td>
 						<a {{action "showDisableModal"}} href="#"> {{disableText}} </a>			
-						<a {{action "details"}} href="#"> Details </a>
+						{{#link-to "employees.employee" id}} Details {{/link-to}}
 					</td>					
 				{{/view}}
 			{{/each}}			
 		</table>
 		<div class="text-right">
-			<button type="submit" class="btn btn-primary" {{action 'add'}}>Add Employee</button>
+			{{#link-to "employees.newemployee" tagName = "button" type="submit" class="btn btn-primary"}}Add New Employee{{/link-to}}
 			<button type="submit" class="btn btn-success" {{action 'showImportModal'}}>Import Employees</button>
 		</div>
 	</div>
-	{{outlet	}}		
 </script>
-<script type="text/x-handlebars" data-template-name="newemployee">
-	{{outlet headerBar}}
-	<div class="container">
-			<h2> Setup New Employees</h2>
+
+<script type="text/x-handlebars" data-template-name="employees/employee">
+		<div class="container">
+			<h2> Edit Employee Details</h2>
 			<hr />
-		<div class="col-md-8">
 			<form role="form">
+		<div class="col-md-6">
+			
 				<div class="form-group">
 					<label for="txtEmployeeId">Employee Id</label>
 					{{input type="text" class="form-control" id="txtEmployeeId" placeholder="Enter Employee Id" value=empId }}
@@ -71,6 +90,10 @@
 					<label for="txtEmail">Email Address</label>
 					{{input type="email" class="form-control" id="txtEmail" placeholder="Enter Email" value=email }}
 				</div>
+
+				
+			</div>
+			<div class="col-md-6">
 				<div class="form-group">
 					<label for="selectDepartment">Department</label>
 					{{view Ember.Select
@@ -103,16 +126,116 @@
 				   	}}
 				</div>
 				<div class="form-group">
-					<label for="cbRoles">Roles</label>
-					{{#each role in roles}}
-						{{input type="checkbox" checked=role.isSelected }} {{role.name}}
-					{{/each}}
+					<label for="txtDoj">Date Of Joining</label>
+					   <div class='input-group date' id='datetimepicker1'>
+					{{input type="text" class="form-control" id="txtJoiningDate" placeholder="Select Date" value=joiningDate }}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
 				</div>
-				<button type="submit" class="btn btn-primary" {{action add target=view}}>Create Employees</button>
+				</div>
+				
+				
+				
+					
+					<div class="text-right">
+					<button type="submit" class="btn btn-primary" {{action save target="view"}}>Save Employee Details</button></div>
+				<div class="col-md-10 pull-right">
+					<button type="submit" class="btn btn-danger" {{action showDeleteModal target="view"}}>Delete Employee Record</button>
+				</div>
+
+
+
+							
+				
+			</form>
+		</div>
+			
+</script>
+
+<script type="text/x-handlebars" data-template-name="employees/newemployee">
+	
+	<div class="container">
+			<h2> Setup New Employee</h2>
+			<hr />
+			<form role="form">
+		<div class="col-md-6">
+			
+				<div class="form-group">
+					<label for="txtEmployeeId">Employee Id</label>
+					{{input type="text" class="form-control" id="txtEmployeeId" placeholder="Enter Employee Id" value=empId }}
+				</div>
+				<div class="form-group">
+					<label for="txtFirstName">First Name</label>
+					{{input type="text" class="form-control" id="txtFirstName" placeholder="Enter First Name" value=firstName }}
+				</div>
+				<div class="form-group">
+					<label for="txtLastName">Last Name</label>
+					{{input type="text" class="form-control" id="txtLastName" placeholder="Enter Last Name" value=lastName }}
+				</div>
+				<div class="form-group">
+					<label for="txtEmail">Email Address</label>
+					{{input type="email" class="form-control" id="txtEmail" placeholder="Enter Email" value=email }}
+				</div>
+
+				<div class="form-group">
+					<label for="txtPassword">Password</label>
+					{{input type="password" class="form-control" id="txtPassword" placeholder="Enter Password" }}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="selectDepartment">Department</label>
+					{{view Ember.Select
+						classNameBinding= ['form-control']
+						contentBinding='departments'
+						optionValuePath="content.id"
+						optionLabelPath="content.name"
+						value='departmentId'
+						selectionBinding='departmentId'
+				   	}}
+				</div>
+				<div class="form-group">
+					<label for="selectTeam">Team</label>
+					{{view Ember.Select
+						contentBinding=teams
+						optionValuePath="content.id"
+						optionLabelPath="content.name"
+						value='teamId'						
+						selectionBinding='teamId'
+				   	}}
+				</div>
+				<div class="form-group">
+					<label for="txtManager">Manager</label>
+					{{view Ember.Select
+						contentBinding=managers
+						optionValuePath="content.id"
+						optionLabelPath="content.nameWithEmpId"
+						value='managerId'						
+						selectionBinding='managerId'
+				   	}}
+				</div>
+				<div class="form-group">
+					<label for="txtDoj">Date Of Joining</label>
+					   <div class='input-group date' id='datetimepicker1'>
+					{{input type="text" class="form-control" id="txtJoiningDate" placeholder="Select Date" value=joiningDate }}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
+				</div>
+				</div>
+				
+				
+				
+					
+				<div class="clearfix"></div>
+				<div class="row">
+				<div class="col-md-1">
+					<button type="submit" class="btn btn-primary" {{action add target="view"}}>Register New Employee</button></div></div>		
+				
 			</form>
 		</div>
 	</div>		
 </script>
+
 <script type="text/x-handlebars" data-template-name="save-modal">
 	<p class="text-info"><strong>Are you sure? </strong></p>
 </script>

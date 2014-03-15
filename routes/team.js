@@ -1,71 +1,114 @@
-
 /*
  * GET team listing page.
  */
-
-exports.display = function(req, res){
-  res.render('team', { title: 'Team' ,  user: req.user });
+exports.display = function (req, res) {
+    res.render('team', {
+        title: 'Team',
+        user: req.user
+    });
 };
 
-exports.list = function(req, res) {
-	var KRA = require('../models/reviewDocument');
-	var User = require('../models/user');
-	var Cycle = require('../models/cycle');
-	var teamusers = [];
-	var async = require('async');
+exports.list = function (req, res) {
+    var KRA = require('../models/reviewDocument');
+    var User = require('../models/user');
+    var Cycle = require('../models/cycle');
+    var teamusers = [];
+    var async = require('async');
 
-	User.find({managerId: req.user._id}).sort({firstName: 1}).execFind( function(err, users) {
-		if(err) throw err;
+    var registeredCycles = Cycle.find();
 
-		if(users && users.length > 0) {
-			
-			console.log('found users ' + users.length);
-			var userfuncs = [];
+    var cycleInContext = {}
 
-			for (var i = 0 ; i < users.length; i++) {
-				var user = users[i];
-				var item = { 
-					name: user.firstName + ' ' + user.lastName,
-					userId: user._id,
-					_id: user._id
-					};
-				
-				userfuncs.push(function(callback) { 
-					KRA.find({ userId: user._id},function(err, success){ 
-						if(err) callback(err);
+    if (req.query.cycleid) {
 
-						item.areGoalsSet = (success != null); 
+        cycleInContext = Cycle.findOne({
+            _id: req.query.cycleid
+        });
+    } else {
 
-						if(item.areGoalsSet) {
+        cycleInContext = Cycle.findOne({
+            companyId: req.User._id
+        }).sort({
+            startDate: -1
+        });
+    }
 
-							Cycle.findOne({ _id : success.cycleId }, function(err, cycle) { 
-								if(err) throw err;
-								
-								if(cycle) {
-									item.appraisalDueDate = cycle.end;
-									var moment = require('moment');
-									item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
-								}
-							});
-						}
+    User.find({
+        managerId: req.user._id
+    }).sort({
+        firstName: 1
+    }).execFind(function (err, users) {
+            if (err) throw err;
 
-						teamusers.push(item);
-						callback();
-					});
-				});
-			}
+            if (users && users.length > 0) {
 
-			async.parallel(userfuncs, function(err) {
-				
-				if(err) throw err;
+                console.log('found users ' + users.length);
+                var userfuncs = [];
 
-				return res.send({teamusers: teamusers});
-			});
-			
-		}else {
+                for (var i = 0; i < users.length; i++) {
+                    var user = users[i];
+                    var item = {
+                        name: user.firstName + ' ' + user.lastName,
+                        userId: user._id,
+                        _id: user._id
+                    };
 
-			return res.send({teamusers: teamusers});	
-		}
-			
-	});
+
+                    if (cycleInContext == null) {
+                        userfuncs.push(function (callback) {
+                            item.KRAStatus = "Cycle Not Defined";
+                        });
+
+                    } else {
+                        userfuncs.push(function (callback) {
+                            KRA.find({
+                                userId: user._id,
+                                cycleId: cycleInContext._id
+                            }, function (err, kra) {
+                                if (err) callback(err);
+
+                                item.areGoalsSet = (kra != null);
+
+                                if (item.areGoalsSet) {
+
+                                    item.appraisalDueDate = cycle.endDate;
+                                    var moment = require('moment');
+                                    item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
+                                    if (kra.pending) {
+                                        item.KRAstatus = "Pending for approval";
+                                    } else {
+                                        item.KRAStatus = "Approved";
+                                    }
+
+
+                                } else {
+                                    item.KRAstatus = "Goals Not Set"
+                                }
+
+                            });
+
+                        });
+                    }
+
+                    teamusers.push(item);
+                    callback();
+                }
+            
+                async.parallel(userfuncs, function (err) {
+
+                if (err) throw err;
+
+                return res.send({
+                    teamusers: teamusers
+                });
+            });
+
+        } else {
+
+            return res.send({
+                teamusers: teamusers
+            });
+        }
+
+    });
 };

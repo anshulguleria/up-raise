@@ -16,8 +16,8 @@ var reviewSchema = new Schema({
   // associations
   userId: { type: ObjectId, ref: 'User' },
   cycleId: { type: ObjectId, ref: 'Cycle' },
-  goals: [ { type: Schema.Types.ObjectId, ref: 'Goal' } ]
 });
+  goals: [ { type: Schema.Types.ObjectId, ref: 'Goal' } ]
 
 reviewSchema.methods.clone = function clone(success) {
 

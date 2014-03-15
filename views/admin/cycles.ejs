@@ -1,0 +1,143 @@
+<% layout('../layout') -%>
+<% script('/javascripts/router/admin/cyclesRoute.js') -%>
+<% script('/javascripts/controllers/admin/cyclesController.js') -%>
+<% script('/javascripts/views/admin/cyclesView.js') -%>
+
+
+<script type="text/x-handlebars" data-template-name="cycles">
+	{{outlet "headerBar"}}
+
+	
+	{{outlet}}
+	
+	
+	
+</script>
+
+<script type="text/x-handlebars" data-template-name="cycles/index">
+	
+	<div class="container">
+	<ul class="nav nav-pills">
+  <li>
+    <a href="/admin/employees">Employees</a>
+  </li>
+  <li><a href="/admin/departments">Departments</a></li>
+  <li><a href="/admin/teams">Teams</a></li>
+  <li class="active"><a href="/admin/cycles">Cycles</a></li>
+  <li><a href="/admin/permissions">Permissions</a></li>
+  
+	</ul>
+		<hr />
+		<table class="table table-bordered table-responsive">
+			<tr>
+				<th class="col-sm-1 text-center"> Index</th>
+				<th class="col-sm-1 text-center"> Name</th>
+				<th class="col-sm-2 text-center"> Start Date</th>
+				<th class="col-sm-2 text-center"> End Date</th>
+				<th class="col-sm-2 text-center"> Status</th>
+				<th class="col-sm-2 text-center"> Actions</th>
+			</tr>			
+			{{#each }}
+				{{#view UpRaise.CyclesView contentBinding="this" tagName="tr"}}
+					<td> {{view.adjustedIndex}} </td>
+					<td> {{name}} </td>
+					<td> {{shortdate startDate}} </td>
+					<td> {{shortdate endDate}} </td>
+					<td> {{status}} </td>
+					<td>
+						<a {{action "showEditModal" this target="view" }} href="#"> Edit </a> |			
+						<a {{action "showDeleteModal" this target="view" }} href="#"> Delete </a>			
+					</td>					
+				{{/view}}
+			{{/each}}			
+		</table>
+		<div class="text-right">
+
+				<button type="submit" class="btn btn-primary" {{action "showAddModal" target="view"}}>Add New Cycle</button></div>
+			
+		</div>
+	</div>
+</script>
+
+
+
+<script type="text/x-handlebars" data-template-name="add-modal">
+	
+	
+		
+			
+				<div class="form-group">
+					<label for="txtDeptName">Cycle Name</label>
+					{{input type="text" class="form-control" id="txtCycleName" placeholder="Enter Name" valueBinding='targetObject.cycleInContext.name' }}
+					
+				</div>
+				<div class="form-group">
+					<label for="txtStartDate">Start Date</label>
+		  <div class='input-group date' id='datetimepicker1'>
+			{{view Em.BSDatePickerView format='mm/dd/yyyy' inputValueBinding='targetObject.cycleInContext.startDate' viewMode='Months' minViewMode='days' inputClassNames='form-control'}}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
+					
+				</div>
+
+				<div class="form-group">
+					<label for="txtEndDate">End Date</label>
+		  <div class='input-group date' id='datetimepicker1'>
+					{{view Em.BSDatePickerView format='mm/dd/yyyy' inputValueBinding='targetObject.cycleInContext.endDate' viewMode='Months' minViewMode='days' inputClassNames='form-control'}}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
+					
+				</div>
+
+				<div class="form-group">
+					<label for="txtStatus">Status</label>
+					{{view Ember.Select
+						contentBinding=targetObject.allowedStatus
+						value='targetObject.cycleInContext.status'						
+						selectionBinding='targetObject.cycleInContext.status'
+				   	}}
+					
+				</div>
+
+		
+				
+
+</script>
+<script type="text/x-handlebars" data-template-name="delete-modal">
+	<p class="text-warning"><strong>Are you sure you want to delete?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>
+<script type="text/x-handlebars" data-template-name="edit-modal">
+<div class="form-group">
+					<label for="txtDeptName">Cycle Name</label>
+					{{input type="text" class="form-control" id="txtCycleName" placeholder="Enter Name" valueBinding='targetObject.cycleInContext.name' }}
+					
+				</div>
+				<div class="form-group">
+					<label for="txtStartDate">Start Date</label>
+		  <div class='input-group date' id='datetimepicker1'>
+			{{view Em.BSDatePickerView format='mm/dd/yyyy' inputValueBinding='targetObject.cycleInContext.startDate' viewMode='Months' minViewMode='days' inputClassNames='form-control'}}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
+					
+				</div>
+
+				<div class="form-group">
+					<label for="txtEndDate">End Date</label>
+		  <div class='input-group date' id='datetimepicker1'>
+					{{view Em.BSDatePickerView format='mm/dd/yyyy' inputValueBinding='targetObject.cycleInContext.endDate' viewMode='Months' minViewMode='days' inputClassNames='form-control'}}
+					    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					    </div>
+					
+				</div>
+
+				<div class="form-group">
+					<label for="txtStatus">Status</label>
+					{{view Ember.Select
+						contentBinding=targetObject.allowedStatus
+						value='targetObject.cycleInContext.status'						
+						selectionBinding='targetObject.cycleInContext.status'
+				   	}}
+					
+				</div>
+</script>

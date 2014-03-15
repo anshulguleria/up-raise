@@ -1,8 +1,6 @@
-UpRaise.EmployeesController = Ember.ArrayController.extend({
+UpRaise.EmployeesIndexController = Ember.ArrayController.extend({
 	actions: {
-		add: function() {
-			this.transitionToRoute('newemployee');
-		},
+		
 		showImportModal: function() {
 			Bootstrap.ModalManager.open('importModal', 'Import from Excel', 'import-modal', this.get('importModalButtons'), this)
 			setTimeout(function() {

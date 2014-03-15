@@ -1,0 +1,96 @@
+<% layout('../layout') -%>
+<% script('/javascripts/router/admin/departmentsRoute.js') -%>
+
+<% script('/javascripts/controllers/admin/departmentsController.js') -%>
+<% script('/javascripts/views/admin/departmentsView.js') -%>
+<% script('/javascripts/infra/jquery.ajaxfileupload.js') -%>
+<% script('/javascripts/infra/bootstrap.file-input.js') -%>
+
+<script type="text/x-handlebars" data-template-name="departments">
+	{{outlet "headerBar"}}
+
+	
+	{{outlet}}
+	
+	
+	
+</script>
+
+<script type="text/x-handlebars" data-template-name="departments/index">
+	
+	<div class="container">
+	<ul class="nav nav-pills">
+  <li>
+    <a href="/admin/employees">Employees</a>
+  </li>
+  <li  class="active"><a href="/admin/departments">Departments</a></li>
+  <li><a href="/admin/teams">Teams</a></li>
+  <li ><a href="/admin/cycles">Cycles</a></li>
+  <li><a href="/admin/permissions">Permissions</a></li>
+	</ul>
+		<hr />
+		<table class="table table-bordered table-responsive">
+			<tr>
+				<th class="col-sm-1 text-center"> Index</th>
+				<th class="col-sm-1 text-center"> Name</th>
+				<th class="col-sm-2 text-center"> Description</th>
+				<th class="col-sm-2 text-center"> Actions</th>
+			</tr>			
+			{{#each }}
+				{{#view UpRaise.DepartmentsView contentBinding="this" tagName="tr"}}
+					<td> {{view.adjustedIndex}} </td>
+					<td> {{name}} </td>
+					<td> {{description}} </td>
+					<td>
+						<a {{action "showEditModal" this target="view" }} href="#"> Edit </a> |			
+						<a {{action "showDeleteModal" this target="view" }} href="#"> Delete </a>			
+					</td>					
+				{{/view}}
+			{{/each}}			
+		</table>
+		<div class="text-right">
+
+				<button type="submit" class="btn btn-primary" {{action "showAddModal" target="view"}}>Add New Department</button></div>
+			
+		</div>
+	</div>
+</script>
+
+
+
+<script type="text/x-handlebars" data-template-name="add-modal">
+	
+	
+		
+			
+				<div class="form-group">
+					<label for="txtDeptName">Department Name</label>
+					{{input type="text" class="form-control" id="txtDeptName" placeholder="Enter Name" valueBinding='targetObject.departmentInContext.name' }}
+					
+				</div>
+				<div class="form-group">
+					<label for="txtDeptDescription">Descritipn</label>
+					{{textarea type="textarea" rows="4" cols="50" class="form-control" id="txtDeptDescription" placeholder="Enter Description" valueBinding='targetObject.departmentInContext.description' }}
+					
+				</div>
+
+		
+				
+
+</script>
+<script type="text/x-handlebars" data-template-name="delete-modal">
+	<p class="text-warning"><strong>Are you sure you want to delete?</strong></p>
+	<p class="text-info"><em>This action is irreversible.</em></p>
+</script>
+<script type="text/x-handlebars" data-template-name="edit-modal">
+<div class="form-group">
+					<label for="txtDeptName"> Name</label>
+					{{input type="text" class="form-control" id="txtDeptName" placeholder="Enter Name" valueBinding='targetObject.departmentInContext.name' }}
+					
+				</div>
+				<div class="form-group">
+					<label for="txtDeptDescription">Descritipn</label>
+					{{textarea type="textarea" rows="4" cols="50" class="form-control" id="txtDeptDescription" placeholder="Enter Description" valueBinding='targetObject.departmentInContext.description' }}
+					
+				</div>
+</script>

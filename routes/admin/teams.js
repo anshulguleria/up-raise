@@ -45,8 +45,20 @@ exports.delete = function(req, res) {
 	
 	var id = req.param('id');
 
-	Team.findOneAndUpdate({_id: id},{$set: {isEnabled: false} },function(err, doc) {
-		if(err) throw err;
-		res.send(null);
-	});	
+	// Team.findOneAndUpdate({_id: id},{$set: {isEnabled: false} },function(err, doc) {
+	// 	if(err) throw err;
+	// 	res.send(null);
+	// });	
+
+Team.remove({ _id: id }, function(err,doc) {
+    if (!err) {
+            res.send(true);
+    }
+    else {
+            throw err;
+    }
+});
+
+
+
 };

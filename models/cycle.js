@@ -3,9 +3,10 @@ var mongoose = require('mongoose')
    ,ObjectId = Schema.ObjectId;
  
 var cycleSchema = new Schema({	
-	start: Date,
-	end: Date,
-	isActive: Boolean,
+	name: String,
+	startDate: Date,
+	endDate: Date,
+	status: String,
 	companyId: ObjectId	
 });
 

@@ -32,12 +32,21 @@ exports.list = function(req, res) {
 
 exports.create = function(req, res) {
 	var Employee = require('../../models/user');
+
+	var Permission = require('../../models/permission');
 	
 	var employee  = new Employee(req.body.employee);
 	
 	employee.companyId = req.user.companyId;
 
 	employee.isEnabled = true;
+
+	employee.permission = new Permission({
+
+		 companySupervision: false,
+  permissionHandeling: false,
+  userManagement:false
+	});
 	
 	employee.save(function(err) {
 		if(err) throw err;
@@ -63,11 +72,32 @@ exports.delete = function(req, res) {
 	
 	var id = req.param('id');
 
-	Employee.findOneAndUpdate({_id: id},{$set: {isEnabled: false} },function(err, doc) {
-		if(err) throw err;
-		res.send(null);
-	});	
+Employee.remove({ _id: id }, function(err,doc) {
+    if (!err) {
+            res.send(true);
+    }
+    else {
+            throw err;
+    }
+});
+
+
 };
+
+exports.get = function(req,res){
+
+	var Employee = require('../../models/user');
+	
+	var id = req.param('id');
+
+	
+	Employee.find({_id: id},function(err, doc) {
+		if(err) throw err;
+		res.send({employee: doc });
+	});	
+
+}
+
 
 var Employee = require('../../models/user');
 //var parseXlsx = require('excel');

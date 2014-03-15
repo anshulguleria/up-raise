@@ -1,0 +1,60 @@
+<% layout('../layout') -%>
+<% script('/javascripts/router/admin/permissionsRoute.js') -%>
+<% script('/javascripts/controllers/admin/permissionsController.js') -%>
+<% script('/javascripts/views/admin/permissionsView.js') -%>
+<% script('/javascripts/infra/jquery.ajaxfileupload.js') -%>
+<% script('/javascripts/infra/bootstrap.file-input.js') -%>
+<script type="text/x-handlebars" data-template-name="permissions">
+	{{outlet "headerBar"}}
+
+	
+	{{outlet}}
+	
+	
+	
+</script>
+
+<script type="text/x-handlebars" data-template-name="permissions/index">
+	
+	<div class="container">
+	<ul class="nav nav-pills">
+  <li>
+    <a href="/admin/employees">Employees</a>
+  </li>
+  <li><a href="/admin/departments">Departments</a></li>
+  <li><a href="/admin/teams">Teams</a></li>
+  <li ><a href="/admin/cycles">Cycles</a></li>
+    <li class="active"><a href="/admin/permissions">Permissions</a></li>
+	</ul>
+		<hr />
+		<table class="table table-bordered table-responsive">
+			<tr>
+				<th class="col-sm-2 text-center"> Index</th>
+				<th class="col-sm-1 text-center"> EID</th>
+				<th class="col-sm-2 text-center"> Name</th>
+				<th class="col-sm-2 text-center"> Email</th>
+				<th class="col-sm-2 text-center"> Company Supervision</th>
+				<th class="col-sm-2 text-center"> Permission Handling</th>
+				<th class="col-sm-2 text-center"> User Management</th>
+			</tr>			
+			{{#each }}
+				{{#view UpRaise.PermissionsView contentBinding="this" tagName="tr"}}
+
+				<td> {{view.adjustedIndex}} </td>
+					<td> {{empId}} </td>
+					<td> {{fullName}} </td>
+					<td> {{email}} </td>
+				<td> {{input type="checkbox" name="perCS" checked=permission.companySupervision}} ----{{permissions.companySupervision}} </td>
+				<td> {{input type="checkbox" name="perPH" checked=permission.permissionHandling}}</td>
+				<td> {{input type="checkbox" name="perUM" checked=permission.userManagement}}</td>
+										
+				{{/view}}
+			{{/each}}			
+		</table>
+		<div class="text-right">
+
+				<button type="submit" class="btn btn-primary" {{action "saveMapping" target="view"}}>Save Changes</button></div>
+			
+		</div>
+	</div>
+</script>

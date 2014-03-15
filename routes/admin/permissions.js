@@ -1,18 +1,18 @@
 exports.display = function(req, res){
-  res.render('admin/roles', { title: 'Role Listing' ,  user: req.user });
+  res.render('admin/permissions', { title: 'Permission Listing' ,  user: req.user });
 };
 
-var Role = require('../../models/role');	
+var Permission = require('../../models/permission');	
 
 exports.list = function(req, res) {
 	
-	Role.find({ companyId: req.user.companyId }, function(err, roles) {
+	Permission.find(function(err, permissions) {
 
-		return res.send({ roles: roles });	
+		return res.send({ permissions: permissions });	
 	});
 
 };
-
+/*
 exports.create = function(req, res) {
 	
 	var role  = new Role(req.body.role);
@@ -49,4 +49,4 @@ exports.delete = function(req, res) {
 		if(err) throw err;
 		res.send(null);
 	});	
-};
+};*/

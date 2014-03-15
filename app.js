@@ -3,8 +3,8 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var mongoose = require('mongoose');
+var express = require('express')
+  , mongoose = require('mongoose');
 
 var passport = require('passport')
   , flash = require('connect-flash')
@@ -19,28 +19,30 @@ var perfdiary = require('./routes/perfdiary');
 var diaryitems = require('./routes/diaryitems');
 var team = require('./routes/team');
 
+
 var authenticate = require('./routes/authenticate');
 var OPTS = { server: {
-				url: 'ldap://<server>:389',		      
-				searchBase: '<base>',
-				searchFilter: '(sAMAccountName={{username}})',
-				adminDn: '<admin-user>',
-				adminPassword: '<admin-pwd>',
-				searchAttributes: ['displayName', 'mail', 'givenName', 'sn']				
-		    },
-		    usernameField: 'email', 
-			passwordField: 'password'	
-		};
+        url: 'ldap://<server>:389',         
+        searchBase: '<base>',
+        searchFilter: '(sAMAccountName={{username}})',
+        adminDn: '<admin-user>',
+        adminPassword: '<admin-pwd>',
+        searchAttributes: ['displayName', 'mail', 'givenName', 'sn']        
+        },
+        usernameField: 'email', 
+      passwordField: 'password' 
+    };
 
 var authApi = require('./apis/authenticate')(passport);
-var authApildap = require('./apis/ldap-authenticate')(passport, OPTS);
+//var authApildap = require('./apis/ldap-authenticate')(passport, OPTS);
 var authType = 'local'; //ldapauth
 
 var companies = require('./routes/admin/companies');
 var employees = require('./routes/admin/employees');
 var departments = require('./routes/admin/departments');
 var teams = require('./routes/admin/teams');
-var roles = require('./routes/admin/roles');
+var permissions = require('./routes/admin/permissions');
+var cycles = require('./routes/admin/cycles');
 
 var notes = require('./routes/notes');
 
@@ -85,10 +87,10 @@ app.all(/^\/(?!login)(?!stylesheets)(?!javascripts).*/, requireLogin, function(r
 
 function requireLogin(req, res, next) {
 
-	console.log(req.path);
+  console.log(req.path);
 
   if (req.user) {
-  	
+    
     next(); // allow the next route to run
   } else {
     // require the user to log in
@@ -101,7 +103,8 @@ app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
 
 app.get('/kra', kra.display);
-app.get('/kra/:id', kra.display);
+app.get('/kra/:userId', kra.display);
+app.get('/kra/:userId/:cycleId', kra.display);
 
 app.get('/teamkra/:id', kra.redirect);
 
@@ -115,8 +118,8 @@ app.get('/teamdiary/:userId', perfdiary.displayForUser);
 app.get('/team', team.display);
 
 app.post('/login', passport.authenticate(authType, { successRedirect: '/dashboard',
-	                                   failureRedirect: '/login',
-	                                   failureFlash: true }));
+                                     failureRedirect: '/login',
+                                     failureFlash: true }));
 
 app.get('/logout', authenticate.logout);
 
@@ -124,6 +127,9 @@ app.get('/admin/companies', companies.display);
 app.get('/admin/employees', employees.display);
 app.get('/admin/departments', departments.display);
 app.get('/admin/teams', teams.display);
+
+app.get('/admin/permissions', permissions.display);
+app.get('/admin/cycles', cycles.display);
 
 //API routes
 
@@ -165,6 +171,7 @@ app.delete('/api/diaryitems/:id', diaryitems.delete);
 app.get('/api/teamusers', team.list);
 
 app.get('/api/employees', employees.list);
+app.get('/api/employees/:id', employees.get);
 app.post('/api/employees/upload', employees.upload);
 app.post('/api/employees', employees.create);
 app.put('/api/employees/:id', employees.update);
@@ -181,12 +188,17 @@ app.post('/api/teams', teams.create);
 app.put('/api/teams/:id', teams.update);
 app.delete('/api/teams/:id', teams.delete);
 
-app.get('/api/roles', roles.list);
-app.post('/api/roles', roles.create);
+app.get('/api/permissions', permissions.list);
+/*app.post('/api/roles', roles.create);
 app.put('/api/roles/:id', roles.update);
-app.delete('/api/roles/:id', roles.delete);
+app.delete('/api/roles/:id', roles.delete);*/
 
+
+app.get('/api/cycles', cycles.list);
+app.post('/api/cycles', cycles.create);
+app.put('/api/cycles/:id', cycles.update);
+app.delete('/api/cycles/:id', cycles.delete);
 
 http.createServer(app).listen(app.get('port'), function(){
-		console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });

@@ -4,6 +4,7 @@
 		<title><%= title %></title>
 		<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
 		<link rel='stylesheet' href='/stylesheets/style.css'/>
+		<link rel='stylesheet' href='/stylesheets/datepicker.css'/>
 	</head>
 	<body>
 		<script type="text/x-handlebars" data-template-name="header">
@@ -17,12 +18,14 @@
 							<li>
 								<a href="/teamkra/<%= user._id %>">My Goals</a>
 							</li>
-						
+						<li>
+								<a href="/teamdiary/<%= user._id %>">My Diary</a>
+							</li>
 							<li>
 								<a href="/manager" >Manager Board</a>
 							</li>
 							<li>
-							<a href="admin/employees" >Employee Desk</a>
+							<a href="/admin/employees" >Company Desk</a>
 							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
@@ -71,6 +74,7 @@
 		</script>
 		<script src='/javascripts/infra/jquery/jquery-1.10.2.js'></script>
 		<script src='/javascripts/infra/bootstrap/bootstrap.js'></script>
+		<script src='/javascripts/infra/bootstrap/bootstrap-datepicker.js'></script>
 		<script src='/javascripts/infra/ember/handlebars-1.0.0.js'></script>
 		<script src='/javascripts/infra/ember/ember-1.0.0.js'></script>
 		<script src='/javascripts/infra/ember/ember-data.js'></script>
@@ -79,7 +83,9 @@
 		<script src='/javascripts/infra/bs-for-ember/bs-button.min.js'></script>
 		<script src='/javascripts/infra/bs-for-ember/bs-modal.min.js'></script>
 		<script src='/javascripts/infra/bs-for-ember/bs-alert.min.js'></script>
+		<script src='/javascripts/infra/bs-for-ember/bs-datepicker.max.js'></script>
 		<script src='/javascripts/infra/moment.min.js'></script>
+		<script src='/javascripts/infra/ember-helper.js'></script>
 		<script src='/javascripts/app.js'></script>		
 		<script src='/javascripts/models/goal.js'></script>
 		<script src='/javascripts/models/dashboard.js'></script>
@@ -88,6 +94,12 @@
 		<script src='/javascripts/models/reviewDocument.js'></script>
 		<script src='/javascripts/models/perfdiary.js'></script>
 		<script src='/javascripts/models/diaryitem.js'></script>
+		<script src='/javascripts/models/department.js'></script>
+		<script src='/javascripts/models/team.js'></script>		
+		<script src='/javascripts/models/company.js'></script>
+		<script src='/javascripts/models/employee.js'></script>
+		<script src='/javascripts/models/permission.js'></script>
+		<script src='/javascripts/models/cycle.js'></script>
 		<%-scripts%>
 		<script type="text/javascript">
 			$(document).ready(function(){
