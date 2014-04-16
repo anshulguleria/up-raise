@@ -15,7 +15,7 @@
 	<div class="container">
 		<div>
 			{{#if isreviewdocument}}
-				<a href="#" {{action gotoKRA}} ><h2> My Goals </h2></a>
+				<a href="/kra/<%= user._id %>#/<%= user._id %>"><h2> My Goals </h2></a>
 				<hr />
 				<div>
 					<table class="table table-responsive table-bordered table-responsive">
@@ -39,9 +39,12 @@
 						{{/each}}					
 					</table>
 				</div>
+				<div class="text-right">
+				<a href="/kra/<%= user._id %>#/<%= user._id %>" class="btn btn-primary btn-md"> Modify KRA</a>
+				</div>
 			{{else}}
 				<h2> Your goals are not set. Click below to set goals. </h2>
-				<button class="btn btn-primary btn-md" id="btnSetGoals" {{action 'createReviewDoc'}}>Set Goals</button>				
+				<button class="btn btn-success btn-md" id="btnSetGoals" {{action 'createReviewDoc' '<%= user._id %>'}}>Set Goals</button>				
 			{{/if}}
 			<h2> My Notes</h2>
 			
@@ -74,60 +77,16 @@
 						</tr>
 					{{/if}}
 				</table>
+				<div class="text-right">
 					{{#if showAddNote}}
-						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'saveNote'}}>Save</button>
+						<button class="btn btn-success btn-md" id="btnSaveNote" {{action 'saveNote'}}>Save</button>
 						<button class="btn btn-normal btn-md" id="btnCancelNote" {{action 'cancelNote'}}>Cancel</button>
 					{{else}}
 						<button class="btn btn-primary btn-md" id="btnSaveNote" {{action 'showAddNote'}}>Add Note</button>
 					{{/if}}
+					</div>
 			</div>
-			{{#if showTeam}}			
-				<h2> My Team</h2>
-				<hr />
-				<div class="col-md-8">
-					<table class="table table-bordered table-responsive">
-						<tr>
-							<th class="col-md-4 text-center">Name</th>
-							<th class="col-sm-3 text-center">Due date</th>
-							<th class="text-center">Actions</th>
-						</tr>
-
-						{{#each teamuser in teamusers itemController='teamuser'}}
-								{{#if teamuser.isAppraisalDue}}			
-								<tr class="danger">
-									<td>
-										<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
-									<td> {{ reviewdate }}</td>
-									<td> 
-										<a href="#" {{action review }}> Review Now</a></td>
-								</tr>
-							{{else }}
-								{{#if teamuser.areGoalsSet}}
-
-									<tr>
-										<td>
-											<a href="#" {{action kra }}>{{teamuser.name}}</a></td>
-										<td> {{ reviewdate }}</td>
-										<td> 
-											<a href="#" {{action kra }}> View Goals</a>
-											<a href="#" {{action diary }}> View Diary</a>
-										</td>
-									</tr>
-								{{else}}
-									<tr>
-										<td>
-											<a href="#" {{action history }}>{{teamuser.name}}</a></td>
-										<td> {{ reviewdate }}</td>
-										<td></td>
-									</tr>							
-								{{/if}}
-							{{/if}}
-								
-						{{/each}}					
-					</table>
-				</div>
-				<div class="col-md-4"> </div>
-			{{/if}}
+		
 		</div>
 	</div>
 </script>

@@ -6,5 +6,7 @@ UpRaise.TeamusersController = Ember.ArrayController.extend({
 	showTeam: function() {
 		var doc = this.get('length') ;
 		return doc && doc > 0;
-	}.property('@each.userId')
+	}.property('@each.userId'),
+
+	registeredCycles : null
 });

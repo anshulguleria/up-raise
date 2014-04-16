@@ -8,6 +8,7 @@
 <script type="text/x-handlebars" data-template-name="perfdiaryIndex">
 	{{outlet headerBar}}
 	<div class="container">
+
 		<h2> Your performance diary is not set. Click below to create. </h2>
 		<button class="btn btn-primary btn-md" id="btnCreateDisary" {{action 'createDiary'}}>Create Performance Diary</button>
 	</div>
@@ -20,9 +21,10 @@
 </script>
 <script type="text/x-handlebars" data-template-name="perfdiary">
 	{{outlet headerBar}}
-	<div class="container">
-			<h2> Performance Diary - <strong><%= employee.firstName %></strong> </h2>
-			<h4> Review Cycle (<%= cycle.startDate %> - <%= cycle.endDate %>)</h4>
+		<div class="container">
+			<h2> <strong><%= employee.firstName %>'s</strong>  Performance Diary</h2>
+ 
+		
 			<hr />			
 		<table class="table table-responsive table-bordered">
 			<tr>

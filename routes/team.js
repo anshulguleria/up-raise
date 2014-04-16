@@ -9,35 +9,46 @@ exports.display = function (req, res) {
 };
 
 exports.list = function (req, res) {
-    var KRA = require('../models/reviewDocument');
+  
+    var Cycle = require('../models/cycle');
+  
+    if (req.query.cycleid) {
+
+     Cycle.findOne({_id: req.query.cycleid})
+           .exec(function(err,cycle){
+
+           // var teamusers = findTeamForGivenUserforCycle(req.user._id,cycle);
+           //  console.log(teamusers);
+           //  return res.send(  teamusers );
+
+           });
+    } else {
+
+        Cycle.findOne({companyId : req.user.companyId})
+            .sort({startDate: -1})
+            .exec(function(err,cycle){
+
+            // var teamusers =   findTeamForGivenUserforCycle(req.user._id,cycle);
+            // console.log(teamusers);
+            //  return res.send( teamusers );
+            findTeamForGivenUserforCycle(req.user._id,cycle,res);
+            });
+    }
+
+
+};
+
+function findTeamForGivenUserforCycle (userId,cycle,res){
+  var KRA = require('../models/reviewDocument');
     var User = require('../models/user');
     var Cycle = require('../models/cycle');
     var teamusers = [];
     var async = require('async');
 
-    var registeredCycles = Cycle.find();
 
-    var cycleInContext = {}
-
-    if (req.query.cycleid) {
-
-        cycleInContext = Cycle.findOne({
-            _id: req.query.cycleid
-        });
-    } else {
-
-        cycleInContext = Cycle.findOne({
-            companyId: req.User._id
-        }).sort({
-            startDate: -1
-        });
-    }
-
-    User.find({
-        managerId: req.user._id
-    }).sort({
-        firstName: 1
-    }).execFind(function (err, users) {
+    User.find({ managerId: userId })
+        .sort({firstName: 1 })
+        .exec(function (err, users) {
             if (err) throw err;
 
             if (users && users.length > 0) {
@@ -48,67 +59,69 @@ exports.list = function (req, res) {
                 for (var i = 0; i < users.length; i++) {
                     var user = users[i];
                     var item = {
-                        name: user.firstName + ' ' + user.lastName,
-                        userId: user._id,
-                        _id: user._id
-                    };
+                                    name: user.firstName + ' ' + user.lastName,
+                                    userId: user._id,
+                                    _id: user._id
+                                };
 
 
-                    if (cycleInContext == null) {
-                        userfuncs.push(function (callback) {
-                            item.KRAStatus = "Cycle Not Defined";
-                        });
+                    userfuncs.push(function (callback) {
+                            KRA.findOne({userId: item.userId, cycleId: cycle._id})
+                                .exec(function (err, kra) {
+                                    console.log(item.userId);
+                                    console.log(cycle._id);
 
-                    } else {
-                        userfuncs.push(function (callback) {
-                            KRA.find({
-                                userId: user._id,
-                                cycleId: cycleInContext._id
-                            }, function (err, kra) {
-                                if (err) callback(err);
+                                    console.log(kra);
 
-                                item.areGoalsSet = (kra != null);
+                                   if (err) callback(err);
 
-                                if (item.areGoalsSet) {
+                                
 
-                                    item.appraisalDueDate = cycle.endDate;
-                                    var moment = require('moment');
-                                    item.isAppraisalDue = moment(appraisalDueDate).diff(new Date(), 'days') < 30;
-                                    if (kra.pending) {
-                                        item.KRAstatus = "Pending for approval";
-                                    } else {
-                                        item.KRAStatus = "Approved";
-                                    }
+                                        item.appraisalDueDate = cycle.endDate;
+                                        var moment = require('moment');
+                                        item.isAppraisalDue = moment(item.appraisalDueDate).diff(new Date(), 'days') < 30;
+                                        
+                                        if(kra === null)
+                                        {
+                                            item.kraStatus = "KRA Not set";
+                                        }
+                                        else{
+
+                                            if (kra.isApproved) {
+                                                item.kraStatus ="Approved" ;
+                                            } else {
+                                                item.kraStatus = "Pending for approval";
+                                            }
+                                        }
 
 
-                                } else {
-                                    item.KRAstatus = "Goals Not Set"
-                                }
+                                 
+
+                            console.log(item);
+                            teamusers.push(item);
+                            callback();
 
                             });
+                        
 
-                        });
-                    }
 
-                    teamusers.push(item);
-                    callback();
+                    });
                 }
+
+          
             
-                async.parallel(userfuncs, function (err) {
+                    async.parallel(userfuncs, function (err) {
 
-                if (err) throw err;
+                        if (err) throw err;
 
-                return res.send({
-                    teamusers: teamusers
-                });
-            });
+                        return res.send({teamusers: teamusers});
+                    });
 
-        } else {
+             } else {
 
-            return res.send({
-                teamusers: teamusers
-            });
-        }
+               return res.send({teamusers: teamusers});
+             }
+          
+        });
 
-    });
-};
+    }

@@ -1,0 +1,16 @@
+1. Submit for approval flow - test only - DONE
+2. Reset password flow - with profile - DONE
+3. Add new user view problem
+4. permissions
+5. Is manager field - DONE
+6. Emails upraise link - DONE
+7. Hosting
+8. Cysles shuold be duly attached to KRA and Diary -DONE
+9. Success and Failure handling for ajax calls (reset password, change password ,  send for approval)
+10. goals view
+11. setup employess redirect to listing -  DONE
+12. create /edit back links in user listing
+13. hide password from user get calls
+14. cycle edit issues
+15. Employee Details to listing issue
+16. Reset not working

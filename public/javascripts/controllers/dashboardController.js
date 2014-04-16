@@ -2,7 +2,7 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 	needs: 'notes',
 	actions: {
 		gotoKRA: function() {
-			window.location.assign('/kra/' + this.get('model.reviewdocument.id') + '#/' + this.get('model.reviewdocument.id'));	
+			window.location.assign('/kra');	
 		},
 		showAddNote: function() {
 			this.set('showAddNote', true);
@@ -29,18 +29,18 @@ UpRaise.DashboardController = Ember.ObjectController.extend({
 		cancelNote: function() {
 	      this.set('showAddNote', false);	      
 	    },
-	    createReviewDoc: function() {
+	    createReviewDoc: function(userId) {
 	    	var doc = this.store.createRecord('reviewdocument');
 	    	var that = this;
 	    	doc.save().then(function() {
 	    		that.set('reviewdocument', doc);
-	    		window.location.assign('/kra/' + doc.get('id')+ '#/' + doc.get('id'));					
+	    		window.location.assign('/kra/'+userId+'#/'+userId);					
 			});
 	    }
 		
 	},
 	isreviewdocument: function() {
-		var doc = this.get('model.reviewdocument') 
+		var doc = this.get('model.isKRASet') 
 		return doc && doc != null;
 	}.property('reviewdocument'),
 	showTeam: function() {

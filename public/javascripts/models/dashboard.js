@@ -2,7 +2,9 @@ UpRaise.Dashboard = DS.Model.extend({
   name: DS.attr('string'),
   reviewdocument: DS.belongsTo('reviewdocument'),
   teamusers: DS.hasMany('teamuser', { async: true }),
-  notes: DS.hasMany('note')
+  notes: DS.hasMany('note'),
+  isKRASet : DS.attr('boolean')
+
 });
 
 UpRaise.Dashboard.FIXTURES = [

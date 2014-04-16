@@ -10,8 +10,8 @@ UpRaise.GoalsRoute = Ember.Route.extend({
     return this.store.find('goal');
   },
   renderTemplate: function() {
-  	this.render('goals');
-  	this.render('header', {	into: 'goals', outlet: 'headerBar' });
+    this.render('goals');
+    this.render('header', {	into: 'goals', outlet: 'headerBar' });
 	//this.render('relatedtags', { into: 'questions', outlet: 'relatedTags' });
   }
 });

@@ -13,7 +13,8 @@ UpRaise.PerfdiaryRoute = Ember.Route.extend({
       return this.store.find('perfdiary', { id: params.id});
   },
   setupController: function(controller, model) {
-    var m = model.get('firstObject');
+
+   var m = model.get('firstObject');
     if(m) {      
       this.controllerFor('diaryitems').set('model', m.get('diaryitems'));
       controller.set('model', m);

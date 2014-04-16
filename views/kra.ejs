@@ -9,22 +9,68 @@
 
 <script type="text/x-handlebars" data-template-name="reviewdocument">
 	{{outlet headerBar}}
+
+<% if (!isUserExists) {%>
+
 	<div class="container">
-			<h2> Goals for <strong><%= employee.firstName %></strong> <small>(				
-			{{#if isApproved}}
-				approved
-			{{else}}
-				pending approval
-			{{/if}}
-			)</small></h2>
-			<h4> Review Cycle (<%= cycle.startDate %> - <%= cycle.endDate %>)</h4>
-			<hr />			
-			{{render goals}}
+	<div class="bs-callout bs-callout-danger">
+	<h4> User does not exists</h4>
+
 	</div>
-		
+	</div>
+
+<%}
+else	{%>
+
+	<div class="container">
+
+		<% if (isReviewerMode) {%>
+
+			<div class="alert alert-warning">
+			<h4> You are in reviewer mode</h4>
+			</div>
+		<%}%>
+
+		<div class='form-inline'>
+
+			<h3> Goals of <strong><%= employee.firstName + ' '+ employee.lastName%> </strong>  for Cycle
+			<div class='form-group'>
+			  	{{view Ember.Select
+				       contentBinding='registeredCycles'
+				       optionValuePath="content.id"							
+				       optionLabelPath="content.name"
+				       valueBinding="currentCycleId"	
+				       
+				}}
+				
+			</div>
+			</h3>
+		</div>
+			      		
+					
+		<hr />
+
+
+{{#if isCreateNewMode}}
+		{{partial "create"}}
+{{else}}
+		{{render goals}}
+{{/if}}
+	</div>
+
+	<%}%>
+
 </script>
-<script type="text/x-handlebars" data-template-name="goals">
-			
+<script type="text/x-handlebars" data-template-name="create">
+
+	<h2> Your goals are not set for this cycle. Click below to set goals. </h2>
+				<button class="btn btn-success btn-md" id="btnSetGoals"
+				 {{action 'createReviewDoc' '<%= user._id %>'}}>Set Goals</button>		
+</script>
+
+<script type="text/x-handlebars" data-template-name="goals">			
+
+{{#unless isCreateNewMode}}			
 	<% if (user) { %>
 		<table class="table table-responsive table-bordered">
 			<tr>
@@ -58,7 +104,7 @@
 							
 						<td class="text-center"> {{weight}}% </td>
 						<td>
-							<% if (view == 'self') { %>
+							<% if (isReviewerMode === false) { %>
 								<a {{action "editRow"}} href="#"> Edit </a>									
 								<a {{action "showDeleteModal"}} href="#"> Delete </a>
 							<% } %>
@@ -95,33 +141,33 @@
 				</tr>
 		</table>
 		
-		<% if (view == 'self') { %>
+		<% if (isReviewerMode == false) { %>
 			
 			<div class="col-md-4 text-left">
-				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'showAddGoalRow'}}>Add Goal</button>
+				<button class="btn btn-success btn-md" id="btnSubmitGoals" {{action 'showAddGoalRow'}}>Add Goal</button>
 			</div>
 			<div class="text-right btn-toolbar col-md-8">
 				{{#if showReset}}
 					<button class="btn btn-warning btn-md" id="btnShowReset" {{action 'showResetModal'}}>Reset</button>
 				{{/if}}
-				<% if (status == 'pending') { %>				
-					{{#if showSubmit}}
+								
+				{{#if showSubmit}}
 						<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'requestApproval'}}>Submit for Approval</button>
-					{{/if}}
-					<button class="btn btn-success btn-md" id="btnImport" {{action 'showImportModal'}}>Excel Import</button>
-				<% } %>
+				{{/if}}
+				
+				
 			</div>
-		<% } else if(status != 'approved') { %>
+		<%}	else {%>
 			{{#unless isApproved}}
 			<div class="text-right btn-toolbar">
 				<button class="btn btn-primary btn-md" id="btnSubmitGoals" {{action 'approve'}}>Approve</button>
 				<button class="btn btn-warning btn-md" id="btnSubmitGoals" {{action 'showRejectModal'}}>Reject</button>
 			</div>
 			{{/unless}}
-		<% } %>
+		<%}%>
 			
-	<% } %>
-	{{render 'footer'}}
+	<%}%>
+	{{/unless}}
 </script>
 <script type="text/x-handlebars" data-template-name="delete-modal">
 	<p class="text-warning"><strong>Are you sure you want to delete this KRA item?</strong></p>

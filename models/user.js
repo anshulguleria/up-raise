@@ -7,7 +7,12 @@ var userSchema = new Schema({
 	lastName: String,
 	email: String,
 	password: String,
-	permission:  { type: ObjectId, ref: 'Permission' } ,
+	permission:  { 
+					_id :String,
+					companySupervision: Boolean,
+					permissionHandeling: Boolean,
+					userManagement:Boolean 
+				} ,
 	managerId: { type: ObjectId, ref: 'User' },
 	departmentId: { type: ObjectId, ref: 'Department' },
 	teamId: { type: ObjectId, ref: 'Team' },

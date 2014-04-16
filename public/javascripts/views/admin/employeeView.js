@@ -8,6 +8,12 @@ UpRaise.EmployeesEmployeeView = Ember.View.extend(Ember.TargetActionSupport, {
 		      return Bootstrap.ModalManager.open('deleteModal', 'Warning', 'delete-modal', this.get('deleteModalButtons'), this);
 		    },
 
+		     showResetPasswordModal: function() {
+		      return Bootstrap.ModalManager.open('resetPasswordModal', 'Warning', 'resetpassword-modal', this.get('resetpasswordModalButtons'), this);
+		    },
+
+
+
 		save: function() {
 					var model = this.get('controller').get('model');
 
@@ -30,11 +36,24 @@ UpRaise.EmployeesEmployeeView = Ember.View.extend(Ember.TargetActionSupport, {
 					    	action:'delete',
 					    	target: this.get('controller')	      	
 			    		});
+		},
+
+		resetpassword: function(){
+
+					this.triggerAction({
+					    	action:'resetpassword',
+					    	target: this.get('controller')	      	
+			    		});
 		}
 	},
 
 	 deleteModalButtons: [
       Ember.Object.create({title: 'Delete', clicked: "delete", type:"danger", dismiss: 'modal'}),
+      Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
+  ],
+
+  resetpasswordModalButtons: [
+      Ember.Object.create({title: 'Reset', clicked: "resetpassword", type:"danger", dismiss: 'modal'}),
       Ember.Object.create({title: 'Cancel', dismiss: 'modal'})
   ],
   

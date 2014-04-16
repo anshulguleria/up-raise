@@ -1,0 +1,101 @@
+<% layout('layout') -%>
+<% script('/javascripts/router/profileRoute.js') -%>
+<% script('/javascripts/views/profileView.js') -%>
+
+
+
+<script type="text/x-handlebars" data-template-name="profile">
+
+{{outlet "headerBar"}}
+		<div class="container">
+			<h2> Your Profile</h2>
+			<hr />
+			<form role="form">
+		<div class="col-md-6">
+			
+				<div class="form-group">
+					<label for="txtEmployeeId">Employee Id</label>
+					<label  class="form-control" id="txtEmployeeId" ><%= user.empId %> </label> 
+				</div>
+				<div class="form-group">
+					<label for="txtFirstName">First Name</label>
+					<label  class="form-control" id="txtFirstName" > <%= user.firstName %></label> 
+					
+				</div>
+				<div class="form-group">
+					<label for="txtLastName">Last Name</label>
+					<label  class="form-control" id="txtFirstName" > <%= user.lastName %></label> 
+					
+				</div>
+				<div class="form-group">
+					<label for="txtEmail">Email Address</label>
+					<label  class="form-control" id="txtEmail" > <%= user.email %></label> 
+					
+				</div>
+
+				
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="selectDepartment">Department</label>
+					<label  class="form-control" id="selectDepartment" > <%= userInfo.Department %></label> 
+					</div>
+				<div class="form-group">
+					<label for="selectTeam">Team</label>
+					<label  class="form-control" id="selectTeam" > <%= userInfo.Team %></label> 
+					
+				</div>
+				<div class="form-group">
+					<label for="txtManager">Manager</label>
+					<label  class="form-control" id="txtManager" > <%= userInfo.Manager %></label> 
+				</div>
+				<div class="form-group">
+					<label for="txtDoj">Date Of Joining</label>
+					  
+					   <label  class="form-control" id="txtJoiningDate" > <% if(user.joiningDate){ %> <%= user.joiningDate.toLocaleDateString() %> <%}%> </label> 
+					   
+					
+					    
+					   
+				</div>
+				</div>
+				
+				
+				
+					
+					<div class="text-right">
+					<button type="submit" class="btn btn-primary" {{action "showPasswordResetModal" target="view"}}>Change Password</button>
+				
+				</div>
+
+
+
+							
+				
+			</form>
+		</div>
+			
+</script>
+
+</script>
+<script type="text/x-handlebars" data-template-name="changePassword-modal">
+	<div class="form-group">
+					<label for="txtOldPassword">Old Password</label>
+					{{input type="password" class="form-control" id="txtOldPassword" placeholder="Enter Old Password" valueBinding='targetObject.passwordInfo.oldPassword' }}
+					
+				</div>
+					
+
+				<div class="form-group">
+					<label for="txtNewPassword">New Password</label>
+					{{input type="password" class="form-control" id="txtNewPassword" placeholder="Enter New Password" valueBinding='targetObject.passwordInfo.newPassword' }}
+					
+				</div>
+
+
+				<div class="form-group">
+					<label for="txtRePassword">Retype Password</label>
+					{{input type="password" class="form-control" id="txtRePassword" placeholder="Enter New Password Again" valueBinding='targetObject.passwordInfo.rePassword' }}
+					
+				</div>
+</script>

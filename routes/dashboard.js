@@ -14,7 +14,7 @@ exports.list = function (req, res, next) {
         Note = require('../models/note'),
         Cycle = require('../models/cycle'),
         KRA = require('../models/reviewDocument')
-
+ 
         var gusers = [];
     var goalids = [];
     var dashgoals = [];
@@ -23,6 +23,7 @@ exports.list = function (req, res, next) {
     var teamuserids = [];
     var gdepartments = [];
     var noteids = [];
+    var isKRASet = false;
 
     var kra = {}, async = require('async')
 
@@ -44,29 +45,30 @@ exports.list = function (req, res, next) {
                         if (err) return next(err);
 
                         if (cycle) {
-                            // cycle found.. next logic here
+                            console.log(cycle);
 
-                            // replace with findOne
-                            KRA.find({
+                            KRA.findOne({
                                 userId: req.user._id,
                                 cycleId: cycle._id
-                            }).sort({
+                            }).sort({ 
                                 updatedOn: -1
                             }).exec(function (err, doc) {
 
-                                    if (err) return next(err);
+                                   if (err) return next(err);
 
-                                    if (doc && doc.length > 0 && doc[0].goals) {
 
-                                        kra = doc[0];
+                                    if (doc && doc.goals) {
 
-                                        if (doc[0].goals.length > 0) {
+                                        kra = doc;
+                                        isKRASet = true;
 
-                                            goalids = doc[0].goals;
+                                        if (doc.goals.length > 0) {
+
+                                            goalids = doc.goals;
 
                                             Goal.find({
                                                 _id: {
-                                                    $in: doc[0].goals
+                                                    $in: doc.goals
                                                 }
                                             }, function (err, g) {
                                                 if (err) return callback(err);
@@ -80,6 +82,7 @@ exports.list = function (req, res, next) {
                                     } else {
                                         return callback();
                                     }
+
 
                             });
                         } else {
@@ -105,13 +108,14 @@ exports.list = function (req, res, next) {
                         });
                 }
             ], function (err) {
-                if (err) throw err;
+                if (err) return next(err);
+
                 var responseObj = {
                     _id: req.user._id,
                     name: req.user.firstName + ' ' + req.user.lastName,
                     reviewdocument: kra._id,
-                    teamusers: teamuserids,
-                    notes: noteids
+                    notes: noteids,
+                    isKRASet: isKRASet
                 };
 
                 return res.send({
@@ -119,6 +123,7 @@ exports.list = function (req, res, next) {
                     reviewdocuments: [kra],
                     goals: dashgoals,
                     notes: dashnotes
+                    
                 });
             });
 

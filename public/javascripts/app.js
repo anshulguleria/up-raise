@@ -20,9 +20,24 @@ UpRaise.AppRESTSerializer = DS.RESTSerializer.extend({
 
 		if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany' || relationshipType === 'manyToOne') {
 			json[key] = record.get(key).mapBy('id');
-		// TODO support for polymorphic manyToNone and manyToMany relationships
-		}
-	}
+
+		
+    }
+},
+
+    serializeBelongsTo: function(record, json, relationship) {
+		    var key = relationship.key,
+		        belongsToRecord = Ember.get(record, key);
+		     
+		    if (relationship.options.embedded === 'always') {
+		        json[key] = belongsToRecord.serialize();
+		    }
+		    else {
+		        return this._super(record, json, relationship);
+		      }
+			}
+		
+	
 });
 
 UpRaise.Store = DS.Store.extend({

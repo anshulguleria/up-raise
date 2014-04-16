@@ -6,7 +6,9 @@ var Cycle = require('../../models/cycle');
 
 exports.list = function(req, res) {
 	
-	Cycle.find({ companyId: req.user.companyId }, function(err, cycles) {
+	Cycle.find({ companyId: req.user.companyId })
+	.sort({startDate: -1})
+	.exec(function(err, cycles) {
 
 		return res.send({ cycles: cycles });	
 	});

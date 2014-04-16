@@ -7,7 +7,10 @@ UpRaise.PerfdiaryIndexController = Ember.ObjectController.extend({
 				return that.transitionToRoute('/' + model.get('id'));
 			});
 		}
-	}
+	},
+
+
+
 });
 
 UpRaise.PerfdiaryController = Ember.ObjectController.extend({
@@ -45,5 +48,7 @@ UpRaise.PerfdiaryController = Ember.ObjectController.extend({
 		}		
 	},
 	showAdd: false
+
+
 	
 });

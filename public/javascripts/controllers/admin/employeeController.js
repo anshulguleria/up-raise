@@ -25,6 +25,20 @@ UpRaise.EmployeesEmployeeController = Ember.ObjectController.extend({
 
     },
 
+    resetpassword: function(){
+
+      var userId = this.get('model').id;
+
+  
+      $.post( window.location.origin+"/api/employees/resetpassword/"+userId)
+          .done(function( data ) {
+            alert( "Data Loaded: " + data );
+          })
+          .fail(function() {
+            alert( "error" );
+          })
+  }
+
 
   },
  departments:null, 

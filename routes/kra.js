@@ -1,70 +1,35 @@
 
-exports.display = function(req, res){
-    var cycle = { startDate:'', endDate: ''};
+exports.display = function(req, res,next){
 
+    
         var Cycle = require('../models/cycle');
 
-        var registeredCycles = Cycle.find({companyId : req.user._id}).sort({startDate :-1});
 
-        if(registeredCycles == null || registeredCycles.length <= 0){
+        var User = require('../models/user');
 
-             return res.render('kra', { title: 'KRA' , registeredCycles : null });
+        if(req.params.userId === undefined || req.params.userId === null || req.params.userId === ''){
+
+              res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user,isUserExists : true, isReviewerMode:false});
+
+
         }
-        
-        var cycleInContext = {};
-        if(req.param('cycleId')){
-        
-            for (var i = 0; i< registeredCycles.length ; i++) {
-             
-
-                if(registeredCycles[i]._id == req.param('cycleId')){
-
-                    cycleInContext = registeredCycles[i];
-                }
-            }
-        }else{
-
-            cycleInContext = registeredCycles[0];
-        }
-
-
-        if(req.param('userid')) {
-
-            var User = require('../models/user');
-            var KRA = require('../models/reviewDocument');
-            var status = 'Pending for approval';
-
-            var moment = require('moment');
-            cycle.startDate = moment(cycleInContext.startDate).format('MMM YY');
-            cycle.endDate = moment(cycleInContext.endDate).format('MMM YY');
-
-            KRA.findOne({userId: req.param('id')}, function(err, kra) { 
-                
-                if(err) return next(err) ;
-
-                if( kra.isApproved)
-                    status = 'Approved';
-                
-                if(req.user._id != kra.userId.toString()) {
-                        
-                    User.findOne({_id : kra.userId}, function(err, user) {
-                        if(err) return next(err);
-
-                        return res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, 
-                                    cycle: cycle, status: status, view: 'reviewer' ,registeredCycles : registeredCycles});
-                    });
-                } else {
+            
                             
-                        return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-                                cycle: cycle, status: status, view: 'self', registeredCycles : registeredCycles });
-                }
+       else if(req.user._id !=  req.params.userId) {
+                
+            User.findOne({_id : req.params.userId}, function(err, user) {
+                if(err)
+                    {
+                       return res.render('kra', { title: 'KRA' ,  user: req.user, isUserExists : false});
+                    }
 
-            });         
-        }else {
-    
-            return res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, 
-                cycle: cycle, status: status, view: 'self' ,registeredCycles : registeredCycles});
+                 return res.render('kra', { title: 'KRA' ,  user: req.user, employee: user, isUserExists : true,isReviewerMode: true });
+            });
+        } else {
+                    
+                return  res.render('kra', { title: 'KRA' ,  user: req.user, employee: req.user, isUserExists : true,isReviewerMode: false });
         }
+       
 };
 
 exports.post = function(req, res) {
@@ -76,21 +41,21 @@ exports.post = function(req, res) {
     var kra  = new KRA(req.body.reviewdocument);
 
     kra.userId = req.user._id;
-
    
 
-    if(req.query.cycleid){
+    if(req.query.cid){
 
-       Cycle.findOne({_id: req.query.cycleid},function(err,cycleItem){
+       Cycle.findOne({_id: req.query.cid},function(err,cycleItem){
 
              if(cycleItem) {
-            kra.cycleId = cycleItem._id;
-             }
-
-            kra.save(function(err) {
+                kra.cycleId = cycleItem._id;
+                kra.save(function(err) {
                 if(err) throw err;
                 res.send({reviewdocument: kra});
             }); 
+             }
+
+            
         });
     }
     else{
@@ -104,13 +69,15 @@ exports.post = function(req, res) {
                 
                 console.log('cycle get  ' + cycleItem);
                 if(cycleItem) {
+
                     kra.cycleId = cycleItem._id;
-                }
 
                 kra.save(function(err) {
                     if(err) throw err;
                     res.send({reviewdocument: kra});
                 }); 
+                }
+
             });
 
     
@@ -120,40 +87,72 @@ exports.post = function(req, res) {
     
 };
 
-exports.list = function(req, res) {
+exports.list = function(req, res,next) {
+
+  
+    var Cycle = require('../models/cycle');
+
+    var ids = req.params.id.split('__');
+
+    if(ids.length < 2)
+        return null;
+
+
+    var userId = ids[0];
+    var cycleId = ids[1];
+
+    if(cycleId){
+
+        findAndReturnReviewDoc(cycleId,userId, res,next  );
+
+    }
+    else{
+
+       Cycle.findOne({companyId : req.user.companyId})
+        .sort({startDate : -1})
+        .exec(function(err,cycle){
+
+            if(err) return next(err);
+          
+            findAndReturnReviewDoc(cycle._id,userId,res, next);
+        });
+ 
+    }
+
+};
+
+findAndReturnReviewDoc = function(cycleId,userId,res,next){
 
     var KRA = require('../models/reviewDocument');
     var Goal = require('../models/goal');
+       
+   
 
-    var userId = '';
-
-    if(req.param('id')) {
-        id = req.param('id');
+    KRA.findOne({ userId : userId , cycleId : cycleId})
+            .exec(function(err, doc) {
+                if(err) {console.log(err); return next(err);}
     
-        KRA.find({ _id: id}, function(err, doc) { 
-            if(err) throw err;
+                if(doc){
+               
+                    var allGoals = doc.goals;
 
-            var allGoals = [];
-
-            for (var i = doc.length - 1; i >= 0; i--) {
-                allGoals = allGoals.concat(doc[i].goals);
-            };
-            if(allGoals && allGoals.length > 0) {           
-                Goal.find({_id: { $in: allGoals } }, function(err, goals) {
-                    //if(err) return next(err);
-
-                    return res.send({ reviewdocuments:  doc , goals: goals });  
-                });
-            } else {
-                return res.send({ reviewdocuments:  doc }); 
-            }
-            
+                    if(allGoals && allGoals.length > 0) {
+                         Goal.find({_id: { $in: allGoals } }, function(err, goals) {
+                        return res.send({ reviewdocument:  doc , goals: goals });
+                    });
+                    } else {
+                        return res.send({ reviewdocument:  doc });
+                    }
+                }
+                else{
+                    return res.send({ reviewdocument:  null });
+                }
+    
         });
-    } else {
-        return res.send(null);
-    }
-    
 };
+
+
+          
 
 exports.redirect = function(req, res) {
 
@@ -192,18 +191,44 @@ exports.put = function(req, res) {
     var ReviewDocument = require('../models/reviewDocument');
     var kra  = req.body.reviewdocument;
     
-    
-    var id = req.param('id');
-    
-    ReviewDocument.findOneAndUpdate({ _id: id }, {$set: kra}, function(err, doc) {
-        if(err) throw err;
+    var kraId = req.param('id');
 
-        if(kra.type == 'request') {
-            //send email
-        };
-        return res.send({reviewdocument: doc});
-    });
-    res.send({});
+    var isMailRequired = kra.isApproved;
+
+     if(kra.isApproved){
+
+
+        ReviewDocument.findOne({_id : kraId })
+        .exec(function(err, item){
+
+            item.clone();
+
+            kra.isApproved = false;
+
+            ReviewDocument.findOneAndUpdate({ _id: kraId }, {$set: kra}, function(err, doc) {
+                if(err) throw err;
+
+               
+                return res.send({reviewdocument: doc});
+              }); // improve code
+
+        });
+        
+     }
+     else{
+
+            ReviewDocument.findOneAndUpdate({ _id: kraId }, {$set: kra}, function(err, doc) {
+                if(err) throw err;
+
+               
+                return res.send({reviewdocument: doc});
+              });
+        }
+         
+     if(isMailRequired) {
+               console.log('Will send mail');
+            }
+    
 };
 
 
@@ -229,19 +254,6 @@ exports.delete = function(req, res) {
     
 };
 
-exports.clone = function(req, res) {
-    
-    var ReviewDocument = require('../models/reviewDocument');
-    var item  = req.param('id');
-    
-    ReviewDocument.findOne({_id: item}, function(err, doc) {
-        if(err) throw err;
-        if(doc) {
-            doc.clone();
-        } 
-        res.send(null);
-    }); 
-};
 
 exports.requestApproval = function(req, res) {
     var User = require('../models/user');
@@ -270,7 +282,7 @@ exports.requestApproval = function(req, res) {
                 +   "<br />"
                 + "<p>" + req.user.firstName + "'s goals have been set/updated. Please approve the goals."
                 + " To approve, please click on the link below.</p>"
-                + "<a href='http://localhost:3000/' >Up-Raise</a>"
+                + "Up-Raise"
                 + "<br />"              
             };
 
@@ -295,6 +307,7 @@ exports.requestApproval = function(req, res) {
 exports.approve = function(req, res) {
     var User = require('../models/user');
     var ReviewDocument = require('../models/reviewDocument');
+    var CloneDocument = require('../models/cloneDocument');
     var nodemailer = require("nodemailer");
     
     // create reusable transport method (opens pool of SMTP connections)
@@ -306,16 +319,16 @@ exports.approve = function(req, res) {
         }
     });
 
-    if(req.param('id')) {
+    var docId = req.param('id');
+    if(docId) {
 
-        ReviewDocument.findOneAndUpdate({ _id: req.param('id') }, {$set: {isApproved: true, approvedOn: new Date(), type: 'approved' }}, function(err, doc) {
+        
+        ReviewDocument.findOneAndUpdate({ _id: docId }, {$set: {isApproved: true, approvedOn: new Date(), type: 'approved' }}, function(err, doc) {
             if(err) throw err;
 
             if(doc) {
-
-                doc.clone();
-
-                    User.findOne({_id: doc.userId}, function(err, user) {
+                CloneDocument.find({ clonefor:doc._id }).remove().exec();
+                User.findOne({_id: doc.userId}, function(err, user) {
                         if(err) throw err;
                         // setup e-mail data with unicode symbols
                         var mailOptions = {
@@ -326,7 +339,7 @@ exports.approve = function(req, res) {
                             +   "<br />"
                             + "<p>" + "Your goals have been approved."
                             + " To view your goals, please click on the link below.</p>"
-                            + "<a href='http://localhost:3000/' >Up-Raise</a>"
+                            + "Up-Raise"
                             + "<br />"              
                         };
 
@@ -355,8 +368,9 @@ exports.approve = function(req, res) {
 
 exports.requestApproval = function(req, res) {
     var User = require('../models/user');
-    
+     
     var nodemailer = require("nodemailer");
+  
 
     // create reusable transport method (opens pool of SMTP connections)
     var smtpTransport = nodemailer.createTransport("SMTP",{
@@ -381,7 +395,7 @@ exports.requestApproval = function(req, res) {
                 + "<p>" + req.user.firstName + "'s goals have been set/updated. Please approve the goals."
                 + " To approve, please click on the link below.</p>"
                 + "<br />"
-                + "<a href='http://localhost:3000/' >Up-Raise</a>"
+                + "Up-Raise"
                 + "<br />"              
             };
 
@@ -443,7 +457,7 @@ exports.reject = function(req, res) {
                             + "</p> <br />"
                             + " To view your goals, please click on the link below.</p>"
                             + "<br />"
-                            + "<a href='http://localhost:3000/' >Up-Raise</a>"
+                            + "Up-Raise"
                             + "<br />"              
                         };
 
@@ -542,4 +556,25 @@ exports.upload = function(req, res) {
             return res.send(null);
     });
     
+};
+
+exports.reset = function(req,res){
+
+      var KRA = require('../models/reviewDocument');
+
+      KRA.findOne({_id : req.params.id})
+        .exec(function(err, kra){
+        
+                if(err) throw err;
+
+                if(kra){
+
+                    kra.revertToClone(res); 
+                }
+                else{
+                    res.send(null);
+                }
+
+        });
+
 };

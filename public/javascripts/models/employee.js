@@ -3,7 +3,7 @@ UpRaise.Employee = DS.Model.extend({
   firstName: DS.attr('string'),
   lastName: DS.attr('string'),
   email: DS.attr('string'),
-  permission: DS.belongsTo('permission'),
+  //permission: DS.belongsTo('permission',{embedded: 'always'}),              
   managerId: DS.belongsTo('employee'),
   departmentId: DS.belongsTo('department'),
   teamId: DS.belongsTo('team'),
@@ -11,6 +11,7 @@ UpRaise.Employee = DS.Model.extend({
   joiningDate: DS.attr('date'),
   isEnabled: DS.attr('boolean'),
   empId: DS.attr('string'),
+
   nameWithEmpId: function() {
     return this.get('firstName') + ' ' + this.get('lastName') + ' (' + this.get('empId') + ')';
   }.property('firstName', 'lastName'),

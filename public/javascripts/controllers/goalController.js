@@ -21,31 +21,16 @@ UpRaise.GoalController = Ember.ObjectController.extend({
 
       goal.set('reviewdocument', kra);
       
-      if(kra.get('isApproved')) {
-        $.get('/api/clonekra/' + kra.get('id')).then(function() { 
+      goal.save().then(function() {
 
-
-          goal.save().then(function() {
-            
-            kra.set('isApproved', false);     
-            kra.get('goals').addObject(goal);
-            kra.save();
+          kra.get('goals').addObject(goal);
+          kra.save();
             
           });
 
-        });
-      }
-      else {
-
-          goal.save().then(function() {
-
-            kra.get('goals').addObject(goal);
-            kra.save();
-            
-          });
-
-      }
+      
     },
+    
     deleteRow: function () {
       var item = this.get('content');
       item.deleteRecord();

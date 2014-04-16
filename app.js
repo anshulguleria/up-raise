@@ -44,6 +44,7 @@ var teams = require('./routes/admin/teams');
 var permissions = require('./routes/admin/permissions');
 var cycles = require('./routes/admin/cycles');
 
+
 var notes = require('./routes/notes');
 
 mongoose.connect('mongodb://127.0.0.1/up-raise');
@@ -101,8 +102,7 @@ function requireLogin(req, res, next) {
 app.get('/', authenticate.display);
 app.get('/login', authenticate.display);
 app.get('/dashboard', dashboard.display);
-
-app.get('/kra', kra.display);
+app.get('/profile', employees.displayProfile);
 app.get('/kra/:userId', kra.display);
 app.get('/kra/:userId/:cycleId', kra.display);
 
@@ -127,6 +127,7 @@ app.get('/admin/companies', companies.display);
 app.get('/admin/employees', employees.display);
 app.get('/admin/departments', departments.display);
 app.get('/admin/teams', teams.display);
+app.get('/teamusers', team.display);
 
 app.get('/admin/permissions', permissions.display);
 app.get('/admin/cycles', cycles.display);
@@ -143,10 +144,10 @@ app.post('/api/goals', goals.post);
 app.post('/api/goals/upload', kra.upload);
 
 app.get('/api/reviewDocuments', kra.list);
+app.get('/api/reviewDocuments/:id', kra.list);
 app.put('/api/reviewDocuments/:id', kra.put);
 app.post('/api/reviewDocuments', kra.post);
-app.get('/api/reset/:id', kra.delete);
-app.get('/api/clonekra/:id', kra.delete);
+app.get('/api/reset/:id', kra.reset);
 app.get('/api/requestApproval', kra.requestApproval);
 app.get('/api/approve/:id', kra.approve);
 app.post('/api/reject/:id', kra.reject);
@@ -176,6 +177,8 @@ app.post('/api/employees/upload', employees.upload);
 app.post('/api/employees', employees.create);
 app.put('/api/employees/:id', employees.update);
 app.delete('/api/employees/:id', employees.delete);
+app.post('/api/employees/changepassword', employees.changepassword);
+app.post('/api/employees/resetpassword/:id', employees.resetpassword);
 
 app.get('/api/departments', departments.list);
 app.post('/api/departments', departments.create);

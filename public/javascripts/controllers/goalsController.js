@@ -67,51 +67,40 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			
 			var kra = this.get('controllers.reviewdocument.content');
 
-			if(kra.get('isApproved')) {
-				$.get('/api/clonekra/' + kra.get('id')).then(function() { 
-
-					goal.set('reviewdocument', kra);
-					goal.save().then(function() {
-						
-						kra.set('isApproved', false);			
-						kra.get('goals').addObject(goal);
-						kra.save();
-						
-					});
-
-				});
-			}
-			else {
-
-					goal.set('reviewdocument', kra);
-					goal.save().then(function() {
-
-						kra.get('goals').addObject(goal);
-						kra.save();
-						
-					});
-
-			}
+		
+				goal.set('reviewdocument', kra);
+				goal.save().then(function() {
+					
 				
-			
+				if(!kra.get('goals')){
+
+					kra.set('goals',[]);
+				}
+				kra.get('goals').addObject(goal);
+				kra.set('type' ,'request');
+				kra.save();
+			});
+						
 			this.set('showAddRow',false);
 		},
 		reset: function() {
 			var kra = this.get('controllers.reviewdocument.content');
-			$.get('/api/reset/' + kra.get('id')).then(function(){ 
-				window.location.assign('/dashboard');
-			});
+			$.get('/api/reset/' + kra.get('id')).then($.proxy(function(data){
+				
+				this.set('controllers.reviewdocument.content' , data);
+
+			}),this);
 		},
 		requestApproval: function() {
-			$.get('/api/requestApproval').then(function(){ 
-				window.location.assign('/dashboard');
+			$.get('/api/requestApproval').then(function(){
+				alert("submited for approval")
 			});
 		},
 		approve: function() {
 			var kra = this.get('controllers.reviewdocument.content');
-			$.get('/api/approve/' + kra.get('id')).then(function(){ 
-				window.location.assign('/dashboard');
-			});			
+			$.get('/api/approve/' + kra.get('id')).then(function(){
+				window.location.assign('/teamusers');
+			});
 		},
 		reject: function() {
 			var content = this.get('rejecttext');
@@ -119,7 +108,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 			if(content){ 
 				var kra = this.get('controllers.reviewdocument.content');
 				$.post('/api/reject/' + kra.get('id'), { text: content} ).then(function(){ 
-					window.location.assign('/dashboard');
+					window.location.assign('/teamusers');
 				});
 			}
 		}
@@ -141,18 +130,18 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 
 	showSubmit: function () {
 		var kra = this.get('controllers.reviewdocument.content');
-		if(this.get('totalWeight') == 100 && !kra.get('isApproved'))
+		if(this.get('totalWeight') == 100 &&  !Em.get('kra.isApproved'))
 			return true;
 		else
 			return false;
 	}.property('@each.weight', 'controllers.reviewdocument.content.isApproved'),
 	showReset: function() {
 		var kra = this.get('controllers.reviewdocument.content');
-		return !kra.get('isApproved') && this.get('model').get('length') > 0;
+		return kra && !Em.get('kra.isApproved') && this.get('model').get('length') > 0;
 	}.property('controllers.reviewdocument.content.isApproved', 'length'),
 	isApproved: function() {
 		var kra = this.get('controllers.reviewdocument.content');
-		return kra.get('isApproved');
+		return Em.get('kra.isApproved');
 	}.property('controllers.reviewdocument.content.isApproved'),
 	resetModalButtons: [
       Ember.Object.create({title: 'Reset', clicked: "reset", type:"danger", dismiss: 'modal'}),

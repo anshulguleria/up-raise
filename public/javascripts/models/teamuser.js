@@ -1,7 +1,7 @@
 UpRaise.Teamuser = DS.Model.extend({	
   name: DS.attr('string'),
   userId: DS.attr('string'),
-  areGoalsSet: DS.attr('boolean'),
+  kraStatus: DS.attr('string'),
   isAppraisalDue: DS.attr('boolean'),
   appraisalDueDate: DS.attr('date')  
 });
@@ -11,7 +11,7 @@ UpRaise.Teamuser.FIXTURES = [
  	id: 1,
  	name: 'Varun Jain',
  	userId: '1',
-   	areGoalsSet: true,
+   	KRAstatus: 'Pending for Approval',
    	isAppraisalDue: true,
    	appraisalDueDate: new Date(2013,10,22)
  },
@@ -19,7 +19,7 @@ UpRaise.Teamuser.FIXTURES = [
  	id: 2,
  	name: 'Tarun Dhillon',
  	userId: '2',
-   	areGoalsSet: false,
+   	KRAstatus: 'Approved',
    	isAppraisalDue: false,
    	appraisalDueDate: new Date(2013,10,22)
  }

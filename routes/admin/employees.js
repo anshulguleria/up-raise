@@ -7,6 +7,120 @@ exports.display = function(req, res){
   res.render('admin/employees', { title: 'Employee Listing' ,  user: req.user });
 };
 
+exports.displayProfile = function(req,res){
+
+var Employee = require('../../models/user');
+var Department = require('../../models/department');
+var Team = require('../../models/team');	
+var userInfo = {};
+
+Employee.findOne({_id: req.user.managerId},function(err, emp) {
+
+ 		
+		if(err) userInfo.Manager = "Manager Not Set";
+		else userInfo.Manager = emp.firstName +" "+emp.lastName;
+
+		Department.findOne({_id: req.user.departmentId},function(err, dep) {
+
+			
+			if(err) userInfo.Department = "Department Not Set";
+			else userInfo.Department = dep.name;
+
+			Team.findOne({_id: req.user.teamId},function(err, team) {
+
+
+				if(err) userInfo.Team = "Team Not Set";
+				else userInfo.Team = team.name;
+
+
+				res.render('profile', { title: 'Profile' ,  user: req.user  , userInfo :  userInfo});
+			});
+		});
+	
+	});	
+
+
+};
+
+
+exports.changepassword = function(req,res,next){
+
+	var Employee = require('../../models/user');
+
+	var passwordInfo  = req.body;
+
+	
+	Employee.findOne({_id: req.user._id},function(err, emp) {
+		if(err) return next;
+
+		console.log(emp.password);
+		console.log(passwordInfo.oldPassword);
+		if(emp && emp.password === passwordInfo.oldPassword){
+
+			emp.password = passwordInfo.newPassword;
+			emp.save(function(err,updatedEmp){
+
+				if(err) 
+					return next(err);
+
+				if(updatedEmp)
+					return	res.send({isSucessfull : true , message:"Success"});
+
+				return res.send({isSucessfull:false,message:"Unable to update passoword."})
+
+
+			});
+
+		}
+		else{
+			return res.send({isSucessfull:false,message:"Your current password is incorrect."})
+		}
+
+		
+	});	
+
+
+};
+
+
+
+exports.resetpassword = function(req,res,next){
+
+console.log("i am in");
+var Employee = require('../../models/user');
+
+var passwordInfo  = req.body.passwordInfo;
+
+var id = req.param('id');
+
+console.log(id);
+	
+	Employee.findOne({_id: id},function(err, emp) {
+		if(err) return next;
+
+		if(emp){
+
+			emp.password = emp.empId;
+			emp.save(function(err,updatedEmp){
+
+				if(err) 
+					return next(err);
+
+				if(updatedEmp)
+					return	res.send({isSucessfull : true , message:"Success"});
+
+				return res.send({isSucessfull:false,message:"Unable to update passoword."})
+
+
+			});
+
+		}
+
+		
+	});	
+
+};
+
 exports.list = function(req, res) {
 	var Employee = require('../../models/user');
 	var Department = require('../../models/department');
@@ -41,12 +155,22 @@ exports.create = function(req, res) {
 
 	employee.isEnabled = true;
 
-	employee.permission = new Permission({
+	employee.password = employee.empId;
 
-		 companySupervision: false,
-  permissionHandeling: false,
-  userManagement:false
-	});
+	var date = new Date();
+	var uid = date.getTime().toString();
+
+	employee.permission = {
+
+			_id: uid,
+		 	companySupervision: true,
+  			permissionHandeling: false,
+  			userManagement:false
+	};
+
+
+
+
 	
 	employee.save(function(err) {
 		if(err) throw err;
