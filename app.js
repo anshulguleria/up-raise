@@ -47,7 +47,7 @@ var cycles = require('./routes/admin/cycles');
 
 var notes = require('./routes/notes');
 
-mongoose.connect('mongodb://127.0.0.1/up-raise');
+mongoose.connect('mongodb://benchmark-sql/up-raise');
 
 var http = require('http');
 var path = require('path');
