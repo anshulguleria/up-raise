@@ -16,17 +16,23 @@ UpRaise.GoalController = Ember.ObjectController.extend({
     },
     saveRow: function() {
       this.set('isEditing', false);
-      var kra = this.get('controllers.reviewdocument.content');
+      var id = this.get('controllers.reviewdocument.content.id');
       var goal = this.get('model');
 
-      goal.set('reviewdocument', kra);
-      
-      goal.save().then(function() {
 
-          kra.get('goals').addObject(goal);
-          kra.save();
-            
-          });
+      this.store.find('reviewdocument',id)
+      .then($.proxy(function(kra){
+
+        goal.save().then(function() {
+
+            kra.get('goals').addObject(goal);
+            kra.save();
+              
+            });
+        
+      },this));
+     
+      
 
       
     },
@@ -35,14 +41,19 @@ UpRaise.GoalController = Ember.ObjectController.extend({
       var item = this.get('content');
       item.deleteRecord();
 
-      var kra = this.get('controllers.reviewdocument.content');
-      kra.set('isApproved', false);
-      kra.get('goals').removeObject(item);
-      kra.save().then(function() {
-        item.save();
-      });         
+      var id = this.get('controllers.reviewdocument.content.id');
+      this.store.find('reviewdocument',id)
+      .then($.proxy(function(kra){
 
-      return Bootstrap.ModalManager.hide('deleteModal');
+        kra.set('isApproved', false);
+        kra.get('goals').removeObject(item);
+        kra.save().then(function() {
+          item.save();
+        });         
+
+        return Bootstrap.ModalManager.hide('deleteModal');
+        
+      },this));
     }
   },
   deleteModalButtons: [

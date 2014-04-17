@@ -65,31 +65,34 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 				weight: this.get('weight')
 			});
 			
-			var kra = this.get('controllers.reviewdocument.content');
+			 this.store.find('reviewdocument',this.get('controllers.reviewdocument.content.id'))
+				.then($.proxy(function(kra){
 
-		
-				goal.set('reviewdocument', kra);
-				goal.save().then(function() {
-					
-				
-				if(!kra.get('goals')){
-
-					kra.set('goals',[]);
-				}
-				kra.get('goals').addObject(goal);
-				kra.set('type' ,'request');
-				kra.save();
-			});
+					goal.save().then(function() {
+							
 						
-			this.set('showAddRow',false);
+						if(!Em.get(kra,'goals')){
+
+							Em.set(kra,'goals',[]);
+						}
+						Em.get(kra,'goals').addObject(goal);
+						kra.set('type' ,'request');
+						kra.save();
+					});
+								
+					this.set('showAddRow',false);
+
+					
+				},this));
+
 		},
 		reset: function() {
 			var kra = this.get('controllers.reviewdocument.content');
-			$.get('/api/reset/' + kra.get('id')).then($.proxy(function(data){
+			$.get('/api/reset/' + Em.get(kra,'id')).then($.proxy(function(data){
 				
-				this.set('controllers.reviewdocument.content' , data);
+				window.location.reload();
 
-			}),this);
+			},this));
 		},
 		requestApproval: function() {
 			$.get('/api/requestApproval').then(function(){
@@ -98,7 +101,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 		},
 		approve: function() {
 			var kra = this.get('controllers.reviewdocument.content');
-			$.get('/api/approve/' + kra.get('id')).then(function(){
+			$.get('/api/approve/' + Em.get(kra,'id')).then(function(){
 				window.location.assign('/teamusers');
 			});
 		},
@@ -107,7 +110,7 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 
 			if(content){ 
 				var kra = this.get('controllers.reviewdocument.content');
-				$.post('/api/reject/' + kra.get('id'), { text: content} ).then(function(){ 
+				$.post('/api/reject/' + Em.get(kra,'id'), { text: content} ).then(function(){ 
 					window.location.assign('/teamusers');
 				});
 			}
@@ -130,18 +133,18 @@ UpRaise.GoalsController = Ember.ArrayController.extend({
 
 	showSubmit: function () {
 		var kra = this.get('controllers.reviewdocument.content');
-		if(this.get('totalWeight') == 100 &&  !Em.get('kra.isApproved'))
+		if(this.get('totalWeight') == 100 &&  !Em.get(kra,'isApproved'))
 			return true;
 		else
 			return false;
 	}.property('@each.weight', 'controllers.reviewdocument.content.isApproved'),
 	showReset: function() {
 		var kra = this.get('controllers.reviewdocument.content');
-		return kra && !Em.get('kra.isApproved') && this.get('model').get('length') > 0;
+		return kra && !Em.get(kra,'isApproved') && this.get('model').get('length') > 0;
 	}.property('controllers.reviewdocument.content.isApproved', 'length'),
 	isApproved: function() {
 		var kra = this.get('controllers.reviewdocument.content');
-		return Em.get('kra.isApproved');
+		return Em.get(kra,'isApproved');
 	}.property('controllers.reviewdocument.content.isApproved'),
 	resetModalButtons: [
       Ember.Object.create({title: 'Reset', clicked: "reset", type:"danger", dismiss: 'modal'}),

@@ -43,8 +43,8 @@
 				<a href="/kra/<%= user._id %>#/<%= user._id %>" class="btn btn-primary btn-md"> Modify KRA</a>
 				</div>
 			{{else}}
-				<h2> Your goals are not set. Click below to set goals. </h2>
-				<button class="btn btn-success btn-md" id="btnSetGoals" {{action 'createReviewDoc' '<%= user._id %>'}}>Set Goals</button>				
+				<h3> Your KRA for the latest cycle is not set. Goto <a href="/kra/<%= user._id %>#/<%= user._id %>">KRA Section</a> to set KRA. </h3>
+							
 			{{/if}}
 			<h2> My Notes</h2>
 			

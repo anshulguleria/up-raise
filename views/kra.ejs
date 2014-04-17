@@ -33,7 +33,7 @@ else	{%>
 
 		<div class='form-inline'>
 
-			<h3> Goals of <strong><%= employee.firstName + ' '+ employee.lastName%> </strong>  for Cycle
+			<h3> KRA of <strong><%= employee.firstName + ' '+ employee.lastName%> </strong>  for Cycle
 			<div class='form-group'>
 			  	{{view Ember.Select
 				       contentBinding='registeredCycles'
@@ -63,9 +63,9 @@ else	{%>
 </script>
 <script type="text/x-handlebars" data-template-name="create">
 
-	<h2> Your goals are not set for this cycle. Click below to set goals. </h2>
+	<h3> Your KRA is not set for this cycle. Click below to Add KRA or change cycle. </h3>
 				<button class="btn btn-success btn-md" id="btnSetGoals"
-				 {{action 'createReviewDoc' '<%= user._id %>'}}>Set Goals</button>		
+				 {{action 'createReviewDoc' '<%= user._id %>'}}>Add KRA</button>		
 </script>
 
 <script type="text/x-handlebars" data-template-name="goals">			
@@ -126,6 +126,7 @@ else	{%>
 					<td> {{textarea classNames="form-control" id="new-description" placeholder="Enter Details" value=description }} </td>
 					<td class="text-center"> {{input type="text" classNames="form-control" id="new-weight" placeholder="Eg: 10 %" value=weight }} </td>
 					<td>
+					
 						<a {{action "cancelRow"}} href="#">Cancel</a>
 						<a {{action "saveRow"}} href="#">Save</a>
 					</td>

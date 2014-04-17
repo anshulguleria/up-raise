@@ -14,7 +14,7 @@ isCreateNewMode : false,
 loadKRA : function(){
 
 	var cycleId = this.get('currentCycleId');
-	this.store.find('reviewdocument',this.get('model').userId +"__"+ cycleId)
+	this.store.find('reviewdocument',this.get('model.userId') +"__"+ cycleId)
 	.then( $.proxy(function(response){
 
 		this.set('model', response.get('data')); 
@@ -38,12 +38,12 @@ actions:{
 
 	createReviewDoc:function(userId){
 
-			var doc = this.store.createRecord('reviewdocument',{cid:this.get('currentCycleId')});
-	    	var that = this;
-	    	doc.save().then(function() {
-	    		that.set('reviewdocument', doc);
-	    		window.location.assign('/kra/'+userId+'#/'+userId);					
-			});
+			var doc = this.store.createRecord('reviewdocument',{ cycleId: this.get('currentCycleId')});
+	    	
+	    	doc.save().then($.proxy(function() {
+	    		this.set('model', doc);
+	    		
+			},this));
 
 	}
 }

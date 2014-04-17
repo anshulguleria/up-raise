@@ -43,20 +43,31 @@ exports.post = function(req, res) {
     kra.userId = req.user._id;
    
 
-    if(req.query.cid){
+    if(kra.cycleId){
 
-       Cycle.findOne({_id: req.query.cid},function(err,cycleItem){
+      Cycle.findOne({
+            _id : kra.cycleId
+            }).sort({
+                startDate:-1
+            }).exec(function(err, cycleItem) {
+                if(err) return next(err);
+                
+                if(cycleItem) {
 
-             if(cycleItem) {
-                kra.cycleId = cycleItem._id;
-                kra.save(function(err) {
-                if(err) throw err;
-                res.send({reviewdocument: kra});
-            }); 
-             }
+                    kra.cycleId = cycleItem._id;
 
-            
-        });
+                    kra.save(function(err) {
+                        if(err) throw err;
+
+                        kra.clone();
+                        res.send({reviewdocument: kra});
+                    });
+                }
+                else{
+                    res.send({staus: 500 , message: "Cycle does not exists."});
+                }
+
+            });
     }
     else{
 
@@ -72,10 +83,12 @@ exports.post = function(req, res) {
 
                     kra.cycleId = cycleItem._id;
 
-                kra.save(function(err) {
-                    if(err) throw err;
-                    res.send({reviewdocument: kra});
-                }); 
+                    kra.save(function(err) {
+                        if(err) throw err;
+
+                        kra.clone();
+                        res.send({reviewdocument: kra});
+                    });
                 }
 
             });

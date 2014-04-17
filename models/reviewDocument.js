@@ -41,7 +41,7 @@ reviewSchema.methods.clone = function clone(success) {
 
   cloneDoc.save(function(err, cloneItem) {    if(err) throw err; console.log(cloneItem); });
   
-};
+}; 
 
 reviewSchema.methods.revertToClone = function revertToClone(res){
 
@@ -50,9 +50,11 @@ reviewSchema.methods.revertToClone = function revertToClone(res){
   
 var docId = this.toObject()._id;
 
+var currentRD = this;
   CloneDocument.findOne({clonefor:docId})
                 .exec(function(err,clone){
-                    console.log(clone);
+                   
+                   if(clone){
                      
                      var reviewDoc  = new ReviewDocument(
                                   { 
@@ -75,10 +77,19 @@ var docId = this.toObject()._id;
                                       if(res)
                                       res.send(doc);
                                     else
-                                      return doc;
+                                      return  doc;
                                     });
 
-                                  });
+                    }
+                    else{if(res)
+                                      res.send(currentRD);
+                                    else
+                                      return  currentRD;
+                    }
+
+
+             });
+                    
 
  
       };
